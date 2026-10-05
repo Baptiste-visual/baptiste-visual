@@ -65,12 +65,23 @@ def noise(d):
     return RNG.standard_normal(int(SR * d)).astype(np.float32)
 
 
+def _blep(ph, dt):
+    """PolyBLEP residual: removes the aliasing of naive saw/square edges."""
+    out = np.zeros_like(ph)
+    m = ph < dt; x = ph[m] / dt; out[m] = x + x - x * x - 1
+    m2 = ph > 1 - dt; x2 = (ph[m2] - 1) / dt; out[m2] = x2 * x2 + x2 + x2 + 1
+    return out
+
+
 def saw(f, d, phase=0.0):
-    t = t_(d); return (2 * ((f * t + phase) % 1.0) - 1).astype(np.float32)
+    t = t_(d); dt = max(f / SR, 1e-6); ph = (f * t + phase) % 1.0
+    return (2 * ph - 1 - _blep(ph, dt)).astype(np.float32)
 
 
 def sq(f, d, duty=0.5):
-    t = t_(d); return np.where((f * t) % 1.0 < duty, 1.0, -1.0).astype(np.float32)
+    t = t_(d); dt = max(f / SR, 1e-6); ph = (f * t) % 1.0
+    y = np.where(ph < duty, 1.0, -1.0) + _blep(ph, dt) - _blep((ph + 1 - duty) % 1.0, dt)
+    return y.astype(np.float32)
 
 
 def sine_sweep(f0, f1, d, curve='exp'):
@@ -502,7 +513,14 @@ mix = m * 0.82 + s * 0.95
 mix = Pedalboard([LowShelfFilter(cutoff_frequency_hz=55, gain_db=-3.5), PeakFilter(cutoff_frequency_hz=3200, gain_db=2.0, q=0.8), HighShelfFilter(cutoff_frequency_hz=6000, gain_db=2.5), Compressor(threshold_db=-10, ratio=2.5, attack_ms=3, release_ms=80), Limiter(threshold_db=-1.2, release_ms=60)])(mix.astype(np.float32), SR)
 mix = mix[:, :int(DUR * SR)]
 fade = int(0.25 * SR); mix[:, -fade:] *= np.linspace(1, 0, fade)
-peak = np.abs(mix).max(); mix = mix / peak * 0.89
+mix = np.vstack([lp(c, 16500, 4) for c in mix]).astype(np.float32)   # tame the top octave
+# true-peak normalisation (4x oversampled) to -1.5 dBTP so the renderer never has to turn it down
+from scipy.signal import resample_poly
+for _ in range(3):
+    tp = max(np.abs(resample_poly(c, 4, 1)).max() for c in mix)
+    mix = mix * (10 ** (-1.5 / 20) / tp)
+    mix = np.clip(mix, -0.98, 0.98)
+print('true peak dBTP', round(20 * np.log10(max(np.abs(resample_poly(c, 4, 1)).max() for c in mix)), 2))
 sf.write('assets/audio/mix.wav', mix.T, SR, subtype='PCM_16')
 rms = np.sqrt((mix ** 2).mean())
 print('written assets/audio/mix.wav', mix.shape, 'peak', np.abs(mix).max().round(3), 'rms dBFS', round(20 * np.log10(rms), 1))

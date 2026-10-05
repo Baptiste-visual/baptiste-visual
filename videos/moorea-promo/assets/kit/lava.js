@@ -82,7 +82,7 @@
     '    vec3 navy = mix(vec3(0.059,0.090,0.133), vec3(0.078,0.125,0.188), fbm(ww*4.0));',
     '    navy += vec3(0.88,0.33,0.07)*crack*0.22*(1.0-smoothstep(0.0, 0.5, coolR-d));',
     '    col = mix(col, navy, inside);',
-    '    float edge = exp(-pow((d-coolR)*28.0, 2.0)); col += vec3(1.0,0.9,0.8)*edge*0.55; }',
+    '    float edge = exp(-pow((d-coolR)*70.0, 2.0)); col += vec3(1.0,0.52,0.18)*edge*0.42; }',
     '  if (erupt > 0.0) { vec2 ed = vec2((uv.x-eruptP.x)*asp, uv.y-eruptP.y); float e = exp(-dot(ed,ed)*18.0/(0.2+erupt));',
     '    col += molten(1.4)*e*erupt*1.4; }',
     '  if (sky > 0.5) { float g = exp(-(horizon-uv.y)*7.0); col = mix(vec3(0.035,0.04,0.06), vec3(0.55,0.14,0.03), g*0.9*heat); }',

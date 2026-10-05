@@ -361,7 +361,7 @@
     pf.style.left = px.toFixed(1) + 'px'; pf.style.top = py.toFixed(1) + 'px';
     steam.appendChild(pf);
     var st = 3.2 + k * .018, sc = 1.4 + rnd() * .9;
-    tl.fromTo(pf, { opacity: 0 }, { opacity: .55 + rnd() * .25, duration: .06, ease: 'none' }, st);
+    tl.fromTo(pf, { opacity: 0 }, { opacity: .3 + rnd() * .15, duration: .06, ease: 'none' }, st);
     tl.fromTo(pf, { x: 0, y: 0, scale: .4 }, { x: (rnd() - .5) * 70, y: -(90 + rnd() * 90), scale: sc, duration: .6, ease: 'power2.out' }, st);
     tl.to(pf, { opacity: 0, duration: .45, ease: 'power1.in' }, st + .12);
   }
