@@ -1,0 +1,533 @@
+#!/usr/bin/env python3
+"""Moorea promo — original score + sound design, synthesized from scratch.
+
+120 BPM (beat 0.5 s, bar 2 s), 30 bars = 60 s (the 60 s cut), F minor. Every SFX is placed on the
+storyboard's cue sheet (STORYBOARD.md `sfx:` lines), so picture and sound are locked.
+Deterministic: fixed seeds, no external samples. Output: assets/audio/mix.wav (48 kHz, 16-bit stereo).
+"""
+import numpy as np
+import soundfile as sf
+from pedalboard import Pedalboard, Reverb, Compressor, Limiter, HighpassFilter, LowpassFilter, Distortion, Delay, Chorus, LowShelfFilter, HighShelfFilter, PeakFilter
+from scipy.signal import butter, sosfilt
+
+SR = 48000
+DUR = 60.0
+N = int(SR * DUR) + SR  # 1 s of tail headroom, trimmed at the end
+BEAT = 0.5
+RNG = np.random.default_rng(20260605)
+
+music = np.zeros((2, N), np.float32)
+sfx = np.zeros((2, N), np.float32)
+
+
+# ---------------------------------------------------------------- helpers
+def t_(d):
+    return np.arange(int(SR * d)) / SR
+
+
+def note(n):  # MIDI -> Hz
+    return 440.0 * 2 ** ((n - 69) / 12)
+
+
+def env_ad(n, a, d, curve=4.0):
+    a = max(1, int(a * SR)); x = np.zeros(n, np.float32)
+    x[:a] = np.linspace(0, 1, a)
+    rest = n - a
+    if rest > 0:
+        x[a:] = np.exp(-curve * np.linspace(0, 1, rest) * (n / SR) / max(d, 1e-3))
+    return x
+
+
+def place(buf, sig, at, gain=1.0, pan=0.0):
+    """Mix mono/stereo sig into buf at time `at` (s), equal-power pan -1..1."""
+    i = int(round(at * SR))
+    if sig.ndim == 1:
+        l = np.cos((pan + 1) * np.pi / 4); r = np.sin((pan + 1) * np.pi / 4)
+        sig = np.vstack([sig * l * 1.4142, sig * r * 1.4142])
+    n = min(sig.shape[1], buf.shape[1] - i)
+    if n > 0 and i >= 0:
+        buf[:, i:i + n] += sig[:, :n] * gain
+
+
+def bp(x, lo, hi, order=2):
+    sos = butter(order, [lo, hi], btype='band', fs=SR, output='sos'); return sosfilt(sos, x)
+
+
+def lp(x, f, order=2):
+    sos = butter(order, f, btype='low', fs=SR, output='sos'); return sosfilt(sos, x)
+
+
+def hp(x, f, order=2):
+    sos = butter(order, f, btype='high', fs=SR, output='sos'); return sosfilt(sos, x)
+
+
+def noise(d):
+    return RNG.standard_normal(int(SR * d)).astype(np.float32)
+
+
+def _blep(ph, dt):
+    """PolyBLEP residual: removes the aliasing of naive saw/square edges."""
+    out = np.zeros_like(ph)
+    m = ph < dt; x = ph[m] / dt; out[m] = x + x - x * x - 1
+    m2 = ph > 1 - dt; x2 = (ph[m2] - 1) / dt; out[m2] = x2 * x2 + x2 + x2 + 1
+    return out
+
+
+def saw(f, d, phase=0.0):
+    t = t_(d); dt = max(f / SR, 1e-6); ph = (f * t + phase) % 1.0
+    return (2 * ph - 1 - _blep(ph, dt)).astype(np.float32)
+
+
+def sq(f, d, duty=0.5):
+    t = t_(d); dt = max(f / SR, 1e-6); ph = (f * t) % 1.0
+    y = np.where(ph < duty, 1.0, -1.0) + _blep(ph, dt) - _blep((ph + 1 - duty) % 1.0, dt)
+    return y.astype(np.float32)
+
+
+def sine_sweep(f0, f1, d, curve='exp'):
+    t = t_(d)
+    if curve == 'exp':
+        f = f0 * (f1 / f0) ** (t / d)
+    else:
+        f = f0 + (f1 - f0) * (t / d)
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    return np.sin(ph).astype(np.float32)
+
+
+def resonant_lp(x, cut_env, q=0.85):
+    """Time-varying state-variable lowpass (per-sample) for acid stabs. cut_env in Hz, same length as x."""
+    y = np.zeros_like(x); low = band = 0.0
+    for i in range(len(x)):
+        f = 2 * np.sin(np.pi * min(cut_env[i], SR / 6) / SR)
+        high = x[i] - low - q * band
+        band += f * high; low += f * band
+        y[i] = low
+    return y
+
+
+# ---------------------------------------------------------------- instruments
+def kick(hard=1.0, tail_note=None, d=0.38):
+    t = t_(d)
+    f = 48 + 150 * np.exp(-t * 38)
+    if tail_note is not None:
+        f = note(tail_note) + 170 * np.exp(-t * 30)
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * (6.5 if tail_note is None else 3.2))
+    click = hp(noise(d), 2500) * np.exp(-t * 300) * 0.5
+    k = body + click
+    k = np.tanh(k * (1.6 + 3.5 * hard)) / np.tanh(1.6 + 3.5 * hard)
+    return (k * 0.95).astype(np.float32)
+
+
+def hat(open_=False):
+    d = 0.16 if open_ else 0.045
+    x = hp(noise(d), 7500, 4) * env_ad(int(SR * d), 0.001, d * (0.6 if open_ else 0.35))
+    return x.astype(np.float32) * (0.55 if open_ else 0.45)
+
+
+def clap():
+    d = 0.25; x = np.zeros(int(SR * d), np.float32)
+    for k, off in enumerate([0, 0.011, 0.022, 0.034]):
+        b = bp(noise(0.2), 900, 2600) * env_ad(int(SR * 0.2), 0.001, 0.05 if k < 3 else 0.14)
+        i = int(off * SR); x[i:i + len(b)] += b[:len(x) - i]
+    return x * 0.8
+
+
+def snare(d=0.18):
+    t = t_(d)
+    tone = np.sin(2 * np.pi * 190 * t) * np.exp(-t * 30)
+    nz = bp(noise(d), 1200, 7000) * np.exp(-t * 22)
+    return ((tone * 0.6 + nz) * 0.7).astype(np.float32)
+
+
+def bass_hit(n, d=0.14):
+    t = t_(d)
+    x = saw(note(n), d) * 0.6 + saw(note(n) * 1.005, d) * 0.4
+    x = lp(x, 520) * env_ad(len(t), 0.004, d * 0.8, 3)
+    return np.tanh(x * 2.2).astype(np.float32) * 0.55
+
+
+def supersaw(notes, d, cutoff=5200, att=0.02, rel_curve=2.5):
+    t = t_(d); out = np.zeros(len(t), np.float32)
+    det = [-0.11, -0.06, -0.025, 0, 0.025, 0.06, 0.11]
+    for n in notes:
+        for k, dt in enumerate(det):
+            out += saw(note(n + dt), d, phase=(k * 0.137) % 1)
+    out = lp(out / (len(notes) * len(det)) * 3.0, cutoff, 2)
+    return (out * env_ad(len(t), att, d, rel_curve)).astype(np.float32)
+
+
+def acid_stab(n, d=0.22, peak=3200):
+    x = saw(note(n), d)
+    t = t_(d); cut = 180 + peak * np.exp(-t * 18)
+    y = resonant_lp(x, cut, q=0.35)
+    return np.tanh(y * 3.0).astype(np.float32) * env_ad(len(t), 0.002, d * 0.7, 2.5) * 0.5
+
+
+# ---------------------------------------------------------------- sound design
+def boom(d=1.6):
+    t = t_(d); f = 32 + 120 * np.exp(-t * 9)
+    x = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 2.2)
+    x += lp(noise(d), 300) * np.exp(-t * 6) * 0.6
+    return np.tanh(x * 2.5).astype(np.float32) * 0.9
+
+
+def impact():
+    d = 0.9; t = t_(d)
+    x = kick(1.0, d=0.5); x = np.pad(x, (0, len(t) - len(x)))
+    x += bp(noise(d), 200, 5000) * np.exp(-t * 7) * 0.5
+    return x.astype(np.float32)
+
+
+def crash(d=1.8):
+    t = t_(d); x = hp(noise(d), 4000) * np.exp(-t * 2.3)
+    x += bp(noise(d), 3000, 9000) * np.exp(-t * 1.4) * 0.5
+    return x.astype(np.float32) * 0.45
+
+
+def whoosh(d=0.35, up=True, lo=300, hi=6000):
+    t = t_(d); x = noise(d); y = np.zeros_like(x); seg = 256
+    for i in range(0, len(x), seg):
+        p = i / len(x); p = p if up else 1 - p
+        c = lo * (hi / lo) ** p
+        y[i:i + seg] = bp(x[i:i + seg], max(60, c * 0.6), min(SR / 2 - 100, c * 1.6))
+    env = np.sin(np.pi * np.linspace(0, 1, len(t))) ** 1.2
+    return (y * env * 1.6).astype(np.float32)
+
+
+def geyser(stab_note):
+    d = 0.42; out = np.zeros(int(SR * d), np.float32)
+    w = whoosh(0.35, True, 250, 5000) * 0.9
+    out[:len(w)] += w
+    fire = lp(noise(d), 1800) * env_ad(int(SR * d), 0.02, 0.25) * 0.5
+    out += fire
+    st = acid_stab(stab_note, 0.24); out[:len(st)] += st * 1.1
+    return out
+
+
+def fall_whistle(d=0.4):
+    return (sine_sweep(2200, 380, d) * env_ad(int(SR * d), 0.03, d, 1.2) * 0.22).astype(np.float32)
+
+
+def thud():
+    d = 0.5; t = t_(d)
+    x = np.sin(2 * np.pi * np.cumsum(70 + 90 * np.exp(-t * 25)) / SR) * np.exp(-t * 9)
+    x += lp(noise(d), 900) * np.exp(-t * 18) * 0.5
+    return np.tanh(x * 2).astype(np.float32) * 0.8
+
+
+def splash():
+    d = 0.6; t = t_(d); x = np.zeros(len(t), np.float32)
+    for k in range(9):  # bubbly plops
+        at = RNG.uniform(0, 0.35); f0 = RNG.uniform(260, 700); dd = 0.08
+        b = sine_sweep(f0, f0 * 2.2, dd) * env_ad(int(SR * dd), 0.002, 0.05)
+        i = int(at * SR); x[i:i + len(b)] += b[:len(x) - i] * 0.25
+    x += bp(noise(d), 500, 3000) * np.exp(-t * 8) * 0.35
+    return x
+
+
+def pssht_ting():
+    d = 0.9; t = t_(d)
+    hiss = hp(noise(d), 3500) * np.exp(-t * 7) * 0.55
+    bell = np.zeros(len(t))
+    for f, a, dec in [(2640, 1.0, 4), (3960, 0.55, 5), (5280, 0.3, 7), (7170, 0.2, 9)]:
+        bell += np.sin(2 * np.pi * f * t) * a * np.exp(-t * dec)
+    bell = np.concatenate([np.zeros(int(0.12 * SR)), bell[:len(t) - int(0.12 * SR)]]) * 0.16
+    return (hiss + bell).astype(np.float32)
+
+
+def coin():
+    a = sq(note(83), 0.07, 0.25) * 0.18; b = sq(note(88), 0.22, 0.25) * env_ad(int(SR * 0.22), 0.002, 0.18) * 0.18
+    return np.concatenate([a, b]).astype(np.float32)
+
+
+def stamp():
+    d = 0.35; t = t_(d)
+    x = np.sin(2 * np.pi * np.cumsum(120 + 200 * np.exp(-t * 40)) / SR) * np.exp(-t * 14)
+    x += bp(noise(d), 1500, 6000) * np.exp(-t * 40) * 0.6
+    return np.tanh(x * 2.2).astype(np.float32) * 0.6
+
+
+def boing():
+    d = 0.16; return (sq(1, d) * 0 + sine_sweep(300, 1100, d) * env_ad(int(SR * d), 0.003, 0.12) * 0.3).astype(np.float32)
+
+
+def blip(n, d=0.09, duty=0.5, g=0.2):
+    return (sq(note(n), d, duty) * env_ad(int(SR * d), 0.002, d * 0.7) * g).astype(np.float32)
+
+
+def tick():
+    d = 0.03; return (hp(noise(d), 3000) * env_ad(int(SR * d), 0.0005, 0.01) * 0.5).astype(np.float32)
+
+
+def glitch_buzz(d=0.35):
+    x = sq(55, d, 0.3) * 0.5 + saw(110.5, d) * 0.4
+    x = np.round(x * 4) / 4  # bitcrush
+    gate = (np.floor(t_(d) * 40) % 3 != 1).astype(np.float32)
+    return (x * gate * env_ad(int(SR * d), 0.002, d, 1.5) * 0.35).astype(np.float32)
+
+
+def crt_zap():
+    d = 0.22; return (sine_sweep(9000, 120, d) * env_ad(int(SR * d), 0.001, d, 2) * 0.25 + tick()[:1].sum() * 0).astype(np.float32)
+
+
+def crt_on():
+    d = 0.35; t = t_(d)
+    x = np.sin(2 * np.pi * 60 * t) * np.exp(-t * 10) * 0.6 + hp(noise(d), 2000) * np.exp(-t * 14) * 0.35
+    return x.astype(np.float32)
+
+
+def heartbeat():
+    d = 0.5; t = t_(d); x = np.zeros(len(t))
+    for off, a in [(0.0, 1.0), (0.17, 0.7)]:
+        i = int(off * SR); tt = t[:len(t) - i]
+        x[i:] += np.sin(2 * np.pi * (45 + 30 * np.exp(-tt * 30)) * tt) * np.exp(-tt * 16) * a
+    return lp(x, 160).astype(np.float32) * 1.6
+
+
+def sparkle(d=0.6):
+    t = t_(d); x = np.zeros(len(t))
+    for k in range(14):
+        f = RNG.uniform(3000, 9000); at = RNG.uniform(0, d * 0.6); dd = 0.12
+        i = int(at * SR); n = min(int(SR * dd), len(t) - i)
+        x[i:i + n] += np.sin(2 * np.pi * f * t[:n]) * np.exp(-t[:n] * 30) * 0.08
+    return x.astype(np.float32)
+
+
+def clang():
+    d = 1.0; t = t_(d); x = np.zeros(len(t))
+    for f, a, dec in [(420, 1, 3), (1070, 0.7, 4), (1840, 0.5, 5), (2930, 0.35, 6), (4370, 0.25, 8)]:
+        x += np.sin(2 * np.pi * f * t) * a * np.exp(-t * dec)
+    x += bp(noise(d), 2000, 9000) * np.exp(-t * 25) * 0.8
+    return (np.tanh(x * 0.9) * 0.45).astype(np.float32)
+
+
+def rewind(src_buf, t0, t1, d):
+    """Tape-rewind: the last stretch of audio played backwards with rising pitch."""
+    seg = src_buf[:, int(t0 * SR):int(t1 * SR)][:, ::-1]
+    n = int(d * SR); idx = (np.linspace(0, 1, n) ** 1.7) * (seg.shape[1] - 1)
+    out = np.vstack([np.interp(idx, np.arange(seg.shape[1]), seg[c]) for c in range(2)])
+    squeal = sine_sweep(600, 3200, d) * 0.08
+    return (out * 0.55 + squeal).astype(np.float32)
+
+
+def riser(d, lo=200, hi=8000):
+    w = whoosh(d, True, lo, hi)
+    t = t_(d); w *= (t / d) ** 1.5 * 1.6
+    tone = sine_sweep(note(41), note(65), d) * (t / d) ** 2 * 0.15
+    return (w + tone).astype(np.float32)
+
+
+def reverse_cymbal(d=0.4):
+    return (crash(d)[::-1] * 1.3).astype(np.float32)
+
+
+# ================================================================ SCORE (music bus) — 60 s cut, 120 BPM
+F1, AB1, C2, DB2, EB2, F2 = 29, 32, 36, 37, 39, 41
+bass_line = [F1, F1, F1, AB1, F1, F1, EB2 - 12, DB2 - 12]
+
+
+def groove(t0, t1, kick_hard=1.0, bass=True, hats=True, claps=True, lead=False, kick_on=True, tail=None):
+    b = 0; t = t0
+    while t < t1 - 1e-6:
+        if kick_on:
+            place(music, kick(kick_hard, tail_note=tail), t, 0.95)
+        if bass:
+            root = bass_line[b % len(bass_line)]
+            for s_ in (1, 2, 3):
+                place(music, bass_hit(root + (12 if s_ == 2 else 0)), t + s_ * BEAT / 4, 0.55 if s_ != 2 else 0.4)
+        if hats:
+            place(music, hat(True), t + BEAT / 2, 0.35, pan=0.25)
+            for s_ in range(4):
+                place(music, hat(False), t + s_ * BEAT / 4, 0.18 if s_ % 2 else 0.1, pan=-0.2)
+        if claps and b % 2 == 1:
+            place(music, clap(), t, 0.5)
+        if lead and b % 4 == 0:
+            seq = [65, 68, 72, 70] if (b // 4) % 2 == 0 else [65, 68, 75, 72]
+            for k, n in enumerate(seq):
+                place(music, acid_stab(n - 12, 0.2, 2200), t + k * BEAT / 2, 0.22, pan=0.3 * (1 if k % 2 else -1))
+        t += BEAT; b += 1
+
+X = 1.25  # 35 s cut -> 60 s cut stretch for the hook / drop / outro sections
+
+# A — hook 0–4
+place(music, lp(noise(4.1), 140) * 0.35, 0.0, 1.0)
+for i, n in enumerate([76, 72, 69]):
+    place(sfx, blip(n, 0.14, 0.5, 0.18), 0.0 + i * 0.16)
+place(sfx, blip(64, 0.35, 0.5, 0.16), 0.48)
+place(sfx, splash(), 0.5, 1.0); place(sfx, sine_sweep(320, 55, 0.4) * env_ad(int(SR * 0.4), 0.002, 0.35) * 0.6, 0.5)
+place(sfx, hp(noise(0.5), 3000) * env_ad(int(SR * 0.5), 0.01, 0.35) * 0.25, 0.55)
+for at in (1.0, 1.5):
+    place(music, boom(1.5), at, 1.0); place(music, impact(), at, 0.9); place(music, crash(1.8), at, 0.7)
+for i, n in enumerate([67, 66, 65, 64, 63, 62, 61, 60]):
+    place(sfx, blip(n, 0.12, 0.25, 0.16), 1.0 + i * 0.125, pan=-0.3 + i * 0.08)
+place(sfx, blip(48, 0.6, 0.5, 0.18), 2.0)
+place(sfx, glitch_buzz(0.4), 2.0, 1.0); place(sfx, glitch_buzz(0.2), 2.5, 0.8)
+
+# B — rejouer 4–6
+place(sfx, crt_on(), 4.0); place(sfx, blip(84, 0.06, 0.5, 0.15), 4.02)
+for at in (4.0, 4.5, 5.0, 5.5):
+    place(music, lp(kick(0.6), 600 if at < 5.0 else 20000), at, 0.9)
+place(sfx, tick(), 4.5, 1.2); place(sfx, blip(79, 0.05, 0.5, 0.12), 4.5)
+place(sfx, impact(), 5.0, 0.9); place(sfx, coin(), 5.0, 1.4); place(sfx, crash(1.0), 5.0, 0.5)
+place(sfx, reverse_cymbal(0.5), 5.5, 1.0)
+
+# C — level 6–10
+place(sfx, impact(), 6.0, 1.0); place(music, crash(1.8), 6.0, 0.6)
+for i, n in enumerate([72, 76, 79, 84, 88, 91, 96]):
+    place(sfx, blip(n, 0.05, 0.25, 0.14), 6.0 + i * 0.06)
+groove(6.0, 10.0, kick_hard=0.7, claps=False)
+place(sfx, splash(), 7.0, 1.0)
+for i in range(8):
+    place(sfx, geyser(53 + i), 7.0 + i * 0.25, 0.75, pan=[-0.6, 0.6, 0, -0.4, 0.5, -0.1, 0.6, -0.6][i])
+place(sfx, riser(1.0), 9.0, 1.0)
+for i in range(16):
+    place(music, snare(0.1), 9.0 + i * 0.0625, 0.15 + 0.35 * i / 16)
+
+# D — power-ups 10–40 (full groove)
+groove(10.0, 40.0, kick_hard=1.0, lead=True)
+place(music, crash(1.8), 10.0, 0.6)
+for k, P in enumerate([10.0, 15.0, 20.0, 25.0, 30.0, 35.0]):
+    place(sfx, geyser(58 + k), P, 0.8)
+    place(sfx, fall_whistle(0.5), P + 0.5, 1.0)
+    place(sfx, thud(), P + 1.0, 1.0); place(sfx, splash(), P + 1.0, 0.8); place(sfx, pssht_ting(), P + 1.0, 1.0)
+    place(sfx, stamp(), P + 1.5, 1.0); place(sfx, coin(), P + 1.5, 1.2)
+    place(sfx, boing(), P + 3.5, 1.0); place(sfx, tick(), P + 4.0, 1.2)
+    place(sfx, whoosh(0.45, True, 400, 7000), P + 4.5, 0.9, pan=-0.5)
+# PU1 navettes showcase
+for i in range(3):
+    place(sfx, blip(76 + i * 3, 0.07, 0.5, 0.12), 12.0 + i * 0.5)
+place(sfx, sine_sweep(700, 1500, 0.08) * 0.18, 13.5)
+# PU2 interdits: branding + zoom
+for i in range(8):
+    b_ = hp(noise(0.06), 2500) * env_ad(int(SR * 0.06), 0.001, 0.03) * 0.5
+    place(sfx, b_, 16.1 + i * 0.0625, 1.0, pan=-0.6 + i * 0.17)
+place(sfx, tick(), 17.0, 1.2); place(sfx, whoosh(0.35, True, 300, 4000), 17.0, 0.8)
+place(sfx, whoosh(0.25, False, 600, 3000), 17.5, 0.6, pan=0.4); place(sfx, whoosh(0.25, False, 600, 3000), 18.0, 0.6, pan=-0.4)
+place(sfx, whoosh(0.35, False, 300, 4000), 18.5, 0.8)
+# PU3 map
+place(sfx, lp(noise(0.6), 250) * env_ad(int(SR * 0.6), 0.1, 0.4) * 0.9, 20.5)
+place(sfx, clang()[:int(0.3 * SR)] * 0.3, 20.55)
+for i, n in enumerate([62, 69, 69, 57, 62, 74]):
+    place(sfx, blip(n + 12, 0.07, 0.5, 0.14), 21.0 + i * 0.25, pan=-0.5 + i * 0.2)
+place(sfx, blip(86, 0.05, 0.5, 0.12), 22.0)
+place(sfx, tick(), 22.5, 1.4); place(sfx, sine_sweep(500, 1300, 0.08) * 0.2, 22.5)
+place(sfx, sine_sweep(900, 2400, 0.35) * env_ad(int(SR * 0.35), 0.01, 0.3) * 0.1, 23.0)
+sonar = (np.sin(2 * np.pi * 1400 * t_(0.9)) * np.exp(-t_(0.9) * 5) * 0.18).astype(np.float32)
+place(sfx, sonar, 23.5, 1.0)
+# PU4 planning
+place(sfx, clang(), 25.25, 1.1); place(sfx, sparkle(0.4), 25.25, 1.0)
+place(sfx, whoosh(0.35, True, 200, 3000), 25.5, 0.8)
+for i in range(3):
+    place(sfx, tick(), 27.0 + i * 0.5, 1.4); place(sfx, blip(76 + i * 4, 0.06, 0.5, 0.13), 27.0 + i * 0.5)
+place(sfx, impact(), 28.5, 0.6); place(sfx, sparkle(0.5), 28.5, 1.0)
+# PU5 food
+for i in range(4):
+    place(sfx, sine_sweep(500, 1300, 0.07) * 0.18, 30.5 + i * 0.25)
+    place(sfx, whoosh(0.12, False, 800, 4000) * 0.7, 30.95 + i * 0.25)
+    place(sfx, thud() * 0.5, 31.0 + i * 0.25)
+for i in range(4):
+    place(sfx, whoosh(0.22, True, 500, 5000) * 0.6, 32.0 + i * 0.5, pan=-0.4 + i * 0.27)
+    place(sfx, blip(81, 0.05, 0.5, 0.1), 32.1 + i * 0.5)
+# PU6 cashless
+for i in range(3):
+    place(sfx, blip(79 + i * 5, 0.12, 0.5, 0.15), 37.0 + i * 0.5)
+place(sfx, coin(), 36.55, 0.8)
+place(sfx, (np.sin(2 * np.pi * 1760 * t_(0.6)) * np.exp(-t_(0.6) * 6) * 0.12 + np.sin(2 * np.pi * 2637 * t_(0.6)) * np.exp(-t_(0.6) * 8) * 0.08).astype(np.float32), 38.5)
+
+# E — breakdown 40–45 (no kick): heartbeat + pad
+place(music, supersaw([53, 56, 60], 5.1, cutoff=900, att=0.6, rel_curve=1.0), 40.0, 0.5)
+for at in np.arange(40.0, 45.0, 1.0):
+    place(music, heartbeat(), at, 0.9)
+groove(40.0, 45.0, kick_on=False, bass=False, hats=True, claps=False)
+place(sfx, geyser(64), 40.0, 0.6)
+place(sfx, thud() * 0.6, 41.0); place(sfx, tick(), 41.0, 1.5); place(sfx, blip(72, 0.05, 0.5, 0.12), 41.02)
+for i in range(8):
+    place(sfx, tick(), 41.0 + i * 0.0625, 0.6)
+place(sfx, sonar, 41.5, 1.0); place(sfx, stamp(), 41.5, 1.0); place(sfx, coin(), 41.5, 1.1)
+place(sfx, tick(), 42.0, 1.4); place(sfx, blip(70, 0.06, 0.5, 0.12), 42.0)
+for i in range(3):
+    place(sfx, sine_sweep(600, 1200, 0.06) * 0.15, 42.5 + i * 0.125)
+place(sfx, sparkle(0.5), 43.0, 1.2)
+place(sfx, sine_sweep(300, 700, 0.15) * env_ad(int(SR * 0.15), 0.005, 0.1) * 0.25, 43.5)
+place(sfx, whoosh(0.45, True, 400, 7000), 44.5, 0.9, pan=-0.5)
+
+# F — build 45–50
+place(sfx, geyser(65), 45.0, 0.8)
+roll_t = 45.0
+while roll_t < 49.9:
+    p_ = (roll_t - 45.0) / 4.9
+    step = 0.25 if p_ < 0.33 else (0.125 if p_ < 0.66 else 0.0625)
+    place(music, snare(0.1), roll_t, 0.2 + 0.5 * p_)
+    roll_t += step
+place(music, riser(4.9, 150, 9000), 45.0, 1.0)
+place(music, supersaw([53, 56, 60, 65], 4.9, cutoff=1500, att=3.0, rel_curve=0.3), 45.0, 0.35)
+for i in range(12):
+    place(sfx, tick(), 45.75 + i * 0.0625, 1.0)
+place(sfx, whoosh(0.3, True, 600, 8000), 46.5, 0.9); place(sfx, stamp(), 46.5, 0.8); place(sfx, coin(), 46.5, 1.0)
+place(sfx, sine_sweep(600, 1400, 0.08) * 0.22, 47.0)
+for i in range(4):
+    place(sfx, blip(84 + i * 2, 0.04, 0.5, 0.1), 47.5 + i * 0.25)
+place(sfx, tick(), 48.5, 1.4)
+
+# G — DROP 50–54
+place(music, crash(2.0), 50.0, 0.8); place(music, boom(1.3), 50.0, 0.9)
+groove(50.0, 54.0, kick_hard=1.6, tail=F1 + 12, bass=False, hats=True, claps=True)
+lead_seq = [(0.0, [77, 80, 84]), (0.4, [77, 80, 84]), (0.6, [80, 84, 87]), (0.8, [79, 82, 86]), (1.2, [77, 80, 84]),
+            (1.6, [75, 79, 82]), (2.0, [75, 79, 82]), (2.2, [77, 80, 84]), (2.4, [80, 84, 87]), (2.8, [82, 86, 89])]
+for off, ch in lead_seq:
+    place(music, supersaw([n - 12 for n in ch], 0.45, cutoff=6500, att=0.005, rel_curve=2.0), 50.0 + off * X, 0.42)
+for i in range(8):
+    place(sfx, tick(), 50.5 + i * 0.044, 1.0)
+for i, n in enumerate([72, 76, 79, 84]):
+    place(sfx, blip(n, 0.09, 0.5, 0.14), 50.875 + i * 0.075)
+place(sfx, whoosh(0.7, False, 200, 6000), 51.5, 1.0)
+for i in range(8):
+    place(sfx, blip(67 + i * 2, 0.07, 0.25, 0.12), 51.625 + i * 0.15, pan=-0.6 + i * 0.17)
+place(sfx, supersaw([72, 76, 79], 0.6, 7000, 0.005, 2), 52.31, 0.5)
+place(sfx, stamp(), 52.5, 1.0); place(sfx, stamp(), 53.0, 1.0)
+
+# H — outro 54–60
+place(music, supersaw([53, 56, 60, 65], 2.0, 4500, 0.2, 0.8), 54.0, 0.5)
+place(music, supersaw([49, 53, 56, 61], 2.0, 4500, 0.06, 0.8), 56.0, 0.45)
+place(music, supersaw([51, 55, 58, 63], 1.0, 4500, 0.06, 1.0), 58.0, 0.45)
+place(music, sparkle(1.4), 54.0, 1.2)
+groove(54.0, 59.0, kick_hard=1.0, tail=F1 + 12, bass=False, hats=True, claps=True)
+place(sfx, whoosh(0.55, True, 300, 5000), 55.25, 0.8)
+place(sfx, impact() * 0.5, 56.0); place(sfx, sparkle(0.8), 56.0, 1.5)
+place(sfx, tick(), 56.5, 1.2)
+place(sfx, blip(84, 0.08, 0.5, 0.13), 57.0); place(sfx, blip(88, 0.08, 0.5, 0.13), 57.25)
+place(sfx, tick(), 57.75, 1.2)
+place(sfx, sine_sweep(400, 1000, 0.12) * 0.2, 58.0)
+place(music, kick(1.6, tail_note=F1 + 12, d=0.9), 59.0, 1.0); place(music, boom(1.0), 59.0, 0.8)
+place(music, crash(1.2), 59.0, 0.8)
+place(music, supersaw([53, 56, 60, 65, 72], 0.95, 6000, 0.002, 1.5), 59.0, 0.6)
+place(sfx, tick(), 59.0, 1.5); place(sfx, coin(), 59.02, 1.0)
+
+# rewind 3.0–3.75 built from the hook (1.0–3.0)
+cur = music + sfx
+place(sfx, rewind(cur, 1.0, 3.0, 0.75), 3.0, 1.0)
+place(sfx, crt_zap(), 3.75, 1.0)
+g = np.ones(N, np.float32); a_, b_ = int(3.0 * SR), int(4.0 * SR)
+g[a_:b_] = np.linspace(1, 0.15, b_ - a_)
+music *= g
+
+# ================================================================ mix
+board_music = Pedalboard([HighpassFilter(28), Compressor(threshold_db=-14, ratio=3, attack_ms=5, release_ms=120)])
+board_sfx = Pedalboard([HighpassFilter(40), Reverb(room_size=0.32, wet_level=0.12, dry_level=0.9, width=0.9)])
+m = board_music(music, SR)
+s = board_sfx(sfx, SR)
+mix = m * 0.82 + s * 0.95
+mix = Pedalboard([LowShelfFilter(cutoff_frequency_hz=55, gain_db=-3.5), PeakFilter(cutoff_frequency_hz=3200, gain_db=2.0, q=0.8), HighShelfFilter(cutoff_frequency_hz=6000, gain_db=2.5), Compressor(threshold_db=-10, ratio=2.5, attack_ms=3, release_ms=80), Limiter(threshold_db=-1.2, release_ms=60)])(mix.astype(np.float32), SR)
+mix = mix[:, :int(DUR * SR)]
+fade = int(0.25 * SR); mix[:, -fade:] *= np.linspace(1, 0, fade)
+mix = np.vstack([lp(c, 16500, 4) for c in mix]).astype(np.float32)   # tame the top octave
+# true-peak normalisation (4x oversampled) to -1.5 dBTP so the renderer never has to turn it down
+from scipy.signal import resample_poly
+for _ in range(3):
+    tp = max(np.abs(resample_poly(c, 4, 1)).max() for c in mix)
+    mix = mix * (10 ** (-1.5 / 20) / tp)
+    mix = np.clip(mix, -0.98, 0.98)
+print('true peak dBTP', round(20 * np.log10(max(np.abs(resample_poly(c, 4, 1)).max() for c in mix)), 2))
+sf.write('assets/audio/mix.wav', mix.T, SR, subtype='PCM_16')
+rms = np.sqrt((mix ** 2).mean())
+print('written assets/audio/mix.wav', mix.shape, 'peak', np.abs(mix).max().round(3), 'rms dBFS', round(20 * np.log10(rms), 1))

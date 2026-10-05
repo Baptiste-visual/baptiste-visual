@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0f1722;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="60"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div
+        id="el-01-game-over"
+        class="scene"
+        data-composition-id="01-game-over"
+        data-composition-src="compositions/frames/01-game-over.html"
+        data-start="0"
+        data-duration="4"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-02-rejouer"
+        class="scene"
+        data-composition-id="02-rejouer"
+        data-composition-src="compositions/frames/02-rejouer.html"
+        data-start="4"
+        data-duration="2"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-03-niveau"
+        class="scene"
+        data-composition-id="03-niveau"
+        data-composition-src="compositions/frames/03-niveau.html"
+        data-start="6"
+        data-duration="4"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-04-navette-sac"
+        class="scene"
+        data-composition-id="04-navette-sac"
+        data-composition-src="compositions/frames/04-navette-sac.html"
+        data-start="10"
+        data-duration="10"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-05-plan-planning"
+        class="scene"
+        data-composition-id="05-plan-planning"
+        data-composition-src="compositions/frames/05-plan-planning.html"
+        data-start="20"
+        data-duration="10"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-06-food-cash"
+        class="scene"
+        data-composition-id="06-food-cash"
+        data-composition-src="compositions/frames/06-food-cash.html"
+        data-start="30"
+        data-duration="10"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-07-safety-mana"
+        class="scene"
+        data-composition-id="07-safety-mana"
+        data-composition-src="compositions/frames/07-safety-mana.html"
+        data-start="40"
+        data-duration="10"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-08-niveau-termine"
+        class="scene"
+        data-composition-id="08-niveau-termine"
+        data-composition-src="compositions/frames/08-niveau-termine.html"
+        data-start="50"
+        data-duration="4"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-09-end"
+        class="scene"
+        data-composition-id="09-end"
+        data-composition-src="compositions/frames/09-end.html"
+        data-start="54"
+        data-duration="6"
+        data-track-index="1"
+      ></div>
+
+      <!-- Game HUD overlay (app components): lives, festival clock, "GALÈRES ÉVITÉES" counter -->
+      <div
+        id="el-hud"
+        class="scene"
+        data-composition-id="hud"
+        data-composition-src="compositions/hud.html"
+        data-start="6"
+        data-duration="44"
+        data-track-index="3"
+      ></div>
+
+      <!-- BGM -->
+      <audio
+        id="el-bgm"
+        src="assets/audio/mix.wav"
+        data-start="0"
+        data-duration="60"
+        data-track-index="11"
+        data-volume="1"
+      ></audio>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

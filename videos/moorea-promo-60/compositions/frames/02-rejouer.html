@@ -1,0 +1,313 @@
+<template>
+<style>
+@font-face{font-family:"Montserrat";font-weight:300;font-display:block;src:url("assets/fonts/Montserrat-300.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:400;font-display:block;src:url("assets/fonts/Montserrat-400.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:500;font-display:block;src:url("assets/fonts/Montserrat-500.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:block;src:url("assets/fonts/Montserrat-600.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:block;src:url("assets/fonts/Montserrat-700.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:800;font-display:block;src:url("assets/fonts/Montserrat-800.woff2") format("woff2");}
+@font-face{font-family:"Turret Road";font-weight:800;font-display:block;src:url("assets/fonts/TurretRoad-800.woff2") format("woff2");}
+
+#root { position: absolute; inset: 0; overflow: hidden; }
+[class~="02-rejouer-full"] { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+/* REJOUER ? — display 150 px, centred on y = 380 */
+[class~="02-rejouer-title"] { position: absolute; left: 0; top: 305px; width: 1920px; height: 150px; text-align: center; white-space: nowrap; }
+[class~="02-rejouer-title"] .mui-display { display: block; font-size: 150px; line-height: 150px; white-space: nowrap; }
+[class~="02-rejouer-q"] { display: inline-block; }
+
+/* subline — Montserrat 600 / 54 px / #b4bcc6, centred on y = 520 */
+[class~="02-rejouer-sub"] { position: absolute; left: 0; top: 486px; width: 1920px; text-align: center; white-space: nowrap;
+  font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 54px; line-height: 68px; color: #b4bcc6; letter-spacing: 0.005em; }
+[class~="02-rejouer-wm"] { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.04em 0.16em; margin: 0 -0.04em -0.16em; }
+[class~="02-rejouer-w"] { display: inline-block; }
+
+/* the app's orange button (kit .mui-btn-orange, source width 760) centred on (960, 700) */
+[class~="02-rejouer-btnw"] { position: absolute; left: 580px; top: 644px; width: 760px; height: 112px; }
+[class~="02-rejouer-glow"] { position: absolute; left: 0; top: 0; width: 760px; height: 112px; border-radius: 30px;
+  box-shadow: 0 18px 50px rgba(225, 83, 17, 0.35), 0 0 60px 10px rgba(255, 106, 31, 0.45), 0 0 150px 36px rgba(225, 83, 17, 0.26); }
+[class~="02-rejouer-white"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 30px;
+  background: linear-gradient(90deg, #fff8ec 0%, #ffe2c0 60%, #ffcf9e 100%); }
+[class~="02-rejouer-sheenclip"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border-radius: 30px; overflow: hidden; }
+[class~="02-rejouer-sheen"] { position: absolute; left: 0; top: -20%; width: 20%; height: 140%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,240,222,0.55) 50%, rgba(255,255,255,0) 100%); }
+[class~="02-rejouer-lbl"] { position: relative; }
+
+/* press shockwaves: the button's own outline */
+[class~="02-rejouer-ring"] { position: absolute; left: 580px; top: 644px; width: 760px; height: 112px; border-radius: 30px; }
+[class~="02-rejouer-ringo"] { border: 6px solid #e15311; box-shadow: 0 0 26px 3px rgba(255, 106, 31, 0.85), inset 0 0 18px 2px rgba(255, 106, 31, 0.55); }
+[class~="02-rejouer-ringw"] { border: 3px solid #ffd9b0; box-shadow: 0 0 16px 2px rgba(255, 190, 120, 0.7); }
+
+/* game-menu cursor chevrons flanking the button */
+[class~="02-rejouer-chev"] { position: absolute; top: 673px; width: 44px; height: 54px; }
+[class~="02-rejouer-chev"] svg { display: block; width: 44px; height: 54px; overflow: visible; filter: drop-shadow(0 0 12px rgba(255, 106, 31, 0.85)); }
+
+/* soft orange light pool under the button */
+[class~="02-rejouer-pool"] { position: absolute; left: 210px; top: 430px; width: 1500px; height: 560px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(225, 83, 17, 0.30) 0%, rgba(225, 83, 17, 0.14) 45%, rgba(225, 83, 17, 0.05) 75%, rgba(225, 83, 17, 0) 100%); }
+
+/* press sparks + dive speed lines */
+[class~="02-rejouer-spark"] { position: absolute; height: 4px; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(255, 138, 31, 0) 0%, rgba(255, 211, 74, 0.9) 55%, #fff6d8 100%);
+  box-shadow: 0 0 8px rgba(255, 138, 31, 0.8); }
+[class~="02-rejouer-line"] { position: absolute; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 226, 190, 0.55) 60%, rgba(255, 255, 255, 0.95) 100%); }
+
+/* CRT: scanlines + overexposure + power-on beam */
+[class~="02-rejouer-scan"] { background: repeating-linear-gradient(180deg, rgba(0,0,0,0.30) 0px, rgba(0,0,0,0.30) 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 5px); }
+[class~="02-rejouer-beam"] { position: absolute; left: 0; top: 536px; width: 1920px; height: 8px; background: #fff; border-radius: 4px;
+  box-shadow: 0 0 24px 6px rgba(255, 255, 255, 0.85), 0 0 80px 24px rgba(170, 205, 255, 0.35); }
+[class~="02-rejouer-forange"] { background: radial-gradient(circle at 960px 700px, #fff1d6 0%, #ffb35a 22%, #ff6a1f 52%, #e15311 78%, #c2460c 100%); }
+</style>
+<link rel="stylesheet" href="assets/kit/moorea-ui.css">
+
+<div id="root" data-composition-id="02-rejouer" data-width="1920" data-height="1080" data-duration="2">
+  <!-- full-bleed background layers -->
+  <div class="clip" id="02-rejouer-black" data-start="0" data-duration="2" data-track-index="0"
+       style="position:absolute;inset:0;width:100%;height:100%;background:#000"></div>
+  <div class="clip" id="02-rejouer-bg" data-start="0" data-duration="2" data-track-index="1"
+       style="position:absolute;inset:0;width:100%;height:100%;background:radial-gradient(ellipse 1250px 800px at 50% 56%, #172539 0%, #0f1722 60%, #0a0f17 100%)"></div>
+  <canvas class="clip" id="02-rejouer-embers" width="1920" height="1080" data-start="0" data-duration="2" data-track-index="2"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+
+  <!-- CRT group content (opens with the background layers at 0.00) -->
+  <div id="02-rejouer-crt" class="mui 02-rejouer-full">
+    <div id="02-rejouer-shake" class="02-rejouer-full">
+      <div id="02-rejouer-cam" class="02-rejouer-full" style="transform-origin:960px 700px">
+
+        <div id="02-rejouer-pool" class="02-rejouer-pool"></div>
+
+        <!-- Scene 1: REJOUER ? -->
+        <div id="02-rejouer-title" class="02-rejouer-title">
+          <div id="02-rejouer-titletx" class="mui-display fx-hot-white">REJOUER&nbsp;<span id="02-rejouer-q" class="02-rejouer-q">?</span></div>
+        </div>
+
+        <!-- Scene 2: subline -->
+        <div id="02-rejouer-sub" class="02-rejouer-sub"><span class="02-rejouer-wm"><span class="02-rejouer-w">Cette</span></span> <span class="02-rejouer-wm"><span class="02-rejouer-w">fois,</span></span> <span class="02-rejouer-wm"><span class="02-rejouer-w">avec</span></span> <span class="02-rejouer-wm"><span class="02-rejouer-w">l’appli.</span></span></div>
+
+        <!-- press shockwaves (behind the button) -->
+        <svg width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;overflow:visible;pointer-events:none">
+          <rect id="02-rejouer-ring" x="580" y="644" width="760" height="112" rx="30" fill="none" stroke="#e15311" stroke-width="6" style="opacity:0;filter:drop-shadow(0 0 13px rgba(255,106,31,0.9))"></rect>
+          <rect id="02-rejouer-ring2" x="580" y="644" width="760" height="112" rx="30" fill="none" stroke="#ffd9b0" stroke-width="3" style="opacity:0;filter:drop-shadow(0 0 8px rgba(255,190,120,0.75))"></rect>
+        </svg>
+        <div id="02-rejouer-sparks" class="02-rejouer-full"></div>
+
+        <!-- menu cursor chevrons -->
+        <div id="02-rejouer-chevl" class="02-rejouer-chev" style="left:476px">
+          <div id="02-rejouer-chevli">
+            <svg viewBox="0 0 44 54"><polygon points="4,4 40,27 4,50" fill="#e15311" stroke="#e15311" stroke-width="7" stroke-linejoin="round"></polygon></svg>
+          </div>
+        </div>
+        <div id="02-rejouer-chevr" class="02-rejouer-chev" style="left:1400px">
+          <div id="02-rejouer-chevri">
+            <svg viewBox="0 0 44 54"><polygon points="40,4 4,27 40,50" fill="#e15311" stroke="#e15311" stroke-width="7" stroke-linejoin="round"></polygon></svg>
+          </div>
+        </div>
+
+        <!-- focal: the app's orange button, label JOUER -->
+        <div id="02-rejouer-btnw" class="02-rejouer-btnw">
+          <div id="02-rejouer-glow" class="02-rejouer-glow" style="opacity:0"></div>
+          <div class="mui-btn-orange" style="position:relative">
+            <div id="02-rejouer-white" class="02-rejouer-white" style="opacity:0"></div>
+            <div class="02-rejouer-sheenclip"><div id="02-rejouer-sheen" class="02-rejouer-sheen"></div></div>
+            <span id="02-rejouer-lbl" class="mui-display 02-rejouer-lbl">JOUER</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div id="02-rejouer-scan" class="02-rejouer-full 02-rejouer-scan"></div>
+    <div id="02-rejouer-crtwhite" class="02-rejouer-full" style="background:#ffffff"></div>
+  </div>
+
+  <!-- dive speed lines -->
+  <div id="02-rejouer-speed" class="02-rejouer-full" style="pointer-events:none"></div>
+
+  <!-- CRT power-on beam -->
+  <div id="02-rejouer-beam" class="02-rejouer-beam"></div>
+
+  <!-- dive flash: orange then white -->
+  <div id="02-rejouer-forange" class="02-rejouer-full 02-rejouer-forange" style="opacity:0;pointer-events:none"></div>
+  <div id="02-rejouer-fwhite" class="02-rejouer-full" style="background:#ffffff;opacity:0;pointer-events:none"></div>
+</div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/kit/mui.js"></script>
+<script src="assets/kit/lava.js"></script>
+<script>
+(function () {
+  var FID = '02-rejouer', FRAME_START = 3.2, DUR = 1.6;
+  function $(id) { return document.getElementById(FID + '-' + id); }
+  var crt = $('crt');
+  var root = (crt && crt.closest('[data-composition-id="' + FID + '"]')) || document;
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  /* ---------- deterministic helpers ---------- */
+  function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var rnd = mulberry(2032);
+  function R(a, b) { return a + (b - a) * rnd(); }
+  function el(parent, cls, css) { var d = document.createElement('div'); d.className = cls; if (css) d.style.cssText = css; parent.appendChild(d); return d; }
+
+  /* ---------- markup completion ---------- */
+  MUI.hydrate(root);
+
+  /* ---------- sparse embers (same seed as frame 01, GLOBAL time -> continuous across the cut) ---------- */
+  var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 30 });
+  var S = { u: 0, boost: 1 };
+  function draw() { emb.render(FRAME_START + S.u, { boost: S.boost }); }
+  // function-setter proxy: GSAP calls these on every render (seek-safe, independent of suppressEvents)
+  var L = {};
+  Object.keys(S).forEach(function (k) {
+    L[k] = function (v) { if (arguments.length) { S[k] = v; return; } return S[k]; };
+  });
+  // param tweens live in `lt`, bracketed by two redraw tweens -> one draw per render, after params update
+  var lt = gsap.timeline({ defaults: { lazy: false } });
+  var DR = { a: 0, b: 0 };
+  var DP = {
+    a: function (v) { if (arguments.length) { if (v < DR.a) draw(); DR.a = v; return; } return DR.a; },
+    b: function (v) { if (arguments.length) { if (v > DR.b) draw(); DR.b = v; return; } return DR.b; }
+  };
+  tl.to(DP, { a: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
+  tl.add(lt, 0);
+  tl.to(DP, { b: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
+  function LT(prop, from, to, at, dur, ease) {
+    var a = {}, b = { duration: dur, ease: ease || 'none', immediateRender: false };
+    a[prop] = from; b[prop] = to; lt.fromTo(L, a, b, at);
+  }
+  LT('u', 0, DUR, 0, DUR, 'none');
+
+  /* ---------- elements ---------- */
+  var bg = $('bg'), embers = $('embers'), shake = $('shake'), cam = $('cam');
+  var titleW = $('title'), titleTx = $('titletx'), q = $('q');
+  var words = $('sub').querySelectorAll('[class~="02-rejouer-w"]');
+  var btnW = $('btnw'), glow = $('glow'), white = $('white'), sheen = $('sheen'), lbl = $('lbl');
+  var ring = $('ring'), ring2 = $('ring2'), sparkHost = $('sparks'), pool = $('pool');
+  var chevL = $('chevl'), chevLi = $('chevli'), chevR = $('chevr'), chevRi = $('chevri');
+  var scan = $('scan'), crtWhite = $('crtwhite'), beam = $('beam');
+  var speed = $('speed'), fOrange = $('forange'), fWhite = $('fwhite');
+
+  function doShake(t, a, dur) {
+    var d = (dur || 0.3) / 6;
+    tl.to(shake, { keyframes: [
+      { x: a, y: -0.75 * a, duration: d }, { x: -0.9 * a, y: 0.85 * a, duration: d },
+      { x: 0.7 * a, y: -0.55 * a, duration: d }, { x: -0.45 * a, y: 0.35 * a, duration: d },
+      { x: 0.2 * a, y: -0.15 * a, duration: d }, { x: 0, y: 0, duration: d } ], ease: 'none' }, t);
+  }
+
+  /* ================= Scene 1 (0.00-0.40): CRT ON — REJOUER ? ================= */
+  // the screen opens from a white-hot line (frame 01 ended on the CRT-off line/dot)
+  tl.fromTo([bg, embers, crt], { scaleY: 0.008 }, { scaleY: 1, duration: 0.12, ease: 'power4.out' }, 0);
+  tl.fromTo(beam, { opacity: 1, scaleY: 1 }, { opacity: 0, scaleY: 3, duration: 0.066, ease: 'power1.in' }, 0);
+  tl.fromTo(crtWhite, { opacity: 1 }, { opacity: 0, duration: 0.14, ease: 'power2.out' }, 0.02);
+  tl.fromTo(scan, { opacity: 0.75 }, { opacity: 0.4, duration: 0.4, ease: 'none' }, 0);
+  tl.set(scan, { opacity: 0 }, 0.40);
+  // slam/stamp on the downbeat: scale 1.4 -> 1 back.out(3), tracking 0.3em -> 0.035em, RGB split decays
+  tl.fromTo(titleW, { scale: 1.4 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' }, 0);
+  // .fx-rgb chromatic split (kit recipe), decaying to fully transparent so nothing sits under the settled glyphs
+  tl.fromTo(titleTx, { textShadow: '16px 0px 0px rgba(255,30,60,0.85), -16px 0px 0px rgba(30,220,255,0.85)' },
+    { textShadow: '0px 0px 0px rgba(255,30,60,0), 0px 0px 0px rgba(30,220,255,0)', duration: 0.3, ease: 'power3.out' }, 0);
+  doShake(0, 10, 0.3);
+  LT('boost', 2.4, 1, 0, 0.4, 'power2.out');
+  // the "?" kicks on the 8th
+  tl.fromTo(q, { rotation: 0, y: 0 }, { rotation: -16, y: -14, duration: 0.05, ease: 'power2.out', immediateRender: false }, 0.20);
+  tl.fromTo(q, { rotation: -16, y: -14 }, { rotation: 0, y: 0, duration: 0.3, ease: 'back.out(3)', immediateRender: false }, 0.25);
+
+  /* ================= Scene 2 (0.40-0.80): subline + the app's button ================= */
+  tl.fromTo(words, { yPercent: 115, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.24, ease: 'power3.out', stagger: 0.06 }, 0.40);
+  // pop 0 -> ~1.1 -> 1
+  tl.fromTo(btnW, { scale: 0 }, { scale: 1, duration: 0.26, ease: 'back.out(1.8)' }, 0.40);
+  tl.fromTo(pool, { scale: 0.45, opacity: 0 }, { scale: 1, opacity: 0.8, duration: 0.3, ease: 'power3.out' }, 0.40);
+  // menu cursor chevrons slide in, then bounce toward the button on the 8ths
+  tl.fromTo(chevL, { x: -90, opacity: 0 }, { x: 0, opacity: 1, duration: 0.18, ease: 'power3.out' }, 0.40);
+  tl.fromTo(chevR, { x: 90, opacity: 0 }, { x: 0, opacity: 1, duration: 0.18, ease: 'power3.out' }, 0.40);
+  function nudge(t, amt, back) {
+    tl.fromTo(chevLi, { x: amt }, { x: 0, duration: back, ease: 'power2.out', immediateRender: false }, t);
+    tl.fromTo(chevRi, { x: -amt }, { x: 0, duration: back, ease: 'power2.out', immediateRender: false }, t);
+  }
+  nudge(0.60, 16, 0.18);
+  // light sweeps across the button
+  tl.fromTo(sheen, { xPercent: -150, skewX: -18 }, { xPercent: 560, skewX: -18, duration: 0.3, ease: 'power2.inOut' }, 0.58);
+
+  /* ================= Scene 3 (0.80-1.20): PRESS ================= */
+  tl.fromTo(btnW, { scale: 1 }, { scale: 0.92, duration: 0.06, ease: 'power2.out', immediateRender: false }, 0.80);
+  tl.fromTo(btnW, { scale: 0.92 }, { scale: 1.06, duration: 0.08, ease: 'power2.out', immediateRender: false }, 0.86);
+  tl.fromTo(btnW, { scale: 1.06 }, { scale: 1, duration: 0.24, ease: 'back.out(3)', immediateRender: false }, 0.94);
+  // shockwave rings off the button outline
+  tl.fromTo(ring, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: 'none' }, 0.80);
+  // the outline grows outward by a uniform offset (constant 6 px stroke, stays a ring on screen)
+  tl.fromTo(ring, { attr: { x: 580, y: 644, width: 760, height: 112, rx: 30 } },
+    { attr: { x: 300, y: 364, width: 1320, height: 672, rx: 310 }, duration: 0.4, ease: 'power2.out' }, 0.80);
+  tl.to(ring, { opacity: 0, duration: 0.36, ease: 'none' }, 0.81);
+  tl.fromTo(ring2, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: 'none' }, 0.84);
+  tl.fromTo(ring2, { attr: { x: 580, y: 644, width: 760, height: 112, rx: 30 } },
+    { attr: { x: 410, y: 474, width: 1100, height: 452, rx: 200 }, duration: 0.34, ease: 'power3.out' }, 0.84);
+  tl.to(ring2, { opacity: 0, duration: 0.3, ease: 'none' }, 0.85);
+  // glow doubles, label flashes white
+  tl.fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'power2.out' }, 0.80);
+  tl.to(glow, { opacity: 0.8, duration: 0.3, ease: 'power2.out' }, 0.85);
+  tl.fromTo(white, { opacity: 0 }, { opacity: 0.85, duration: 0.03, ease: 'none' }, 0.80);
+  tl.to(white, { opacity: 0, duration: 0.24, ease: 'power2.out' }, 0.83);
+  tl.fromTo(lbl, { textShadow: '0 0 0px rgba(255,255,255,0), 0 0 0px rgba(255,255,255,0)' },
+    { textShadow: '0 0 26px rgba(255,255,255,1), 0 0 8px rgba(255,255,255,1)', duration: 0.04, ease: 'none' }, 0.80);
+  tl.to(lbl, { textShadow: '0 0 16px rgba(255,255,255,0.6), 0 0 4px rgba(255,255,255,0.5)', duration: 0.3, ease: 'power2.out' }, 0.84);
+  // light pool kicks
+  tl.fromTo(pool, { scale: 1, opacity: 0.8 }, { scale: 1.2, opacity: 1, duration: 0.07, ease: 'power2.out', immediateRender: false }, 0.80);
+  tl.fromTo(pool, { scale: 1.2 }, { scale: 1.06, duration: 0.33, ease: 'power2.out', immediateRender: false }, 0.87);
+  // chevrons slam in on the press, bounce again on the 8th
+  nudge(0.80, 30, 0.18);
+  nudge(1.00, 14, 0.18);
+  doShake(0.80, 8, 0.24);
+  LT('boost', 1, 2.8, 0.80, 0.05, 'power2.out');
+  LT('boost', 2.8, 1.4, 0.85, 0.35, 'power2.out');
+  // power-up sparks thrown off the button edge
+  for (var i = 0; i < 18; i++) {
+    var a = (i / 18) * Math.PI * 2 + R(-0.14, 0.14), ca = Math.cos(a), sa = Math.sin(a);
+    var sx = 960 + ca * R(372, 392), sy = 700 + sa * R(52, 60);
+    var len = R(26, 58), dist = R(150, 330), dx = ca * dist, dy = sa * dist * 1.15;
+    var deg = Math.atan2(dy, dx) * 180 / Math.PI, d = R(0.3, 0.4);
+    var sp = el(sparkHost, '02-rejouer-spark', 'left:' + (sx - len / 2).toFixed(1) + 'px;top:' + (sy - 2).toFixed(1) + 'px;width:' + len.toFixed(1) + 'px');
+    tl.fromTo(sp, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: 'none' }, 0.80);
+    tl.fromTo(sp, { x: 0, y: 0, rotation: deg }, { x: dx, y: dy, rotation: deg, duration: d, ease: 'power3.out' }, 0.80);
+    tl.fromTo(sp, { scaleX: 0.3 }, { scaleX: 1.5, duration: 0.1, ease: 'power2.out' }, 0.80);
+    tl.to(sp, { scaleX: 0.15, opacity: 0, duration: d - 0.1, ease: 'power2.in' }, 0.90);
+  }
+  // second, faster light sweep on the 8th (charged)
+  tl.fromTo(sheen, { xPercent: -150, skewX: -18 }, { xPercent: 560, skewX: -18, duration: 0.18, ease: 'power2.in', immediateRender: false }, 1.00);
+
+  /* ================= Scene 4 (1.20-1.60): zoom-through INTO the button ================= */
+  // slow push toward the button underneath Scenes 2-3, then the dive
+  tl.fromTo(cam, { scale: 1 }, { scale: 1.04, duration: 0.8, ease: 'none' }, 0.40);
+  tl.fromTo(cam, { scale: 1.04, filter: 'blur(0px)' }, { scale: 7, filter: 'blur(18px)', duration: 0.4, ease: 'power2.in', immediateRender: false }, 1.20);
+  tl.fromTo(embers, { scale: 1 }, { scale: 2.3, duration: 0.4, ease: 'power2.in', immediateRender: false }, 1.20);
+  LT('boost', 1.4, 3.4, 1.20, 0.4, 'power2.in');
+  // speed lines streaking out of the button centre
+  for (var k = 0; k < 30; k++) {
+    var la = (k / 30) * Math.PI * 2 + R(-0.09, 0.09), lc = Math.cos(la), ls = Math.sin(la);
+    var ll = R(140, 340), lh = R(2, 4.5), d0 = R(240, 520), d1 = d0 + R(800, 1200), t0 = 1.20 + R(0, 0.1);
+    var ln = el(speed, '02-rejouer-line', 'left:' + (960 - ll / 2).toFixed(1) + 'px;top:' + (700 - lh / 2).toFixed(1) + 'px;width:' + ll.toFixed(1) + 'px;height:' + lh.toFixed(1) + 'px');
+    var ldeg = la * 180 / Math.PI;
+    tl.fromTo(ln, { opacity: 0 }, { opacity: R(0.55, 0.9), duration: 0.06, ease: 'none' }, t0);
+    tl.fromTo(ln, { x: lc * d0, y: ls * d0, rotation: ldeg, scaleX: 0.4 },
+      { x: lc * d1, y: ls * d1, rotation: ldeg, scaleX: 2.2, duration: 1.6 - t0, ease: 'power2.in' }, t0);
+  }
+  // orange-to-white flash fills the frame
+  tl.fromTo(fOrange, { opacity: 0 }, { opacity: 0.92, duration: 0.12, ease: 'power2.in' }, 1.40);
+  tl.fromTo(fWhite, { opacity: 0 }, { opacity: 1, duration: 0.066, ease: 'power1.in' }, 1.50);
+
+  draw();
+  window.__timelines[FID] = tl;
+})();
+</script>
+<script>
+  /* 60 s cut: this frame is the approved 35 s shot time-stretched x1.25 (150 -> 120 BPM).
+     The original timeline is driven by an outer timeline that tweens its playhead. */
+  (function () {
+    var id = "02-rejouer", inner = window.__timelines[id], D = 1.6, S = 1.25;
+    var outer = gsap.timeline({ paused: true });
+    outer.to(inner, { time: D, duration: D * S, ease: "none" }, 0);
+    window.__timelines[id] = outer;
+  })();
+</script>
+</template>

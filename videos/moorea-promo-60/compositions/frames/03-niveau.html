@@ -1,0 +1,386 @@
+<template>
+<style>
+@font-face{font-family:"Montserrat";font-weight:300;font-display:block;src:url("assets/fonts/Montserrat-300.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:400;font-display:block;src:url("assets/fonts/Montserrat-400.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:500;font-display:block;src:url("assets/fonts/Montserrat-500.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:block;src:url("assets/fonts/Montserrat-600.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:block;src:url("assets/fonts/Montserrat-700.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:800;font-display:block;src:url("assets/fonts/Montserrat-800.woff2") format("woff2");}
+@font-face{font-family:"Turret Road";font-weight:800;font-display:block;src:url("assets/fonts/TurretRoad-800.woff2") format("woff2");}
+
+#root { position: absolute; inset: 0; overflow: hidden; }
+[class~="03-niveau-full"] { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+[id="03-niveau-cam"] { transform-origin: 960px 600px; }
+
+/* ---- NIVEAU 1 ---- */
+[id="03-niveau-titlepos"] { transform-origin: 960px 330px; }
+[id="03-niveau-titleslam"] { transform-origin: 960px 330px; }
+[class~="03-niveau-title"] { position: absolute; left: 0; top: 270px; width: 1920px; height: 120px; text-align: center;
+  font-size: 120px; line-height: 120px; white-space: nowrap; color: #e15311; transform-origin: 960px 60px;
+  text-shadow: 0 0 16px rgba(255, 106, 31, 0.95), 0 0 48px rgba(225, 83, 17, 0.75), 0 0 110px rgba(225, 83, 17, 0.45), 0 6px 0 rgba(10, 6, 4, 0.35); }
+[class~="03-niveau-title"] span { display: inline-block; }
+[class~="03-niveau-bar"] { position: absolute; top: 326px; width: 300px; height: 7px; border-radius: 4px; }
+[class~="03-niveau-bar-l"] { left: 365px; transform-origin: 100% 50%;
+  background: linear-gradient(90deg, rgba(225, 83, 17, 0) 0%, #e15311 70%, #ff6a1f 100%); box-shadow: 0 0 18px rgba(255, 106, 31, 0.7); }
+[class~="03-niveau-bar-r"] { left: 1255px; transform-origin: 0% 50%;
+  background: linear-gradient(270deg, rgba(225, 83, 17, 0) 0%, #e15311 70%, #ff6a1f 100%); box-shadow: 0 0 18px rgba(255, 106, 31, 0.7); }
+
+/* ---- chrome logo ---- */
+[id="03-niveau-logopos"] { transform-origin: 960px 627px; }
+[class~="03-niveau-logo"] { position: absolute; left: 689px; top: 470px; width: 542px; height: 314px; }
+[class~="03-niveau-logo"] img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+[class~="03-niveau-logoshade"] { position: absolute; left: -120px; top: -80px; right: -120px; bottom: -80px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(8, 6, 10, 0.62) 0%, rgba(8, 6, 10, 0.35) 55%, rgba(8, 6, 10, 0) 100%); }
+[class~="03-niveau-logoimg"] { filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 30px rgba(255, 140, 60, 0.25)); }
+[class~="03-niveau-sheen"] { filter: brightness(1.9) sepia(0.35) saturate(1.4); }
+[class~="03-niveau-hot"] { filter: sepia(1) saturate(7) hue-rotate(-18deg) brightness(1.25) drop-shadow(0 0 26px rgba(255, 120, 30, 0.9)); }
+
+/* ---- molten problem words ---- */
+[class~="03-niveau-wpos"] { position: absolute; width: 0; height: 0; }
+[class~="03-niveau-wob"] { position: absolute; left: -1200px; width: 2400px; display: flex; align-items: center; justify-content: center; transform-origin: 50% 50%; }
+[class~="03-niveau-word"] { white-space: nowrap; line-height: 1; }
+[class~="03-niveau-word"] span { display: inline-block; transform-origin: 50% 100%; }
+
+/* ---- eruption fx ---- */
+[class~="03-niveau-pool"] { position: absolute; border-radius: 50%; mix-blend-mode: screen;
+  background: radial-gradient(closest-side, rgba(255, 246, 216, 0.95) 0%, rgba(255, 176, 50, 0.8) 32%, rgba(225, 83, 17, 0.4) 64%, rgba(225, 83, 17, 0) 100%); }
+[class~="03-niveau-plume"] { position: absolute; transform-origin: 50% 100%; mix-blend-mode: screen; filter: blur(4px);
+  background: radial-gradient(ellipse 50% 100% at 50% 100%, rgba(255, 250, 230, 0.95) 0%, rgba(255, 206, 92, 0.72) 20%, rgba(255, 120, 30, 0.36) 48%, rgba(225, 83, 17, 0) 74%); }
+[class~="03-niveau-spurt"] { position: absolute; border-radius: 4px; transform-origin: 50% 0%;
+  background: linear-gradient(0deg, rgba(255, 120, 30, 0) 0%, rgba(255, 170, 60, 0.75) 45%, rgba(255, 226, 140, 1) 82%, #fff6d8 100%);
+  box-shadow: 0 0 10px 2px rgba(255, 140, 40, 0.65); }
+[class~="03-niveau-drop"] { position: absolute; border-radius: 50%;
+  background: radial-gradient(circle at 40% 38%, #fff6d8 0%, #ffd34a 35%, #ff8a1f 70%, #c53a08 100%);
+  box-shadow: 0 0 14px 3px rgba(255, 138, 31, 0.8); }
+[class~="03-niveau-ring"] { position: absolute; border-radius: 50%; border: 5px solid rgba(255, 222, 160, 0.95);
+  box-shadow: 0 0 36px 6px rgba(255, 120, 30, 0.75), inset 0 0 30px 4px rgba(255, 150, 40, 0.6); }
+
+/* ---- overheat + white-out ---- */
+[id="03-niveau-heat"] { mix-blend-mode: screen;
+  background: radial-gradient(ellipse 85% 75% at 50% 100%, rgba(255, 214, 140, 0.7) 0%, rgba(255, 106, 31, 0.38) 42%, rgba(225, 83, 17, 0) 75%); }
+[id="03-niveau-flash"] { background: #fff7ea; }
+</style>
+<link rel="stylesheet" href="assets/kit/moorea-ui.css">
+
+<div id="root" data-composition-id="03-niveau" data-width="1920" data-height="1080" data-duration="4">
+  <!-- full-bleed background layers: the lava horizon + embers -->
+  <canvas class="clip" id="03-niveau-lava" width="960" height="540" data-start="0" data-duration="4" data-track-index="0"
+          style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+  <canvas class="clip" id="03-niveau-embers" width="1920" height="1080" data-start="0" data-duration="4" data-track-index="1"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+
+  <!-- camera (slow push) > shake -->
+  <div id="03-niveau-cam" class="03-niveau-full mui">
+    <div id="03-niveau-shake" class="03-niveau-full">
+
+      <!-- eruption glow pools + geysers (behind the words) -->
+      <div id="03-niveau-fxback" class="03-niveau-full"></div>
+
+      <!-- NIVEAU 1 -->
+      <div id="03-niveau-titlepos" class="03-niveau-full">
+        <div id="03-niveau-bars" class="03-niveau-full">
+          <div id="03-niveau-barl" class="03-niveau-bar 03-niveau-bar-l"></div>
+          <div id="03-niveau-barr" class="03-niveau-bar 03-niveau-bar-r"></div>
+        </div>
+        <div id="03-niveau-titleslam" class="03-niveau-full">
+          <div id="03-niveau-title" class="03-niveau-title mui-display">NIVEAU 1</div>
+        </div>
+      </div>
+
+      <!-- chrome MOOREA logo -->
+      <div id="03-niveau-logopos" class="03-niveau-full">
+        <div id="03-niveau-logodrop" class="03-niveau-full">
+          <div class="03-niveau-logo">
+            <div class="03-niveau-logoshade"></div>
+            <img class="03-niveau-logoimg" src="assets/img/logo-chrome.png" alt="">
+            <img id="03-niveau-sheen" class="03-niveau-sheen" src="assets/img/logo-chrome.png" alt="">
+            <img id="03-niveau-hot" class="03-niveau-hot" src="assets/img/logo-chrome.png" alt="">
+          </div>
+        </div>
+      </div>
+
+      <!-- the eight molten problem words -->
+      <div id="03-niveau-words" class="03-niveau-full">
+        <div class="03-niveau-wpos" style="left:350px;top:300px"><div id="03-niveau-wob1" class="03-niveau-wob" style="top:-46px;height:92px"><div id="03-niveau-w1" class="03-niveau-word mui-display fx-molten" style="font-size:92px">NAVETTE ?</div></div></div>
+        <div class="03-niveau-wpos" style="left:1500px;top:290px"><div id="03-niveau-wob2" class="03-niveau-wob" style="top:-42px;height:84px"><div id="03-niveau-w2" class="03-niveau-word mui-display fx-molten" style="font-size:84px">SAC RECALÉ ?</div></div></div>
+        <div class="03-niveau-wpos" style="left:960px;top:450px"><div id="03-niveau-wob3" class="03-niveau-wob" style="top:-62px;height:124px"><div id="03-niveau-w3" class="03-niveau-word mui-display fx-molten" style="font-size:124px">PERDU ?</div></div></div>
+        <div class="03-niveau-wpos" style="left:445px;top:600px"><div id="03-niveau-wob4" class="03-niveau-wob" style="top:-54px;height:108px"><div id="03-niveau-w4" class="03-niveau-word mui-display fx-molten" style="font-size:108px">ÇA CLASHE !</div></div></div>
+        <div class="03-niveau-wpos" style="left:1460px;top:570px"><div id="03-niveau-wob5" class="03-niveau-wob" style="top:-54px;height:108px"><div id="03-niveau-w5" class="03-niveau-word mui-display fx-molten" style="font-size:108px">J'AI FAIM</div></div></div>
+        <div class="03-niveau-wpos" style="left:715px;top:760px"><div id="03-niveau-wob6" class="03-niveau-wob" style="top:-50px;height:100px"><div id="03-niveau-w6" class="03-niveau-word mui-display fx-molten" style="font-size:100px">BRACELET À SEC</div></div></div>
+        <div class="03-niveau-wpos" style="left:1540px;top:848px"><div id="03-niveau-wob7" class="03-niveau-wob" style="top:-58px;height:116px"><div id="03-niveau-w7" class="03-niveau-word mui-display fx-molten" style="font-size:116px">T'ES OÙ ?!</div></div></div>
+        <div class="03-niveau-wpos" style="left:500px;top:900px"><div id="03-niveau-wob8" class="03-niveau-wob" style="top:-46px;height:92px"><div id="03-niveau-w8" class="03-niveau-word mui-display fx-molten" style="font-size:92px">1000 QUESTIONS</div></div></div>
+      </div>
+
+      <!-- molten droplets / splash rings (in front) -->
+      <div id="03-niveau-fxfront" class="03-niveau-full"></div>
+    </div>
+  </div>
+
+  <!-- overheat glow + white flash / white-out -->
+  <div id="03-niveau-heat" class="03-niveau-full"></div>
+  <div id="03-niveau-flash" class="03-niveau-full"></div>
+</div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/kit/mui.js"></script>
+<script src="assets/kit/lava.js"></script>
+<script>
+(function () {
+  var FID = '03-niveau', FRAME_START = 4.8, DUR = 3.2;
+  function $(id) { return document.getElementById(FID + '-' + id); }
+  var cam = $('cam');
+  var root = (cam && cam.closest('[data-composition-id="' + FID + '"]')) || document;
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  /* ---------- deterministic helpers ---------- */
+  function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var rnd = mulberry(3032);
+  function R(a, b) { return a + (b - a) * rnd(); }
+  function el(parent, cls, css) { var d = document.createElement('div'); d.className = cls; if (css) d.style.cssText = css; parent.appendChild(d); return d; }
+  function split(node) {
+    var txt = node.textContent, out = []; node.textContent = '';
+    for (var i = 0; i < txt.length; i++) {
+      var s = document.createElement('span'); s.textContent = txt[i] === ' ' ? ' ' : txt[i];
+      node.appendChild(s); out.push(s);
+    }
+    return out;
+  }
+
+  /* ---------- lava world: horizon view, seek-safe ----------
+     L exposes function setters over S, so every seek updates the params even with
+     suppressEvents; the two bracket tweens (DP.a before, DP.b after the lava child
+     timeline) redraw exactly once per seek, after all params are set. */
+  var lava = MooreaLava.create($('lava'), { seed: 3 });
+  var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 80 });
+  var S = { t: FRAME_START, heat: 1, panY: 0, erupt: 0, eruptX: 0.5, eruptY: 0.75, flash: 0, boost: 1, esc: 1 };
+  var P = { tilt: 0.85, horizon: 0.30, zoom: 1, panX: 0, coolR: 0, coolX: 0.5, coolY: 0.5 };
+  function draw() {
+    P.t = S.t; P.heat = S.heat; P.panY = S.panY; P.erupt = S.erupt; P.eruptX = S.eruptX; P.eruptY = S.eruptY; P.flash = S.flash;
+    lava.render(P); emb.render(S.t, { boost: S.boost, scale: S.esc });
+  }
+  var L = {};
+  Object.keys(S).forEach(function (k) {
+    L[k] = function (v) { if (arguments.length) { S[k] = v; return; } return S[k]; };
+  });
+  var lt = gsap.timeline({ defaults: { lazy: false } });
+  var DR = { a: 0, b: 0 };
+  var DP = {
+    a: function (v) { if (arguments.length) { if (v < DR.a) draw(); DR.a = v; return; } return DR.a; },
+    b: function (v) { if (arguments.length) { if (v > DR.b) draw(); DR.b = v; return; } return DR.b; }
+  };
+  tl.to(DP, { a: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
+  tl.add(lt, 0);
+  tl.to(DP, { b: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
+
+  // continuous flow across cuts (global time) + the forward swoop over the sea
+  lt.to(L, { t: FRAME_START + DUR, duration: DUR, ease: 'none' }, 0);
+  lt.to(L, { panY: 6, duration: DUR, ease: 'power2.out' }, 0);
+
+  MUI.hydrate(root);
+
+  var shake = $('shake'), flash = $('flash'), fxB = $('fxback'), fxF = $('fxfront');
+
+  /* ---------- reusable beats ---------- */
+  function doShake(t, a, d) {
+    d = d || 0.3; var k = d / 0.3;
+    tl.to(shake, { keyframes: [
+      { x: a, y: -0.6 * a, duration: 0.04 * k }, { x: -0.9 * a, y: 0.6 * a, duration: 0.04 * k },
+      { x: 0.7 * a, y: -0.4 * a, duration: 0.05 * k }, { x: -0.5 * a, y: 0.3 * a, duration: 0.05 * k },
+      { x: 0.25 * a, y: -0.15 * a, duration: 0.06 * k }, { x: 0, y: 0, duration: 0.06 * k } ], ease: 'none' }, t);
+  }
+  function droplets(host, t, n, cx, spread, y0, depth) {
+    for (var i = 0; i < n; i++) {
+      var x = cx + R(-spread, spread), sz = R(7, 19) * depth;
+      var d = el(host, '03-niveau-drop', 'left:' + (x - sz / 2) + 'px;top:' + (y0 - sz / 2 - R(0, 18)) + 'px;width:' + sz + 'px;height:' + sz + 'px');
+      var dx = (x < cx ? -1 : 1) * R(30, 250) * depth, up = Math.min(R(130, 340) * depth, y0 - 190), tu = R(0.13, 0.21), td = R(0.22, 0.34), ts = t + R(0, 0.06);
+      gsap.set(d, { opacity: 0 });
+      tl.set(d, { opacity: 1 }, ts);
+      tl.to(d, { x: dx, duration: tu + td, ease: 'none' }, ts);
+      tl.to(d, { y: -up, duration: tu, ease: 'power2.out' }, ts);
+      tl.to(d, { y: -up + R(200, 330) * depth, duration: td, ease: 'power2.in' }, ts + tu);
+      tl.to(d, { opacity: 0, scale: 0.4, duration: 0.12, ease: 'power1.in' }, ts + tu + td - 0.12);
+    }
+  }
+
+  /* =====================================================================
+     SCENE 1 (0.00–0.80) — NIVEAU 1 slams, chrome logo drops in
+     ===================================================================== */
+  // out of the previous frame's white: the cut lands white, decays, re-flashes on the slam
+  tl.set(flash, { opacity: 0.9 }, 0);
+  tl.to(flash, { opacity: 0.06, duration: 0.11, ease: 'power2.out' }, 0);
+  tl.set(flash, { opacity: 0.7 }, 0.12);
+  tl.to(flash, { opacity: 0, duration: 0.14, ease: 'power2.out' }, 0.12);
+  lt.set(L, { flash: 0.55 }, 0);
+  lt.to(L, { flash: 0, duration: 0.22, ease: 'power2.out' }, 0);
+
+  var titleSlam = $('titleslam'), title = $('title');
+  var tChars = split(title);
+  tl.fromTo(titleSlam, { scale: 2.5 }, { scale: 1, duration: 0.12, ease: 'power4.in' }, 0);
+  tl.fromTo(titleSlam, { opacity: 0 }, { opacity: 1, duration: 0.04, ease: 'none' }, 0);
+  tl.fromTo(title, { scaleX: 1.14, scaleY: 0.84 }, { scaleX: 1, scaleY: 1, duration: 0.25, ease: 'back.out(2)', immediateRender: false }, 0.12);
+  tl.fromTo(title, { color: '#ffe2b8' }, { color: '#e15311', duration: 0.3, ease: 'power2.out' }, 0.12);
+  tl.fromTo([$('barl'), $('barr')], { scaleX: 0 }, { scaleX: 1, duration: 0.26, ease: 'power3.out' }, 0.12);
+  doShake(0.12, 12, 0.18);
+  // the slam lights the sea under the title
+  lt.set(L, { heat: 1.35, erupt: 0.55, eruptX: 0.5, eruptY: 0.37 }, 0.12);
+  lt.to(L, { heat: 1, erupt: 0, duration: 0.5, ease: 'power2.out' }, 0.12);
+
+  // chrome logo drops in on 0.20 (y -200 -> 0, back.out(2))
+  var logoDrop = $('logodrop');
+  tl.fromTo(logoDrop, { y: -200 }, { y: 0, duration: 0.3, ease: 'back.out(2)' }, 0.2);
+  tl.fromTo(logoDrop, { opacity: 0 }, { opacity: 1, duration: 0.07, ease: 'none' }, 0.2);
+  doShake(0.3, 6, 0.2);
+
+  // beat 0.40: a light wave runs across NIVEAU 1 and a chrome glint sweeps the logo
+  tl.to(titleSlam, { scale: 1.06, duration: 0.06, ease: 'power2.out' }, 0.4);
+  tl.to(titleSlam, { scale: 1, duration: 0.24, ease: 'power2.out' }, 0.46);
+  tl.to(tChars, { color: '#fff3dc', duration: 0.05, ease: 'none', stagger: 0.03 }, 0.4);
+  tl.to(tChars, { color: '#e15311', duration: 0.18, ease: 'power1.out', stagger: 0.03 }, 0.45);
+  var sheen = $('sheen');
+  tl.fromTo(sheen, { clipPath: 'polygon(-24% 0%, -10% 0%, -20% 100%, -34% 100%)' },
+    { clipPath: 'polygon(112% 0%, 126% 0%, 116% 100%, 102% 100%)', duration: 0.34, ease: 'power2.inOut' }, 0.4);
+  // 8th 0.60: bars + logo breathe on the off-beat
+  tl.fromTo([$('barl'), $('barr')], { scaleY: 1.8 }, { scaleY: 1, duration: 0.18, ease: 'power2.out', immediateRender: false }, 0.6);
+
+  /* =====================================================================
+     SCENE 2 (0.80–1.20) — both sink into the lava
+     ===================================================================== */
+  var hot = $('hot');
+  tl.fromTo(hot, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'power1.out' }, 0.8);
+  tl.to(tChars, { color: '#ffc46a', duration: 0.2, ease: 'power1.out' }, 0.8);
+  tl.to([$('titlepos'), $('logopos')], { y: 320, scale: 0.75, opacity: 0, duration: 0.35, ease: 'power2.in' }, 0.8);
+  lt.to(L, { erupt: 1, eruptX: 0.5, eruptY: 0.75, duration: 0.18, ease: 'power2.out' }, 0.8);
+  lt.to(L, { erupt: 0, duration: 0.42, ease: 'power2.in' }, 0.98);
+  // the splash where the logo goes under (≈ 1.0)
+  (function () {
+    var ring = el(fxF, '03-niveau-ring', 'left:' + (960 - 420) + 'px;top:' + (805 - 60) + 'px;width:840px;height:120px');
+    gsap.set(ring, { scale: 0.3, opacity: 0 });
+    tl.set(ring, { opacity: 1 }, 1.0);
+    tl.to(ring, { scale: 1.15, duration: 0.45, ease: 'power3.out' }, 1.0);
+    tl.to(ring, { opacity: 0, duration: 0.26, ease: 'power2.in' }, 1.04);
+    var pool = el(fxB, '03-niveau-pool', 'left:' + (960 - 420) + 'px;top:' + (805 - 75) + 'px;width:840px;height:150px');
+    gsap.set(pool, { opacity: 0 });
+    tl.to(pool, { opacity: 1, duration: 0.06 }, 0.98);
+    tl.to(pool, { opacity: 0.3, duration: 0.7, ease: 'power2.out' }, 1.06);
+    droplets(fxF, 0.98, 16, 960, 260, 805, 1.15);
+  })();
+  lt.set(L, { boost: 1 }, 0.8);
+  lt.to(L, { boost: 1.8, duration: 0.3, ease: 'power2.out' }, 0.8);
+
+  /* =====================================================================
+     SCENE 3 (0.80–2.40) — eight molten words erupt, one per 8th note
+     ===================================================================== */
+  var WORDS = [
+    { n: 1, t: 0.8, x: 350,  y: 300, s: 92,  w: 524 },
+    { n: 2, t: 1.0, x: 1500, y: 290, s: 84,  w: 619 },
+    { n: 3, t: 1.2, x: 960,  y: 450, s: 124, w: 558 },
+    { n: 4, t: 1.4, x: 445,  y: 600, s: 108, w: 679 },
+    { n: 5, t: 1.6, x: 1460, y: 570, s: 108, w: 488 },
+    { n: 6, t: 1.8, x: 715,  y: 760, s: 100, w: 855 },
+    { n: 7, t: 2.0, x: 1540, y: 848, s: 116, w: 634 },
+    { n: 8, t: 2.2, x: 500,  y: 900, s: 92,  w: 795 }
+  ];
+  var BEATS = [1.2, 1.6, 2.0, 2.4, 2.8];
+  var wordEls = [], wobEls = [];
+
+  WORDS.forEach(function (W, i) {
+    var word = $('w' + W.n), wob = $('wob' + W.n);
+    wordEls.push(word); wobEls.push(wob);
+    var chars = split(word);
+    var foot = W.y + W.s * 0.5 - 4;
+    var depth = 0.62 + 0.45 * Math.max(0, foot - 324) / 620;   // nearer the camera = bigger splash
+
+    // erupt: y +120 -> 0, scaleY 0.3 -> 1.15 -> 1, blur 12px -> 0, born white-hot then cooling to molten yellow
+    tl.fromTo(word, { filter: 'blur(12px)' }, { filter: 'blur(0px)', duration: 0.26, ease: 'power2.out' }, W.t);
+    tl.fromTo(word, { color: '#fff8ea' }, { color: '#ffd76a', duration: 0.36, ease: 'power1.out' }, W.t);
+    tl.fromTo(chars, { y: 120, scaleY: 0.3, opacity: 0 },
+      { y: 0, scaleY: 1.15, opacity: 1, duration: 0.16, ease: 'power3.out', stagger: { amount: 0.08, from: 'center' } }, W.t);
+    tl.to(chars, { scaleY: 1, duration: 0.14, ease: 'power2.out', stagger: { amount: 0.08, from: 'center' } }, W.t + 0.16);
+
+    // geyser: a soft white-hot plume behind the word + molten spurts shooting up through it
+    var gh = 180 + (foot - 324) * 0.3, gw = W.w * 0.62;
+    var g = el(fxB, '03-niveau-plume', 'left:' + (W.x - gw / 2) + 'px;top:' + (foot - gh) + 'px;width:' + gw + 'px;height:' + gh + 'px');
+    gsap.set(g, { opacity: 0, scaleY: 0, scaleX: 0.5 });
+    tl.set(g, { opacity: 1 }, W.t);
+    tl.to(g, { scaleY: 1.15, scaleX: 1, duration: 0.1, ease: 'power3.out' }, W.t);
+    tl.to(g, { scaleY: 1.5, scaleX: 0.6, opacity: 0, duration: 0.26, ease: 'power2.in' }, W.t + 0.08);
+    for (var sp = 0; sp < 7; sp++) {
+      var sx = W.x + R(-0.32, 0.32) * W.w, ang = (sx - W.x) / W.w * 40 + R(-6, 6);
+      var sh = R(50, 110) * depth, swd = R(5, 9) * depth, dist = Math.min(R(200, 420) * depth, foot - 175 - sh), st = W.t + R(0, 0.07);
+      var spt = el(fxF, '03-niveau-spurt', 'left:' + (sx - swd / 2) + 'px;top:' + (foot - sh) + 'px;width:' + swd + 'px;height:' + sh + 'px');
+      var rad = ang * Math.PI / 180;
+      gsap.set(spt, { opacity: 0, rotation: ang, scaleY: 0.4 });
+      tl.set(spt, { opacity: 1 }, st);
+      tl.to(spt, { x: Math.sin(rad) * dist, y: -Math.cos(rad) * dist, scaleY: 1.3, duration: 0.26, ease: 'power2.out' }, st);
+      tl.to(spt, { opacity: 0, scaleY: 0.5, duration: 0.12, ease: 'power1.in' }, st + 0.16);
+    }
+
+    // molten pool at its foot (stays, glowing, so the word stands in the lava)
+    var pw = W.w * 1.12, ph = 26 + (foot - 324) * 0.11;
+    var pool = el(fxB, '03-niveau-pool', 'left:' + (W.x - pw / 2) + 'px;top:' + (foot - ph / 2) + 'px;width:' + pw + 'px;height:' + ph + 'px');
+    gsap.set(pool, { opacity: 0, scaleX: 0.3 });
+    tl.set(pool, { opacity: 1 }, W.t);
+    tl.to(pool, { scaleX: 1, duration: 0.2, ease: 'power3.out' }, W.t);
+    tl.to(pool, { opacity: 0.5, duration: 0.5, ease: 'power2.out' }, W.t + 0.12);
+
+    droplets(fxF, W.t, 10, W.x, W.w * 0.3, foot, depth);
+    if (W.n !== 2) doShake(W.t, 5, 0.16); else doShake(W.t, 9, 0.2);   // word 2 shares its hit with the logo splash
+
+    // a small lava erupt at its foot (words 1-2 ride the logo-sink blast)
+    if (W.n >= 3) {
+      lt.set(L, { erupt: 0.55, eruptX: W.x / 1920, eruptY: foot / 1080 }, W.t);
+      lt.to(L, { erupt: 0, duration: 0.5, ease: 'power2.out' }, W.t);
+    }
+
+    // words stay and wobble on every beat (rotation ±2°, scale 1 <-> 1.04); overheat pulses bigger on 2.4 / 2.8
+    BEATS.forEach(function (b, k) {
+      if (b < W.t + 0.19) return;
+      var sign = ((i + k) % 2) ? 1 : -1, hotBeat = b >= 2.4;
+      tl.to(wob, { rotation: 2 * sign, scale: hotBeat ? 1.1 : 1.04, duration: 0.08, ease: 'power2.out' }, b);
+      tl.to(wob, { scale: hotBeat ? 1.05 : 1, duration: 0.28, ease: 'power2.out' }, b + 0.08);
+    });
+  });
+
+  /* =====================================================================
+     SCENE 4 (2.40–3.20) — overheat, then white-out -> hard cut
+     ===================================================================== */
+  lt.to(L, { heat: 1.9, duration: 0.8, ease: 'power1.in' }, 2.4);
+  lt.to(L, { boost: 4, duration: 0.6, ease: 'power1.in' }, 2.4);
+  lt.to(L, { esc: 1.8, duration: 0.8, ease: 'power1.in' }, 2.4);
+  lt.to(L, { flash: 1, duration: 0.4, ease: 'power2.in' }, 2.8);
+  lt.set(L, { erupt: 0.9, eruptX: 0.5, eruptY: 0.62 }, 2.4);
+  lt.to(L, { erupt: 0.35, duration: 0.4, ease: 'power2.out' }, 2.4);
+  lt.to(L, { erupt: 1, duration: 0.4, ease: 'power2.in' }, 2.8);
+  tl.to(wordEls, { color: '#fff4d6', duration: 0.6, ease: 'power1.in' }, 2.4);
+  tl.fromTo($('heat'), { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power1.in' }, 2.4);
+  tl.to(flash, { opacity: 1, duration: 0.35, ease: 'power2.in' }, 2.8);
+  // rising tremor: one jolt per 16th, growing
+  (function () {
+    var kf = [], n = 16;
+    for (var i = 0; i < n; i++) {
+      var a = 3 + 11 * (i / (n - 1));
+      kf.push({ x: R(-a, a), y: R(-a * 0.6, a * 0.6), duration: 0.05 });
+    }
+    tl.to(shake, { keyframes: kf, ease: 'none' }, 2.4);
+  })();
+
+  // slow camera push under everything
+  tl.fromTo(cam, { scale: 1 }, { scale: 1.025, duration: DUR, ease: 'power1.in' }, 0);
+
+  draw();
+  window.__timelines[FID] = tl;
+})();
+</script>
+<script>
+  /* 60 s cut: this frame is the approved 35 s shot time-stretched x1.25 (150 -> 120 BPM).
+     The original timeline is driven by an outer timeline that tweens its playhead. */
+  (function () {
+    var id = "03-niveau", inner = window.__timelines[id], D = 3.2, S = 1.25;
+    var outer = gsap.timeline({ paused: true });
+    outer.to(inner, { time: D, duration: D * S, ease: "none" }, 0);
+    window.__timelines[id] = outer;
+  })();
+</script>
+</template>

@@ -1,0 +1,99 @@
+<template>
+  <link rel="stylesheet" href="assets/kit/moorea-ui.css">
+  <style>
+    @font-face{font-family:"Montserrat";font-weight:400;font-display:block;src:url("assets/fonts/Montserrat-400.woff2") format("woff2");}
+    @font-face{font-family:"Montserrat";font-weight:600;font-display:block;src:url("assets/fonts/Montserrat-600.woff2") format("woff2");}
+    @font-face{font-family:"Montserrat";font-weight:700;font-display:block;src:url("assets/fonts/Montserrat-700.woff2") format("woff2");}
+    @font-face{font-family:"Turret Road";font-weight:800;font-display:block;src:url("assets/fonts/TurretRoad-800.woff2") format("woff2");}
+    #root { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    #hud-band { position: absolute; left: 0; right: 0; top: 0; height: 190px;
+      background: linear-gradient(180deg, rgba(15, 23, 34, 0.92) 0%, rgba(15, 23, 34, 0.55) 55%, rgba(15, 23, 34, 0) 100%); }
+    #hud-lives { position: absolute; left: 56px; top: 36px; display: flex; gap: 14px; align-items: center; }
+    #hud-lives img { width: 58px; height: 58px; display: block; filter: drop-shadow(0 0 10px rgba(225, 83, 17, 0.6)); }
+    #hud-level { position: absolute; left: 60px; top: 104px; font-size: 22px; letter-spacing: 0.2em; color: #aab1ba; font-weight: 600; }
+    #hud-counter .lbl { color: #aab1ba; }
+    #hud-clock { position: absolute; left: 50%; top: 34px; margin-left: -190px; width: 380px; justify-content: center; gap: 18px; }
+    #hud-clock .day { color: #b4bcc6; font-weight: 600; }
+    #hud-clock .sep { width: 8px; height: 8px; border-radius: 50%; background: #e15311; display: block; }
+    #hud-clock .time { position: relative; width: 116px; height: 44px; overflow: hidden; }
+    #hud-clock .time span { position: absolute; left: 0; top: 0; width: 116px; text-align: left; font-weight: 700; line-height: 44px; }
+    #hud-counter { position: absolute; right: 60px; top: 26px; }
+    #hud-counter .val { position: relative; }
+    #hud-counter .num { display: inline-block; min-width: 0.9em; text-align: right; }
+    #hud-flash { position: absolute; right: 30px; top: 10px; width: 300px; height: 130px; border-radius: 30px;
+      background: radial-gradient(closest-side, rgba(255, 150, 60, 0.75), rgba(225, 83, 17, 0) 100%); opacity: 0; }
+    .hud-fly { position: absolute; left: 0; top: 0; }
+  </style>
+
+  <div id="root" class="mui" data-composition-id="hud" data-width="1920" data-height="1080" data-duration="44">
+    <div id="hud-band"></div>
+    <div id="hud-lives"><img id="hud-life-0" src="assets/img/sun-orange.png" alt=""><img id="hud-life-1" src="assets/img/sun-orange.png" alt=""><img id="hud-life-2" src="assets/img/sun-orange.png" alt=""></div>
+    <div id="hud-level">NIVEAU 1</div>
+    <div id="hud-clock" class="mui-seg on"><span class="day">VEN 5</span><i class="sep"></i><span class="time" id="hud-time" data-layout-allow-overflow></span></div>
+    <div id="hud-counter" class="hud-counter">
+      <div class="lbl">GALÈRES ÉVITÉES</div>
+      <div class="val mui-display"><span class="num" id="hud-num-wrap"><b id="hud-num">0</b></span>/8</div>
+    </div>
+    <div id="hud-flash"></div>
+    <div id="hud-flies"></div>
+  </div>
+
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      // HUD lives on the root timeline from 6.0 s (local 0) to 50 s. All times below are LOCAL (film time − 6.0).
+      var OFF = 6.0;
+      var tl = gsap.timeline({ paused: true });
+      var root = document.querySelector('[data-composition-id="hud"]');
+
+      // entrance (4.8): band + three blocks drop in on 16ths
+      tl.fromTo('#hud-band', { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'none' }, 0);
+      ['#hud-lives', '#hud-clock', '#hud-counter', '#hud-level'].forEach(function (sel, i) {
+        tl.fromTo(sel, { y: -140, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28, ease: 'back.out(2)' }, 0.05 + i * 0.1);
+      });
+      [0, 1, 2].forEach(function (i) {
+        tl.fromTo('#hud-life-' + i, { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.25, ease: 'back.out(3)' }, 0.2 + i * 0.1);
+      });
+
+      // clock: festival time advances with each obstacle (rolls like an odometer)
+      var times = [['10.0', '14:00'], ['15.0', '16:45'], ['20.0', '17:20'], ['25.0', '18:00'], ['30.0', '20:30'], ['35.0', '21:15'], ['40.0', '01:30'], ['45.0', '02:47']];
+      var timeBox = document.getElementById('hud-time');
+      var first = document.createElement('span'); first.textContent = '13:42'; timeBox.appendChild(first);
+      var prev = first;
+      times.forEach(function (pair) {
+        var at = parseFloat(pair[0]) - OFF;
+        var s = document.createElement('span'); s.textContent = pair[1]; timeBox.appendChild(s);
+        tl.fromTo(s, { yPercent: 100 }, { yPercent: 0, duration: 0.18, ease: 'power3.out' }, at);
+        tl.fromTo(prev, { yPercent: 0 }, { yPercent: -100, duration: 0.18, ease: 'power3.out', immediateRender: false }, at);
+        prev = s;
+      });
+      gsap.set(timeBox.querySelectorAll('span'), { yPercent: 100 });
+      gsap.set(first, { yPercent: 0 });
+
+      // counter: +1 at every answer stamp (P + 1.2) with a bonus pill flying from the stamp into the counter
+      var answers = [11.5, 16.5, 21.5, 26.5, 31.5, 36.5, 41.5, 46.5];
+      var labels = ['NAVETTE', 'SAC OK', 'PLAN', 'PLANNING', 'FOOD', 'CASHLESS', 'SAFETY', 'M.A.N.A'];
+      var num = document.getElementById('hud-num');
+      var flies = document.getElementById('hud-flies');
+      var digits = { v: 0 };
+      answers.forEach(function (A, i) {
+        var at = A - OFF;
+        var pill = document.createElement('div');
+        pill.className = 'hud-bonus hud-fly';
+        pill.innerHTML = '<span class="plus">+1</span><span class="t mui-display">' + labels[i] + '</span>';
+        flies.appendChild(pill);
+        // pops under the answer stamp, then flies into the counter
+        tl.fromTo(pill, { x: 960 - 150, y: 380, scale: 0, opacity: 1 }, { scale: 1, duration: 0.16, ease: 'back.out(3)' }, at + 0.05);
+        tl.to(pill, { x: 1560, y: 40, scale: 0.35, duration: 0.3, ease: 'power3.in' }, at + 0.32);
+        tl.to(pill, { opacity: 0, duration: 0.05, ease: 'none' }, at + 0.62);
+        tl.to(digits, { v: i + 1, duration: 0.01, ease: 'none', onUpdate: function () { num.textContent = String(Math.round(digits.v)); } }, at + 0.62);
+        tl.fromTo('#hud-num-wrap', { scale: 1.8 }, { scale: 1, duration: 0.3, ease: 'back.out(3)', immediateRender: false }, at + 0.62);
+        tl.fromTo('#hud-flash', { opacity: 0.9 }, { opacity: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, at + 0.62);
+      });
+      gsap.set('.hud-fly', { scale: 0 });
+      num.textContent = '0';
+
+      window.__timelines['hud'] = tl;
+    })();
+  </script>
+</template>

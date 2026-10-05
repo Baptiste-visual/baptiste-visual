@@ -1,0 +1,429 @@
+<template>
+<style>
+@font-face{font-family:"Montserrat";font-weight:300;font-display:block;src:url("assets/fonts/Montserrat-300.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:400;font-display:block;src:url("assets/fonts/Montserrat-400.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:500;font-display:block;src:url("assets/fonts/Montserrat-500.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:block;src:url("assets/fonts/Montserrat-600.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:block;src:url("assets/fonts/Montserrat-700.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:800;font-display:block;src:url("assets/fonts/Montserrat-800.woff2") format("woff2");}
+@font-face{font-family:"Turret Road";font-weight:800;font-display:block;src:url("assets/fonts/TurretRoad-800.woff2") format("woff2");}
+
+#root{position:absolute;inset:0;overflow:hidden}
+[class~="08-niveau-termine-full"]{position:absolute;left:0;top:0;width:1920px;height:1080px}
+[class~="08-niveau-termine-line"]{position:absolute;left:0;width:1920px;text-align:center;white-space:nowrap}
+[id="08-niveau-termine-defs"]{position:absolute;width:0;height:0;overflow:hidden}
+[id="08-niveau-termine-flash"]{position:absolute;inset:0;background:#fff6e8;pointer-events:none}
+[id="08-niveau-termine-sparks"]{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+/* film type */
+[class~="08-niveau-termine-hero"]{font-size:190px;line-height:190px;height:190px}
+[class~="08-niveau-termine-ghost"]{mix-blend-mode:screen;pointer-events:none}
+[class~="08-niveau-termine-orange"]{color:#ff8a3a;-webkit-text-stroke-color:#ff8a3a;
+  text-shadow:0 4px 18px rgba(0,0,0,0.85),0 0 26px rgba(255,106,31,0.85),0 0 70px rgba(225,83,17,0.55),0 0 140px rgba(225,60,10,0.35)}
+[id="08-niveau-termine-eight"]{top:560px;height:280px;display:flex;justify-content:center;align-items:center}
+[id="08-niveau-termine-reel"]{position:relative;width:119px;height:280px;flex:none}
+[id="08-niveau-termine-reelwin"]{position:absolute;left:-90px;right:-90px;top:0;bottom:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,#000 22%,#000 78%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0%,#000 22%,#000 78%,rgba(0,0,0,0) 100%)}
+[id="08-niveau-termine-strip"]{position:absolute;left:0;right:0;top:0;filter:url("#08-niveau-termine-vblur")}
+[class~="08-niveau-termine-dg"]{height:280px;line-height:280px;font-size:200px;text-align:center}
+[id="08-niveau-termine-slash"]{font-size:200px;line-height:280px}
+[id="08-niveau-termine-galeres"]{top:803px;height:54px;line-height:54px;font-weight:700;font-size:44px;color:#fff;
+  letter-spacing:0.2em;padding-left:0.2em;text-shadow:0 2px 14px rgba(0,0,0,0.6)}
+[id="08-niveau-termine-burst8"]{position:absolute;left:560px;top:500px;width:800px;height:400px;opacity:0;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,170,60,0.75) 0%,rgba(225,83,17,0.45) 45%,rgba(225,83,17,0) 100%)}
+[id="08-niveau-termine-divider"]{position:absolute;left:984px;top:180px;width:7px;height:120px;border-radius:4px;background:#e15311;
+  box-shadow:0 0 16px rgba(225,83,17,0.8)}
+
+/* path platforms (navy app tiles) */
+[class~="08-niveau-termine-pw"]{position:absolute;width:190px;height:122px}
+[class~="08-niveau-termine-plat"]{position:relative;width:190px;height:122px;border-radius:18px;background:#142030;
+  border:2px solid #22364f;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  box-shadow:0 14px 28px rgba(0,0,0,0.55),0 0 0px 0px rgba(225,83,17,0)}
+[class~="08-niveau-termine-ico"]{display:block;width:64px;height:64px;color:#ff6a1f}
+[class~="08-niveau-termine-ico"] svg{display:block;width:100%;height:100%}
+[class~="08-niveau-termine-patch"]{position:absolute;width:300px;height:190px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(9,14,21,0.92) 0%,rgba(15,23,34,0.72) 55%,rgba(15,23,34,0) 100%)}
+[class~="08-niveau-termine-steam"]{position:absolute;width:220px;height:140px;border-radius:50%;opacity:0;pointer-events:none;
+  border:3px solid rgba(255,160,80,0.65);box-shadow:0 0 18px rgba(255,120,40,0.45)}
+
+/* goal: the festival entrance */
+[id="08-niveau-termine-goal"]{position:absolute;left:1430px;top:282px;width:420px;height:236px}
+[id="08-niveau-termine-goalcard"]{position:relative;width:420px;height:236px;border-radius:22px;border:4px solid #e15311;overflow:hidden;
+  box-shadow:0 0 26px 4px rgba(225,83,17,0.75),0 0 80px 10px rgba(255,106,31,0.35),0 20px 40px rgba(0,0,0,0.55)}
+[id="08-niveau-termine-goalcard"] img{display:block;width:100%;height:100%;object-fit:cover}
+[id="08-niveau-termine-goalflash"]{position:absolute;inset:0;background:#fff6e8;opacity:0;pointer-events:none}
+[class~="08-niveau-termine-ring"]{position:absolute;border-radius:50%;opacity:0;pointer-events:none}
+[id="08-niveau-termine-you"]{position:absolute;left:-23px;top:-23px;width:46px;height:46px}
+[id="08-niveau-termine-youin"]{transform-origin:50% 100%}
+
+/* taglines */
+[id="08-niveau-termine-tagscrim"]{position:absolute;left:200px;top:630px;width:1520px;height:420px;opacity:0;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(8,11,16,0.92) 0%,rgba(8,11,16,0.82) 50%,rgba(8,11,16,0) 100%)}
+[class~="08-niveau-termine-tag"]{font-size:96px;line-height:96px;height:96px}
+</style>
+<link rel="stylesheet" href="assets/kit/moorea-ui.css">
+
+<div id="root" data-composition-id="08-niveau-termine" data-width="1920" data-height="1080" data-duration="4">
+  <canvas class="clip" id="08-niveau-termine-lava" width="960" height="540" data-start="0" data-duration="4" data-track-index="0"
+          style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+  <canvas class="clip" id="08-niveau-termine-embers" width="1920" height="1080" data-start="0" data-duration="4" data-track-index="1"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+  <div class="clip" id="08-niveau-termine-scrim" data-start="0" data-duration="4" data-track-index="2"
+       style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 56% 60% at 50% 50%, rgba(8,11,16,0.70) 0%, rgba(8,11,16,0.52) 52%, rgba(8,11,16,0.16) 100%)"></div>
+
+  <svg id="08-niveau-termine-defs" aria-hidden="true">
+    <filter id="08-niveau-termine-vblur" x="-10%" y="-20%" width="120%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="08-niveau-termine-vdev" stdDeviation="0 0.01"></feGaussianBlur>
+    </filter>
+  </svg>
+
+  <div id="08-niveau-termine-stage" class="mui 08-niveau-termine-full">
+
+    <!-- ============ the path world (pull-back) ============ -->
+    <div id="08-niveau-termine-world" class="08-niveau-termine-full">
+      <div id="08-niveau-termine-patches"></div>
+      <svg id="08-niveau-termine-trail" width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;overflow:visible">
+        <g id="08-niveau-termine-tbase" fill="rgba(255,240,226,0.85)"></g>
+        <g id="08-niveau-termine-tdone" fill="#ff6a1f" style="filter:drop-shadow(0 0 6px rgba(255,106,31,0.95))"></g>
+      </svg>
+      <div id="08-niveau-termine-plats"></div>
+
+      <div id="08-niveau-termine-goal">
+        <div id="08-niveau-termine-goalcard">
+          <img src="assets/img/photo-crowd-gate.jpg" alt="">
+          <div id="08-niveau-termine-goalflash"></div>
+        </div>
+      </div>
+      <div class="08-niveau-termine-ring" id="08-niveau-termine-ringA" style="left:1560px;top:340px;width:160px;height:160px;border:9px solid #ff6a1f;box-shadow:0 0 30px rgba(255,106,31,0.9),inset 0 0 20px rgba(255,106,31,0.6)"></div>
+      <div class="08-niveau-termine-ring" id="08-niveau-termine-ringB" style="left:1560px;top:340px;width:160px;height:160px;border:4px solid #fff6e8"></div>
+      <div class="08-niveau-termine-ring" id="08-niveau-termine-ringC" style="left:1590px;top:370px;width:100px;height:100px;border:5px solid #ff6a1f"></div>
+
+      <div id="08-niveau-termine-you"><div id="08-niveau-termine-youin" class="mui-you"></div></div>
+    </div>
+
+    <!-- ============ NIVEAU TERMINÉ · 8/8 ============ -->
+    <div id="08-niveau-termine-type" class="08-niveau-termine-full">
+      <div id="08-niveau-termine-burst8"></div>
+      <div id="08-niveau-termine-title" class="08-niveau-termine-full">
+        <div id="08-niveau-termine-titleslam" class="08-niveau-termine-full">
+          <div id="08-niveau-termine-ghostR" class="08-niveau-termine-full 08-niveau-termine-ghost" style="color:#ff1e3c">
+            <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display" style="top:205px">Niveau</div>
+            <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display" style="top:395px">Terminé</div>
+          </div>
+          <div id="08-niveau-termine-ghostC" class="08-niveau-termine-full 08-niveau-termine-ghost" style="color:#1edcff">
+            <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display" style="top:205px">Niveau</div>
+            <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display" style="top:395px">Terminé</div>
+          </div>
+          <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display fx-hot-white" style="top:205px">Niveau</div>
+          <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display fx-hot-white" style="top:395px">Terminé</div>
+        </div>
+      </div>
+      <div id="08-niveau-termine-score" class="08-niveau-termine-full">
+        <div id="08-niveau-termine-scorein" class="08-niveau-termine-full">
+          <div id="08-niveau-termine-eight" class="08-niveau-termine-line mui-display 08-niveau-termine-orange">
+            <div id="08-niveau-termine-reel"><div id="08-niveau-termine-reelwin"><div id="08-niveau-termine-strip"></div></div></div>
+            <span id="08-niveau-termine-slash">/8</span>
+          </div>
+        </div>
+        <div id="08-niveau-termine-galeres" class="08-niveau-termine-line">GALÈRES ÉVITÉES</div>
+      </div>
+      <div id="08-niveau-termine-divider"></div>
+    </div>
+
+    <!-- ============ taglines ============ -->
+    <div id="08-niveau-termine-tagscrim"></div>
+    <div id="08-niveau-termine-tag1" class="08-niveau-termine-line 08-niveau-termine-tag mui-display fx-hot-white" style="top:732px">Tout le festival.</div>
+    <div id="08-niveau-termine-tag2" class="08-niveau-termine-line 08-niveau-termine-tag mui-display 08-niveau-termine-orange" style="top:852px">Une seule appli.</div>
+  </div>
+
+  <canvas id="08-niveau-termine-sparks" width="1920" height="1080"></canvas>
+  <div id="08-niveau-termine-flash"></div>
+</div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/kit/mui.js"></script>
+<script src="assets/kit/lava.js"></script>
+<script>
+(function () {
+  var ID = '08-niveau-termine', FS = 27.2, DUR = 3.2;
+  var root = document.querySelector('[data-composition-id="' + ID + '"]');
+  function $(n) { return document.getElementById(ID + '-' + n); }
+  function rng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function div(cls, css, parent) { var d = document.createElement('div'); if (cls) d.className = cls; if (css) d.style.cssText = css; parent.appendChild(d); return d; }
+
+  /* ---------- geometry (world coords = screen coords at the end of the pull-back) ---------- */
+  var B1 = [[190, 905], [820, 925], [700, 455], [1330, 465]];      // the S-curve the 8 platforms sit on
+  var B2 = [[1330, 465], [1400, 466], [1450, 452], [1520, 436]];   // last leg, runs under the goal photo
+  var PTS = [[190, 905], [370, 896], [542, 845], [693, 747], [829, 629], [979, 530], [1151, 477], [1330, 465]]; // equal arc length on B1
+  var ICONS = ['mdiBusSide', 'mdiCancel', 'mdiMapMarker', 'mdiCalendarCheck', 'mdiSilverwareForkKnife', 'mdiCreditCardOutline', 'mdiCompassOutline', 'mdiMessage'];
+  var GOAL = [1640, 420];
+  function bz(b, t) { var u = 1 - t; return [0, 1].map(function (k) { return u * u * u * b[0][k] + 3 * u * u * t * b[1][k] + 3 * u * t * t * b[2][k] + t * t * t * b[3][k]; }); }
+  function blen(b) { var L = 0, p = bz(b, 0); for (var i = 1; i <= 400; i++) { var q = bz(b, i / 400); L += Math.hypot(q[0] - p[0], q[1] - p[1]); p = q; } return L; }
+  var B0 = [-140, 914];                                           // lead-in: the path you already walked (off-screen left)
+  var L0 = Math.hypot(B1[0][0] - B0[0], B1[0][1] - B0[1]), L1 = blen(B1), L2 = blen(B2), LTOT = L0 + L1 + L2;
+  function frac(i) { return (L0 + (i / 7) * L1) / LTOT; }
+  // dotted trail: one SVG dot every 22 px of arc length along lead-in + S-curve + last leg
+  var poly = [B0];
+  for (var q = 0; q <= 400; q++) poly.push(bz(B1, q / 400));
+  for (var q2 = 1; q2 <= 100; q2++) poly.push(bz(B2, q2 / 100));
+  var cum = [0];
+  for (var c = 1; c < poly.length; c++) cum.push(cum[c - 1] + Math.hypot(poly[c][0] - poly[c - 1][0], poly[c][1] - poly[c - 1][1]));
+  function at(sv) { var j = 1; while (j < cum.length - 1 && cum[j] < sv) j++; var u = (sv - cum[j - 1]) / ((cum[j] - cum[j - 1]) || 1);
+    return [poly[j - 1][0] + (poly[j][0] - poly[j - 1][0]) * u, poly[j - 1][1] + (poly[j][1] - poly[j - 1][1]) * u]; }
+  var SVGNS = 'http://www.w3.org/2000/svg', DOTS = [];
+  for (var sv = 11; sv < cum[cum.length - 1]; sv += 22) {
+    var pt = at(sv), c1 = document.createElementNS(SVGNS, 'circle'), c2 = document.createElementNS(SVGNS, 'circle');
+    c1.setAttribute('cx', pt[0].toFixed(1)); c1.setAttribute('cy', pt[1].toFixed(1)); c1.setAttribute('r', '4.5');
+    c2.setAttribute('cx', pt[0].toFixed(1)); c2.setAttribute('cy', pt[1].toFixed(1)); c2.setAttribute('r', '6.5');
+    $('tbase').appendChild(c1); $('tdone').appendChild(c2);
+    DOTS.push({ s: sv / LTOT, base: c1, done: c2 });
+  }
+
+  /* ---------- generated DOM ---------- */
+  var patches = $('patches'), plats = $('plats'), PW = [], CARD = [], ICO = [], HOT = [], PATCH = [], STEAM = [];
+  PTS.forEach(function (p, i) {
+    PATCH.push(div(ID + '-patch', 'left:' + (p[0] - 150) + 'px;top:' + (p[1] - 85) + 'px', patches));
+    STEAM.push(div(ID + '-steam', 'left:' + (p[0] - 110) + 'px;top:' + (p[1] - 70) + 'px', patches));
+    var pw = div(ID + '-pw', 'left:' + (p[0] - 95) + 'px;top:' + (p[1] - 61) + 'px', plats);
+    var card = div(ID + '-plat', '', pw);
+    var ic = document.createElement('span'); ic.className = ID + '-ico'; ic.setAttribute('data-mui-icon', ICONS[i]); card.appendChild(ic);
+    HOT.push(div('fx-hot-overlay', '', card));
+    PW.push(pw); CARD.push(card); ICO.push(ic);
+  });
+  var strip = $('strip');
+  for (var k = 1; k <= 9; k++) { var dg = div(ID + '-dg', '', strip); dg.textContent = String(k === 9 ? 1 : k); }
+  MUI.hydrate(root);
+
+  /* ---------- timeline ---------- */
+  var tl = gsap.timeline({ paused: true });
+  window.__timelines = window.__timelines || {};
+  window.__timelines[ID] = tl;
+
+  /* lava world: seed 3, GLOBAL time; drawn only from proxy-tween onUpdate + once at build */
+  var lava = MooreaLava.create($('lava'), { seed: 3 });
+  var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 110 });
+  var L = { t: FS, et: FS, boost: 4, escale: 1.45, heat: 1.35, zoom: 1.2, panX: 0, panY: 0, sx: 0, sy: 0, tilt: 0, horizon: 0.3,
+            coolR: 0, coolX: GOAL[0] / 1920, coolY: GOAL[1] / 1080, erupt: 0, eruptX: 0.5, eruptY: 0.37, flash: 0.55 };
+  var P = {};
+  function draw() {
+    for (var key in L) P[key] = L[key];
+    P.panX = L.panX + L.sx; P.panY = L.panY + L.sy;
+    lava.render(P); emb.render(L.et, { boost: L.boost, scale: L.escale });
+  }
+  function LT(vars, pos) { vars.onUpdate = draw; return tl.to(L, vars, pos); }
+  function LK(frames, pos) { return tl.to(L, { keyframes: frames, onUpdate: draw }, pos); }
+
+  LT({ t: FS + DUR, duration: DUR, ease: 'none' }, 0);                         // continuous flow across cuts
+  LT({ panY: -0.45, duration: DUR, ease: 'none' }, 0);
+  LT({ et: FS + 3.0, duration: 1.2, ease: 'none' }, 0);                          // embers rising fast
+  LT({ et: FS + 5.4, duration: 2.0, ease: 'none' }, 1.2);
+  LT({ flash: 0, duration: 0.3, ease: 'power2.out' }, 0);
+  LT({ zoom: 1.3, duration: 1.2, ease: 'none' }, 0);                             // slow push-in under the title
+  LT({ zoom: 0.9, duration: 0.9, ease: 'power3.out' }, 1.2);                     // PULL-BACK
+  LT({ zoom: 0.95, duration: 0.8, ease: 'none' }, 2.4);
+  LT({ heat: 0.8, duration: 0.6, ease: 'power2.out' }, 1.2);
+  LT({ boost: 1.5, duration: 0.5, ease: 'power2.out' }, 1.2);
+  LT({ escale: 0.85, duration: 0.6, ease: 'power2.out' }, 1.2);
+  LK([{ erupt: 1.3, eruptX: 0.5, eruptY: 0.37, duration: 0.001, ease: 'none' }, { erupt: 0, duration: 0.55, ease: 'power2.out' }], 0.1);
+  LK([{ erupt: 0.8, eruptX: 0.5, eruptY: 0.65, duration: 0.001, ease: 'none' }, { erupt: 0, duration: 0.4, ease: 'power2.out' }], 0.7);
+  LK([{ erupt: 0.75, eruptX: 1640 / 1920, eruptY: 400 / 1080, duration: 0.001, ease: 'none' }, { erupt: 0, duration: 0.45, ease: 'power2.out' }], 1.4);
+  LT({ coolR: 0.28, duration: 0.5, ease: 'expo.out' }, 2.25);                     // goal: the lava quenches around the festival
+
+  /* ---------- spark bursts (ember explosion), seeded, pure function of local time ---------- */
+  var sctx = $('sparks').getContext('2d');
+  function burst(seed, t0, x, y, n, vmin, vmax, lmin, lmax, w, a0, spread) {
+    var r = rng(seed), arr = [], sp = spread == null ? 6.2832 : spread;
+    for (var i = 0; i < n; i++) arr.push({ a: (a0 || 0) + (r() - 0.5) * sp, v: vmin + (vmax - vmin) * Math.pow(r(), 0.8), life: lmin + (lmax - lmin) * r(),
+      w: (1.2 + r() * 3.4) * w, d: r() * 0.035, k: 2.2 + r() * 2.6, up: 60 + r() * 220, f: r() * 6.28 });
+    return { t0: t0, x: x, y: y, p: arr };
+  }
+  var BURSTS = [
+    burst(801, 0.06, 960, 395, 150, 700, 2500, 0.55, 1.3, 1.15),
+    burst(802, 0.70, 960, 700, 56, 400, 1400, 0.35, 0.8, 0.85),
+    burst(803, 2.25, 1640, 420, 80, 450, 1600, 0.4, 0.95, 0.95),
+    burst(804, 2.40, 490, 780, 26, 500, 1500, 0.25, 0.5, 0.75, Math.PI, 1.3),
+    burst(805, 2.40, 1430, 780, 26, 500, 1500, 0.25, 0.5, 0.75, 0, 1.3),
+    burst(806, 2.80, 520, 900, 26, 500, 1500, 0.25, 0.5, 0.75, Math.PI, 1.3),
+    burst(807, 2.80, 1400, 900, 26, 500, 1500, 0.25, 0.5, 0.75, 0, 1.3)
+  ];
+  function spos(b, p, tau) { var e = (1 - Math.exp(-p.k * tau)) / p.k;
+    return [b.x + Math.cos(p.a) * p.v * e, b.y + Math.sin(p.a) * p.v * e * 0.72 - p.up * tau * tau]; }
+  var SK = { t: 0 };
+  function drawSparks() {
+    sctx.clearRect(0, 0, 1920, 1080); sctx.globalCompositeOperation = 'lighter'; sctx.lineCap = 'round';
+    for (var j = 0; j < BURSTS.length; j++) {
+      var b = BURSTS[j];
+      for (var i = 0; i < b.p.length; i++) {
+        var p = b.p[i], tau = SK.t - b.t0 - p.d;
+        if (tau <= 0 || tau >= p.life) continue;
+        var a = Math.pow(1 - tau / p.life, 1.3) * (0.75 + 0.25 * Math.sin(tau * 40 + p.f));
+        var q1 = spos(b, p, tau), q0 = spos(b, p, Math.max(0, tau - 0.045));
+        sctx.beginPath(); sctx.moveTo(q0[0], q0[1]); sctx.lineTo(q1[0], q1[1]);
+        sctx.strokeStyle = 'rgba(225,83,17,' + (a * 0.45).toFixed(3) + ')'; sctx.lineWidth = p.w * 3.2; sctx.stroke();
+        sctx.strokeStyle = 'rgba(255,207,45,' + (a * 0.9).toFixed(3) + ')'; sctx.lineWidth = p.w * 1.3; sctx.stroke();
+        sctx.strokeStyle = 'rgba(255,248,226,' + a.toFixed(3) + ')'; sctx.lineWidth = p.w * 0.5; sctx.stroke();
+      }
+    }
+    sctx.globalCompositeOperation = 'source-over';
+  }
+  tl.to(SK, { t: DUR, duration: DUR, ease: 'none', onUpdate: drawSparks }, 0);
+
+  /* ---------- helpers ---------- */
+  var stage = $('stage'), flash = $('flash');
+  function hit(at, amt, dur) { tl.to(flash, { keyframes: [{ opacity: amt, duration: 0.001, ease: 'none' }, { opacity: 0, duration: dur || 0.12, ease: 'power2.out' }] }, at); }
+  function punch(el, at, from, dur, ease) {
+    tl.to(el, { keyframes: [{ scale: from, duration: 0.001, ease: 'none' }, { scale: 1, duration: dur || 0.25, ease: ease || 'back.out(3)' }] }, at);
+  }
+  var SHAKE_BIG = [[-18, 10], [16, -12], [-13, 8], [10, -7], [-7, 5], [4, -3], [-2, 1], [0, 0]];
+  var SHAKE_MED = [[-10, 6], [9, -6], [-6, 4], [4, -2], [-2, 1], [0, 0]];
+  function shake(at, seq) {
+    var fs = [], ls = [], k = 3.2 / (1080 * 1.2);
+    seq.forEach(function (s, i) {
+      var d = 0.035 + i * 0.006;
+      fs.push({ x: s[0], y: s[1], duration: d, ease: 'none' });
+      ls.push({ sx: -s[0] * k, sy: -s[1] * k, duration: d, ease: 'none' });
+    });
+    tl.to(stage, { keyframes: fs }, at);
+    LK(ls, at);
+  }
+  function slamIn(el, at, from, dur) {   // arrives from big scale, impact at at+dur, then back.out settle
+    tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.03, ease: 'none' }, at)
+      .fromTo(el, { scale: from }, { scale: 0.94, duration: dur, ease: 'power4.in' }, at)
+      .to(el, { scale: 1, duration: 0.25, ease: 'back.out(2)' }, at + dur);
+  }
+
+  /* ============ Scene 1 (0.00–0.40): DROP — white flash, NIVEAU / TERMINÉ slam, ember explosion ============ */
+  tl.fromTo(flash, { opacity: 1 }, { opacity: 0, duration: 0.15, ease: 'power2.out' }, 0);
+  var tslam = $('titleslam');
+  gsap.set(tslam, { transformOrigin: '960px 395px' });
+  slamIn(tslam, 0, 2.4, 0.1);
+  tl.fromTo($('ghostR'), { x: 34, y: -5, opacity: 1 }, { x: 0, y: 0, opacity: 0, duration: 0.45, ease: 'power2.out' }, 0);
+  tl.fromTo($('ghostC'), { x: -34, y: 5, opacity: 1 }, { x: 0, y: 0, opacity: 0, duration: 0.45, ease: 'power2.out' }, 0);
+  shake(0.1, SHAKE_BIG);
+  gsap.set($('type'), { transformOrigin: '960px 540px' });
+  tl.fromTo($('type'), { scale: 1 }, { scale: 1.035, duration: 0.85, ease: 'none' }, 0.35);   // slow push while 8/8 spins
+
+  /* ============ Scene 2 (0.40–1.20): 8/8 slot reel lands at 0.70 + GALÈRES ÉVITÉES ============ */
+  var scorein = $('scorein');
+  gsap.set(scorein, { transformOrigin: '960px 700px' });
+  tl.fromTo(scorein, { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power3.out' }, 0.4);
+  tl.fromTo(strip, { y: 0 }, { y: -7 * 280, duration: 0.3, ease: 'back.out(0.9)' }, 0.4);
+  tl.fromTo($('vdev'), { attr: { stdDeviation: '0 28' } }, { attr: { stdDeviation: '0 0.01' }, duration: 0.29, ease: 'power2.out' }, 0.4);
+  punch(scorein, 0.7, 1.24, 0.3, 'back.out(3)');
+  tl.to($('burst8'), { keyframes: [{ opacity: 1, scale: 0.55, duration: 0.001, ease: 'none' }, { opacity: 0, scale: 1.5, duration: 0.45, ease: 'power2.out' }] }, 0.7);
+  hit(0.7, 0.22, 0.1);
+  var gal = $('galeres');
+  gsap.set(gal, { transformOrigin: '960px 27px' });
+  tl.fromTo(gal, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, 0.7)
+    .fromTo(gal, { scale: 1.12 }, { scale: 1, duration: 0.3, ease: 'power3.out' }, 0.7);
+
+  /* ============ Scene 3 (1.20–2.40): PULL-BACK over the path of 8 cooled platforms ============ */
+  // type -> results lockup in the top band (kept below the HUD's 150 px): [NIVEAU/TERMINÉ] | [8/8 · GALÈRES ÉVITÉES]
+  var title = $('title'), score = $('score');
+  gsap.set(title, { transformOrigin: '960px 395px' });
+  gsap.set(score, { transformOrigin: '960px 738px' });
+  tl.to($('type'), { scale: 1, duration: 0.45, ease: 'power4.out' }, 1.2);
+  tl.fromTo(title, { x: 0, y: 0, scale: 1 }, { x: -186, y: -155, scale: 0.42, duration: 0.45, ease: 'power4.out' }, 1.2);
+  // the score swings right first, then rises (x fast, y eased in-out) so it never crosses the title
+  tl.fromTo(score, { x: 0, scale: 1 }, { x: 214, scale: 0.55, duration: 0.45, ease: 'power4.out' }, 1.2);
+  tl.fromTo(score, { y: 0 }, { y: -498, duration: 0.38, ease: 'power3.inOut' }, 1.2);
+  gsap.set($('divider'), { transformOrigin: '50% 50%' });
+  tl.fromTo($('divider'), { scaleY: 0 }, { scaleY: 1, duration: 0.2, ease: 'power3.out' }, 1.4);
+  tl.to($('scrim'), { opacity: 0.4, duration: 0.15, ease: 'power2.out' }, 0.4);
+  tl.to($('scrim'), { opacity: 0.62, duration: 0.4, ease: 'power2.out' }, 1.2);
+
+  // camera pull-back over the world
+  var world = $('world');
+  gsap.set(world, { transformOrigin: '260px 880px' });
+  var WORIGIN2 = '1200px 640px';
+  tl.fromTo(world, { scale: 1.5 }, { scale: 1, duration: 0.6, ease: 'power3.out' }, 1.2);
+
+  // trail draws on with the platforms (1.20–1.52), the walked part (lead-in) lights orange
+  DOTS.forEach(function (o) {
+    tl.fromTo(o.base, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: 'none' }, 1.2 + 0.32 * o.s);
+    if (o.s <= frac(0)) tl.fromTo(o.done, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, 1.2 + 0.1 * o.s / frac(0));
+  });
+
+  // 8 platforms pop in red-hot and cool (1.20–1.48, stagger 0.04)
+  PTS.forEach(function (p, i) {
+    var at = 1.2 + i * 0.04;
+    gsap.set(PW[i], { transformOrigin: '50% 60%' });
+    tl.fromTo(PW[i], { scale: 0 }, { scale: 1, duration: 0.2, ease: 'back.out(3)' }, at);
+    tl.fromTo(HOT[i], { opacity: 0.95 }, { opacity: 0, duration: 0.34, ease: 'power2.out' }, at + 0.05);
+    tl.fromTo(PATCH[i], { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power3.out' }, at);
+    tl.to(STEAM[i], { keyframes: [{ opacity: 0.9, scale: 0.45, duration: 0.001, ease: 'none' }, { opacity: 0, scale: 1.55, duration: 0.34, ease: 'power2.out' }] }, at + 0.03);
+  });
+
+  // the goal: festival entrance photo
+  var goal = $('goal');
+  gsap.set(goal, { transformOrigin: '50% 50%' });
+  tl.fromTo(goal, { scale: 0, rotation: -6 }, { scale: 1, rotation: 0, duration: 0.2, ease: 'back.out(2.4)' }, 1.4);
+  punch(goal, 1.6, 1.05, 0.2, 'power2.out');
+  punch(goal, 2.0, 1.05, 0.2, 'power2.out');
+
+  // the "toi" dot hops platform to platform (1.30, 1.42, ... 8 hops) and lands in the photo at 2.25
+  var you = $('you'), youin = $('youin');
+  var STAND = PTS.map(function (p) { return [p[0], p[1] - 65]; }).concat([GOAL]);
+  var SH0 = '0 14px 28px rgba(0,0,0,0.55),0 0 0px 0px rgba(225,83,17,0)';
+  var SH1 = '0 14px 28px rgba(0,0,0,0.55),0 0 30px 5px rgba(225,83,17,0.7)';
+  function light(i, at) {
+    tl.fromTo(CARD[i], { borderColor: '#22364f', boxShadow: SH0 }, { borderColor: '#e15311', boxShadow: SH1, duration: 0.08, ease: 'power2.out' }, at);
+    tl.to(PW[i], { keyframes: [{ y: 9, duration: 0.05, ease: 'power2.out' }, { y: 0, duration: 0.14, ease: 'back.out(3)' }] }, at);
+    punch(ICO[i], at, 1.4, 0.2, 'back.out(3)');
+  }
+  tl.fromTo(youin, { scale: 0 }, { scale: 1, duration: 0.14, ease: 'back.out(3)' }, 1.22);
+  light(0, 1.24);
+  for (var h = 0; h < 8; h++) {
+    var a = STAND[h], b = STAND[h + 1], t0 = 1.3 + h * 0.12, d = h === 7 ? 0.11 : 0.12, lift = h === 7 ? 130 : 64;
+    var apex = Math.min(a[1], b[1]) - lift, first = h === 0;
+    tl.fromTo(you, { x: a[0] }, { x: b[0], duration: d, ease: 'none', immediateRender: first }, t0);
+    tl.fromTo(you, { y: a[1] }, { y: apex, duration: d / 2, ease: 'power2.out', immediateRender: first }, t0);
+    tl.fromTo(you, { y: apex }, { y: b[1], duration: d / 2, ease: 'power2.in', immediateRender: false }, t0 + d / 2);
+    var f0 = frac(h), f1 = h === 7 ? 1 : frac(h + 1);
+    DOTS.forEach(function (o) {   // the walked trail lights up behind the dot
+      if (o.s > f0 && o.s <= f1) tl.fromTo(o.done, { opacity: 0 }, { opacity: 1, duration: 0.04, ease: 'none' }, t0 + d * (o.s - f0) / (f1 - f0));
+    });
+    tl.to(youin, { keyframes: [{ scaleX: 1.32, scaleY: 0.72, duration: 0.001, ease: 'none' }, { scaleX: 1, scaleY: 1, duration: 0.1, ease: 'back.out(3)' }] }, t0 + d);
+    if (h < 7) light(h + 1, t0 + d);
+  }
+
+  // GOAL at 2.25: burst rings, photo flash, sparks, lava quench ring opens around the festival
+  var G = 2.25;
+  [['ringA', 0.2, 2.6, 0.5], ['ringB', 0.2, 3.4, 0.55], ['ringC', 0.4, 4.2, 0.4]].forEach(function (r, i) {
+    gsap.set($(r[0]), { transformOrigin: '50% 50%' });
+    tl.to($(r[0]), { keyframes: [{ opacity: 1, scale: r[1], duration: 0.001, ease: 'none' }, { opacity: 0, scale: r[2], duration: r[3], ease: 'power2.out' }] }, G + i * 0.05);
+  });
+  tl.to($('goalflash'), { keyframes: [{ opacity: 0.85, duration: 0.001, ease: 'none' }, { opacity: 0, duration: 0.3, ease: 'power2.out' }] }, G);
+  punch(goal, G, 1.12, 0.3, 'back.out(3)');
+
+  /* ============ Scene 4 (2.40–3.20): TOUT LE FESTIVAL. / UNE SEULE APPLI. ============ */
+  tl.fromTo($('tagscrim'), { opacity: 0 }, { opacity: 1, duration: 0.1, ease: 'power2.out' }, 2.3);
+  var tag1 = $('tag1'), tag2 = $('tag2');
+  gsap.set([tag1, tag2], { transformOrigin: '50% 50%' });
+  slamIn(tag1, 2.32, 2.3, 0.08);          // impact on 2.40
+  hit(2.4, 0.45, 0.12); shake(2.4, SHAKE_MED);
+  slamIn(tag2, 2.72, 2.3, 0.08);          // impact on 2.80
+  hit(2.8, 0.45, 0.12); shake(2.8, SHAKE_MED);
+  tl.set(world, { transformOrigin: WORIGIN2 }, 2.4);
+  tl.to(world, { scale: 1.035, duration: 0.8, ease: 'none' }, 2.4);       // slow push while the taglines hold
+  // the goal keeps beating on the grid
+  tl.to($('ringC'), { keyframes: [{ opacity: 0.9, scale: 0.5, duration: 0.001, ease: 'none' }, { opacity: 0, scale: 3.2, duration: 0.4, ease: 'power2.out' }] }, 2.8);
+  punch(goal, 2.8, 1.05, 0.2, 'power2.out');
+  punch(youin, 3.0, 1.35, 0.2, 'back.out(3)');
+
+  draw(); drawSparks();
+})();
+</script>
+<script>
+  /* 60 s cut: this frame is the approved 35 s shot time-stretched x1.25 (150 -> 120 BPM).
+     The original timeline is driven by an outer timeline that tweens its playhead. */
+  (function () {
+    var id = "08-niveau-termine", inner = window.__timelines[id], D = 3.2, S = 1.25;
+    var outer = gsap.timeline({ paused: true });
+    outer.to(inner, { time: D, duration: D * S, ease: "none" }, 0);
+    window.__timelines[id] = outer;
+  })();
+</script>
+</template>

@@ -1,0 +1,402 @@
+<template>
+<style>
+@font-face{font-family:"Montserrat";font-weight:300;font-display:block;src:url("assets/fonts/Montserrat-300.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:400;font-display:block;src:url("assets/fonts/Montserrat-400.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:500;font-display:block;src:url("assets/fonts/Montserrat-500.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:block;src:url("assets/fonts/Montserrat-600.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:block;src:url("assets/fonts/Montserrat-700.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:800;font-display:block;src:url("assets/fonts/Montserrat-800.woff2") format("woff2");}
+@font-face{font-family:"Turret Road";font-weight:800;font-display:block;src:url("assets/fonts/TurretRoad-800.woff2") format("woff2");}
+
+#root { position: absolute; inset: 0; overflow: hidden; }
+[class~="01-game-over-full"] { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+[class~="01-game-over-pt"] { position: absolute; width: 0; height: 0; }
+
+/* GAME / OVER display words: 250 px line box, centred on x = 900 */
+[class~="01-game-over-word"] { position: absolute; left: 0; width: 1800px; height: 250px; text-align: center; white-space: nowrap; transform-origin: 50% 45%; }
+[class~="01-game-over-word"] .mui-display { position: relative; display: block; font-size: 250px; white-space: nowrap; }
+[class~="01-game-over-word"] [class~="01-game-over-ghost"] { position: absolute; left: 0; top: 0; width: 100%; color: #3a0508; }
+[class~="01-game-over-sub"] { position: absolute; left: 0; top: 798px; width: 1800px; text-align: center; white-space: nowrap;
+  font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 52px; line-height: 63px; color: #fff; letter-spacing: 0.005em; }
+[class~="01-game-over-sub"] span { display: inline-block; white-space: pre; }
+
+/* sinking dot + lava pool */
+[class~="01-game-over-pool"] { position: absolute; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,236,170,0.95) 0%, rgba(255,170,60,0.8) 30%, rgba(255,106,31,0.45) 62%, rgba(225,83,17,0) 100%); }
+[class~="01-game-over-pulse"] { position: absolute; left: 0; top: 0; width: 46px; height: 46px; border-radius: 50%; border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.7); }
+[class~="01-game-over-tint"] { position: absolute; left: 0; top: 0; width: 46px; height: 46px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, rgba(255,214,120,0.95) 0%, rgba(255,120,30,0.9) 55%, rgba(190,40,0,0.85) 100%); }
+
+[class~="01-game-over-bubble"] { position: absolute; border-radius: 50%; border: 3px solid rgba(255,236,180,0.95);
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,240,0.95) 0%, rgba(255,214,90,0.85) 22%, rgba(255,120,30,0.75) 60%, rgba(150,30,0,0.8) 100%);
+  box-shadow: 0 0 16px 3px rgba(255,140,40,0.75); }
+/* plop splash */
+[class~="01-game-over-crater"] { position: absolute; left: -110px; top: -110px; width: 220px; height: 220px; border-radius: 50%;
+  background: radial-gradient(closest-side, #fffaf0 0%, rgba(255,236,170,0.95) 35%, rgba(255,150,40,0.6) 70%, rgba(255,106,31,0) 100%); }
+[class~="01-game-over-crown"] { position: absolute; left: -120px; top: -120px; width: 240px; height: 240px; border-radius: 50%;
+  border: 10px solid rgba(255,222,150,0.95); box-shadow: 0 0 30px 6px rgba(255,120,30,0.8), inset 0 0 24px 4px rgba(255,150,40,0.7); }
+[class~="01-game-over-drop"] { position: absolute; border-radius: 50%;
+  background: radial-gradient(circle at 40% 38%, #fff6d8 0%, #ffd34a 30%, #ff8a1f 58%, #c53a08 82%, #5a1200 100%);
+  box-shadow: 0 0 14px 3px rgba(255,138,31,0.8); }
+
+/* slam fx */
+[class~="01-game-over-scrim"] { background: radial-gradient(ellipse 820px 470px at 900px 520px, rgba(6,4,8,0.66) 0%, rgba(6,4,8,0.42) 55%, rgba(6,4,8,0) 100%); }
+[class~="01-game-over-shock"] { position: absolute; width: 940px; height: 300px; border-radius: 50%; border: 6px solid rgba(255,170,130,0.95);
+  box-shadow: 0 0 34px 6px rgba(255,40,30,0.75), inset 0 0 26px 4px rgba(255,60,40,0.55); }
+
+/* line-up card */
+[class~="01-game-over-cardpos"] { position: absolute; left: 1318px; top: 247px; width: 783px; height: 719px; transform: scale(0.62); transform-origin: 0 0; }
+[class~="01-game-over-cardin"] { position: absolute; left: 0; top: 0; width: 783px; height: 719px; border-radius: 16px; }
+[class~="01-game-over-cardshadow"] { box-shadow: 0 60px 110px rgba(0,0,0,0.7), 0 0 0 2px rgba(255,255,255,0.07); }
+[class~="01-game-over-sheenclip"] { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; pointer-events: none; }
+[class~="01-game-over-sheen"] { position: absolute; left: 0; top: -20%; width: 26%; height: 140%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.38) 50%, rgba(255,255,255,0) 100%); }
+[class~="01-game-over-dead"] { position: absolute; inset: 0; border-radius: 16px; border: 7px solid #ef4444;
+  box-shadow: 0 0 36px 6px rgba(239,68,68,0.75), inset 0 0 40px 6px rgba(216,31,34,0.55); pointer-events: none; }
+
+/* rewind / VHS */
+[class~="01-game-over-rew"] { position: absolute; left: 110px; top: 90px; width: 90px; height: 90px; color: #fff;
+  filter: drop-shadow(0 0 14px rgba(255,255,255,0.75)); }
+[class~="01-game-over-rew"] svg { display: block; width: 90px; height: 90px; }
+[class~="01-game-over-band"] { position: absolute; left: 0; top: 0; width: 1920px; }
+[class~="01-game-over-scan"] { background: repeating-linear-gradient(180deg, rgba(0,0,0,0.26) 0px, rgba(0,0,0,0.26) 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 5px); }
+
+/* CRT off */
+[class~="01-game-over-beam"] { position: absolute; left: 0; top: 536px; width: 1920px; height: 8px; background: #fff; border-radius: 4px;
+  box-shadow: 0 0 24px 6px rgba(255,255,255,0.85), 0 0 80px 24px rgba(170,205,255,0.35); }
+[class~="01-game-over-wdot"] { position: absolute; left: 951px; top: 531px; width: 18px; height: 18px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 18px 6px rgba(255,255,255,0.9), 0 0 60px 18px rgba(170,205,255,0.45); }
+</style>
+<link rel="stylesheet" href="assets/kit/moorea-ui.css">
+
+<div id="root" data-composition-id="01-game-over" data-width="1920" data-height="1080" data-duration="4">
+  <!-- full-bleed background layers -->
+  <div class="clip" id="01-game-over-black" data-start="0" data-duration="4" data-track-index="0"
+       style="position:absolute;inset:0;width:100%;height:100%;background:#000"></div>
+  <canvas class="clip" id="01-game-over-lava" width="960" height="540" data-start="0" data-duration="4" data-track-index="1"
+          style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+  <canvas class="clip" id="01-game-over-embers" width="1920" height="1080" data-start="0" data-duration="4" data-track-index="2"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+
+  <!-- CRT group (collapses with the canvases at 3.00) -->
+  <div id="01-game-over-crt" class="mui 01-game-over-full">
+    <div id="01-game-over-shake" class="01-game-over-full">
+      <div id="01-game-over-cam" class="01-game-over-full" style="transform-origin:960px 540px">
+
+        <div id="01-game-over-scrim" class="01-game-over-full 01-game-over-scrim"></div>
+
+        <!-- Scene 1: the "toi" dot sinking -->
+        <div id="01-game-over-pool" class="01-game-over-pool" style="left:790px;top:400px;width:340px;height:340px"></div>
+        <svg id="01-game-over-ripples" class="01-game-over-full" width="1920" height="1080" viewBox="0 0 1920 1080"
+             style="overflow:visible;filter:drop-shadow(0 0 6px rgba(255,130,40,0.85))">
+          <circle id="01-game-over-rip0" cx="960" cy="560" r="40" fill="none" stroke="#ff6a1f" stroke-width="2"></circle>
+          <circle id="01-game-over-rip1" cx="960" cy="568" r="40" fill="none" stroke="#ffffff" stroke-width="2"></circle>
+          <circle id="01-game-over-rip2" cx="960" cy="576" r="40" fill="none" stroke="#ff6a1f" stroke-width="2"></circle>
+        </svg>
+        <div id="01-game-over-bubbles" class="01-game-over-full"></div>
+        <div id="01-game-over-dotw" style="position:absolute;left:937px;top:537px;width:46px;height:46px">
+          <div id="01-game-over-pulse" class="01-game-over-pulse"></div>
+          <div class="mui-you"></div>
+          <div id="01-game-over-tint" class="01-game-over-tint"></div>
+        </div>
+
+        <!-- Scene 2: plop splash -->
+        <div id="01-game-over-splash" class="01-game-over-pt" style="left:960px;top:584px">
+          <div id="01-game-over-crater" class="01-game-over-crater"></div>
+          <div id="01-game-over-crown" class="01-game-over-crown"></div>
+        </div>
+
+        <!-- Scene 3: slam shock rings -->
+        <div id="01-game-over-shock1" class="01-game-over-shock" style="left:430px;top:192px"></div>
+        <div id="01-game-over-shock2" class="01-game-over-shock" style="left:430px;top:422px"></div>
+
+        <!-- type (jitter + rgb split wrapper) -->
+        <div id="01-game-over-jittype" class="01-game-over-full" style="--gxt:0">
+          <div id="01-game-over-game" class="01-game-over-word" style="top:229px;--gx:calc(var(--gxt) * 1.5)">
+            <div class="mui-display fx-rgb 01-game-over-ghost">GAME</div>
+            <div class="mui-display fx-gameover">GAME</div>
+          </div>
+          <div id="01-game-over-over" class="01-game-over-word" style="top:459px;--gx:calc(var(--gxt) * 1.5)">
+            <div class="mui-display fx-rgb 01-game-over-ghost">OVER</div>
+            <div class="mui-display fx-gameover">OVER</div>
+          </div>
+          <div id="01-game-over-sub" class="01-game-over-sub fx-rgb" style="--gx:var(--gxt)"><span>Tu </span><span>as </span><span>raté </span><span>Sound </span><span>of </span><span>Legend.</span></div>
+        </div>
+
+        <!-- Scene 4: the real line-up card -->
+        <div id="01-game-over-jitcard" class="01-game-over-full">
+          <div class="01-game-over-cardpos">
+            <div id="01-game-over-carddrop" class="01-game-over-cardin" style="transform-origin:9% 3%">
+              <div id="01-game-over-cardflip" class="01-game-over-cardin" style="transform-origin:50% 50%">
+                <div class="01-game-over-cardin 01-game-over-cardshadow">
+                  <div id="01-game-over-cardimg" class="01-game-over-cardin">
+                    <div class="mui-artist" style="width:783px;height:719px"><img src="assets/img/artist-sound-of-legend.jpg" alt=""></div>
+                  </div>
+                  <div class="01-game-over-sheenclip"><div id="01-game-over-sheen" class="01-game-over-sheen"></div></div>
+                  <div id="01-game-over-dead" class="01-game-over-dead"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Scene 5: rewind HUD + VHS -->
+    <div id="01-game-over-rew" class="01-game-over-rew" data-mui-icon="mdiRewind"></div>
+    <div id="01-game-over-scan" class="01-game-over-full 01-game-over-scan"></div>
+    <div id="01-game-over-band0" class="01-game-over-band" style="height:64px;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.11) 30%,rgba(255,255,255,0.15) 55%,rgba(255,255,255,0.08) 80%,rgba(255,255,255,0) 100%),repeating-linear-gradient(90deg,rgba(255,255,255,0.10) 0px,rgba(255,255,255,0.10) 3px,rgba(255,255,255,0) 3px,rgba(255,255,255,0) 17px)"></div>
+    <div id="01-game-over-band1" class="01-game-over-band" style="height:90px;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.08) 25%,rgba(255,255,255,0.12) 60%,rgba(255,255,255,0) 100%),repeating-linear-gradient(90deg,rgba(255,255,255,0.08) 0px,rgba(255,255,255,0.08) 5px,rgba(255,255,255,0) 5px,rgba(255,255,255,0) 23px)"></div>
+    <div id="01-game-over-band2" class="01-game-over-band" style="height:40px;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.14) 40%,rgba(255,255,255,0.10) 70%,rgba(255,255,255,0) 100%),repeating-linear-gradient(90deg,rgba(255,255,255,0.12) 0px,rgba(255,255,255,0.12) 2px,rgba(255,255,255,0) 2px,rgba(255,255,255,0) 11px)"></div>
+
+    <!-- slam flash + CRT white -->
+    <div id="01-game-over-flash" class="01-game-over-full" style="background:#fff4e6;opacity:0;pointer-events:none"></div>
+    <div id="01-game-over-crtwhite" class="01-game-over-full" style="background:#ffffff;opacity:0;pointer-events:none"></div>
+  </div>
+
+  <!-- CRT power-off line + dot -->
+  <div id="01-game-over-beam" class="01-game-over-beam" style="opacity:0"></div>
+  <div id="01-game-over-wdot" class="01-game-over-wdot" style="opacity:0"></div>
+</div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/kit/mui.js"></script>
+<script src="assets/kit/lava.js"></script>
+<script>
+(function () {
+  var FID = '01-game-over', FRAME_START = 0, DUR = 3.2;
+  function $(id) { return document.getElementById(FID + '-' + id); }
+  var crt = $('crt');
+  var root = (crt && crt.closest('[data-composition-id="' + FID + '"]')) || document;
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  /* ---------- deterministic helpers ---------- */
+  function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var rnd = mulberry(1013);
+  function R(a, b) { return a + (b - a) * rnd(); }
+  function el(parent, cls, css) { var d = document.createElement('div'); d.className = cls; if (css) d.style.cssText = css; parent.appendChild(d); return d; }
+
+  /* ---------- markup completion ---------- */
+  MUI.hydrate(root);
+
+  /* ---------- lava world: seed 3, GLOBAL time, drawn only from timeline renders ---------- */
+  var lava = MooreaLava.create($('lava'), { seed: 3 });
+  var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 70 });
+  // S.u = local clock (drives lava time, ember time and the zoom push); the rest are tweened params.
+  var S = { u: 0, heat: 1, flash: 0, erupt: 0, punch: 0, boost: 1 };
+  var P = { t: FRAME_START, heat: 1, zoom: 1.25, panX: 0, panY: 0, tilt: 0.25, horizon: -0.45,
+            coolR: 0, coolX: 0.5, coolY: 0.5, erupt: 0, eruptX: 0.5, eruptY: 0.52, flash: 0 };
+  function rewindK(u) { var k = Math.min(1, Math.max(0, (u - 2.4) / 0.8)); return 0.5 * k + 0.5 * k * k; }
+  // lava: forward 0 -> 2.4, then runs BACKWARDS 2.4 -> 0.8 (accelerating); embers: forward, then fall (rise -3 equivalent)
+  function lavaT(u) { return FRAME_START + (u <= 2.4 ? u : 2.4 - 1.6 * rewindK(u)); }
+  function emberT(u) { return FRAME_START + (u <= 2.4 ? u : 2.4 - 2.4 * rewindK(u)); }
+  function draw() {
+    P.t = lavaT(S.u); P.heat = S.heat; P.flash = S.flash; P.erupt = S.erupt;
+    P.zoom = 1.25 + 0.10 * (S.u / DUR) + S.punch;          // 1.25 -> 1.35 push over the whole frame (+ slam punches)
+    lava.render(P);
+    emb.render(emberT(S.u), { boost: S.boost });
+  }
+  // function-setter proxy: GSAP calls these on every render (seek-safe, independent of suppressEvents)
+  var L = {};
+  Object.keys(S).forEach(function (k) {
+    L[k] = function (v) { if (arguments.length) { S[k] = v; return; } return S[k]; };
+  });
+  // all lava tweens live in `lt`, bracketed by two redraw tweens -> exactly one draw per render, after params update
+  var lt = gsap.timeline({ defaults: { lazy: false } });
+  var DR = { a: 0, b: 0 };
+  var DP = {
+    a: function (v) { if (arguments.length) { if (v < DR.a) draw(); DR.a = v; return; } return DR.a; },
+    b: function (v) { if (arguments.length) { if (v > DR.b) draw(); DR.b = v; return; } return DR.b; }
+  };
+  tl.to(DP, { a: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
+  tl.add(lt, 0);
+  tl.to(DP, { b: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
+  function LT(prop, from, to, at, dur, ease) {
+    var a = {}, b = { duration: dur, ease: ease || 'none', immediateRender: false };
+    a[prop] = from; b[prop] = to; lt.fromTo(L, a, b, at);
+  }
+  LT('u', 0, DUR, 0, DUR, 'none');
+
+  /* ---------- elements ---------- */
+  var shake = $('shake'), cam = $('cam'), flash = $('flash');
+  var dotw = $('dotw'), pulse = $('pulse'), tint = $('tint'), pool = $('pool');
+  var rips = [$('rip0'), $('rip1'), $('rip2')];
+  var splash = $('splash'), crater = $('crater'), crown = $('crown');
+  var scrim = $('scrim'), game = $('game'), over = $('over'), sub = $('sub'), jitType = $('jittype');
+  var shock1 = $('shock1'), shock2 = $('shock2');
+  var jitCard = $('jitcard'), cardFlip = $('cardflip'), cardDrop = $('carddrop'), cardImg = $('cardimg'), sheen = $('sheen'), dead = $('dead');
+  var rew = $('rew'), scan = $('scan'), bands = [$('band0'), $('band1'), $('band2')];
+  var crtWhite = $('crtwhite'), beam = $('beam'), wdot = $('wdot');
+  var subWords = sub.querySelectorAll('span');
+
+  function doShake(t, a, dur) {
+    var d = (dur || 0.3) / 6;
+    tl.to(shake, { keyframes: [
+      { x: a, y: -0.75 * a, duration: d }, { x: -0.9 * a, y: 0.85 * a, duration: d },
+      { x: 0.7 * a, y: -0.55 * a, duration: d }, { x: -0.45 * a, y: 0.35 * a, duration: d },
+      { x: 0.2 * a, y: -0.15 * a, duration: d }, { x: 0, y: 0, duration: d } ], ease: 'none' }, t);
+  }
+  function doFlash(t, a) {
+    tl.fromTo(flash, { opacity: a }, { opacity: 0, duration: 0.12, ease: 'power1.out', immediateRender: false }, t);
+  }
+
+  /* ================= Scene 1 (0.00-0.40): the "toi" dot sinks ================= */
+  tl.fromTo(dotw, { scale: 2.4, y: 0 }, { scale: 1.5, y: 24, duration: 0.4, ease: 'power1.in' }, 0);
+  tl.fromTo(tint, { opacity: 0 }, { opacity: 0.55, duration: 0.4, ease: 'power2.in' }, 0);
+  // white ring pulsing on 8ths
+  tl.fromTo(pulse, { scale: 1, opacity: 0.95 }, { scale: 1.7, opacity: 0, duration: 0.2, ease: 'power2.out' }, 0);
+  tl.fromTo(pulse, { scale: 1, opacity: 0.95 }, { scale: 1.7, opacity: 0, duration: 0.2, ease: 'power2.out', immediateRender: false }, 0.2);
+  // molten pool closing around it
+  tl.fromTo(pool, { scale: 0.7, opacity: 0.55 }, { scale: 1.05, opacity: 0.95, duration: 0.4, ease: 'power1.in' }, 0);
+  // lava bubbling around it: seeded bubbles swell and pop (16ths)
+  var bubbleHost = $('bubbles');
+  for (var b = 0; b < 9; b++) {
+    var ba = (b / 9) * Math.PI * 2 + R(-0.3, 0.3), br = R(95, 220), bs = R(30, 58);
+    var bx = 960 + Math.cos(ba) * br, by = 566 + Math.sin(ba) * br * 0.8;
+    var bub = el(bubbleHost, '01-game-over-bubble', 'left:' + (bx - bs / 2) + 'px;top:' + (by - bs / 2) + 'px;width:' + bs + 'px;height:' + bs + 'px');
+    var bt = (b % 5) * 0.07 + R(0, 0.03), grow = R(0.14, 0.22);
+    tl.fromTo(bub, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: grow, ease: 'power1.out' }, bt);
+    tl.to(bub, { scale: 1.6, opacity: 0, borderWidth: 1, duration: 0.08, ease: 'power2.out' }, bt + grow);
+  }
+  // three ripple rings, radius 40 -> 220, opacity 0.8 -> 0
+  [0, 0.13, 0.26].forEach(function (t0, i) {
+    tl.fromTo(rips[i], { opacity: 0 }, { opacity: 0.8, duration: 0.01, ease: 'none' }, t0);
+    tl.fromTo(rips[i], { attr: { r: 40 } }, { attr: { r: 220 }, duration: 0.55, ease: 'power2.out' }, t0);
+    tl.to(rips[i], { opacity: 0, duration: 0.54, ease: 'power1.in' }, t0 + 0.01);
+  });
+
+  /* ================= Scene 2 (0.40-0.80): swallowed — plop ================= */
+  tl.fromTo(dotw, { scale: 1.5 }, { scale: 0, duration: 0.12, ease: 'back.in(2.2)', immediateRender: false }, 0.40);
+  tl.fromTo(pool, { scale: 1.05, opacity: 0.95 }, { scale: 1.9, opacity: 0, duration: 0.42, ease: 'power2.out', immediateRender: false }, 0.40);
+  tl.fromTo(crater, { scale: 0.15, opacity: 0 }, { scale: 1.5, opacity: 1, duration: 0.08, ease: 'power2.out' }, 0.40);
+  tl.fromTo(crater, { opacity: 1 }, { opacity: 0, scale: 1.9, duration: 0.3, ease: 'power2.in', immediateRender: false }, 0.48);
+  tl.fromTo(crown, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: 'none' }, 0.42);
+  tl.fromTo(crown, { scale: 0.25, borderWidth: 14 }, { scale: 2.6, borderWidth: 2, duration: 0.42, ease: 'power3.out' }, 0.42);
+  tl.to(crown, { opacity: 0, duration: 0.4, ease: 'power2.in' }, 0.43);
+  // molten droplets flung out of the plop (top-down: radial travel + up/down in scale)
+  for (var i = 0; i < 16; i++) {
+    var ang = (i / 16) * Math.PI * 2 + R(-0.18, 0.18), dist = R(220, 470), sz = R(16, 34);
+    var d = el(splash, '01-game-over-drop', 'left:' + (-sz / 2) + 'px;top:' + (-sz / 2) + 'px;width:' + sz + 'px;height:' + sz + 'px');
+    var ts = 0.40 + R(0, 0.05), dur = R(0.34, 0.46), peak = R(1.5, 2.3);
+    tl.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: 'none' }, ts);
+    tl.fromTo(d, { x: 0, y: 0 }, { x: Math.cos(ang) * dist, y: Math.sin(ang) * dist * 0.78, duration: dur, ease: 'power3.out' }, ts);
+    tl.fromTo(d, { scale: 0.5 }, { scale: peak, duration: dur * 0.45, ease: 'power2.out' }, ts);
+    tl.to(d, { scale: 0.35, opacity: 0, duration: dur * 0.55, ease: 'power2.in' }, ts + dur * 0.45);
+  }
+  doShake(0.40, 6, 0.24);
+  LT('erupt', 0, 1, 0.40, 0.10, 'power2.out');
+  LT('erupt', 1, 0, 0.50, 0.30, 'power2.in');
+  LT('boost', 1, 2.5, 0.40, 0.16, 'power2.out');
+  LT('heat', 1, 1.3, 0.40, 0.08, 'power2.out');
+  LT('heat', 1.3, 1.1, 0.48, 0.30, 'power2.out');
+  LT('flash', 0, 0.18, 0.40, 0.04, 'none');
+  LT('flash', 0.18, 0, 0.44, 0.2, 'power2.out');
+
+  /* ================= Scene 3 (0.80-1.60): GAME / OVER slams ================= */
+  tl.fromTo(scrim, { opacity: 0 }, { opacity: 1, duration: 0.18, ease: 'power1.in' }, 0.62);
+  function slam(word, ring, land, cy) {
+    var t0 = land - 0.18;
+    tl.fromTo(word, { scale: 2.6 }, { scale: 0.94, duration: 0.18, ease: 'power4.in' }, t0);
+    tl.fromTo(word, { opacity: 0 }, { opacity: 1, duration: 0.07, ease: 'none' }, t0);
+    tl.fromTo(word, { filter: 'blur(16px) brightness(1.7)' }, { filter: 'blur(0px) brightness(1.7)', duration: 0.18, ease: 'power3.in' }, t0);
+    tl.fromTo(word, { scale: 0.94 }, { scale: 1, duration: 0.25, ease: 'back.out(2)', immediateRender: false }, land);
+    tl.fromTo(word, { filter: 'blur(0px) brightness(1.7)' }, { filter: 'blur(0px) brightness(1)', duration: 0.22, ease: 'power2.out', immediateRender: false }, land);
+    tl.fromTo(ring, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: 'none' }, land);
+    tl.fromTo(ring, { scale: 0.55 }, { scale: 1.55, duration: 0.38, ease: 'power2.out' }, land);
+    tl.to(ring, { opacity: 0, duration: 0.34, ease: 'power2.in' }, land + 0.04);
+    doFlash(land, 0.9);
+    doShake(land, 12, 0.3);
+    LT('heat', land === 0.8 ? 1.1 : 1.15, 1.6, land, 0.03, 'none');
+    LT('heat', 1.6, land === 0.8 ? 1.15 : 1.2, land + 0.03, 0.34, 'power2.out');
+    LT('flash', 0.35, 0, land, 0.25, 'power2.out');
+    LT('punch', 0.07, 0, land, 0.32, 'power2.out');
+    // sparks kicked off the word's foot
+    for (var j = 0; j < 10; j++) {
+      var sx = R(560, 1240), ssz = R(8, 16);
+      var s = el(jitType, '01-game-over-drop', 'left:' + (sx - ssz / 2) + 'px;top:' + (cy - ssz / 2) + 'px;width:' + ssz + 'px;height:' + ssz + 'px');
+      var up = R(90, 230), dx = (sx - 900) * R(0.25, 0.6), sd = R(0.3, 0.45);
+      tl.fromTo(s, { x: 0, opacity: 0 }, { x: dx, opacity: 1, duration: sd, ease: 'power1.out' }, land);
+      tl.fromTo(s, { y: 0 }, { y: -up, duration: sd * 0.5, ease: 'power2.out' }, land);
+      tl.to(s, { y: -up + R(120, 220), opacity: 0, scale: 0.4, duration: sd * 0.5, ease: 'power2.in' }, land + sd * 0.5);
+    }
+  }
+  slam(game, shock1, 0.80, 430);
+  slam(over, shock2, 1.20, 660);
+  // slow camera push under the hold (content only; lava has its own zoom push)
+  tl.fromTo(cam, { scale: 1 }, { scale: 1.045, duration: 2.2, ease: 'sine.inOut' }, 0.80);
+
+  /* ================= Scene 4 (1.60-2.40): the missed artist ================= */
+  tl.fromTo(cardFlip, { opacity: 0 }, { opacity: 1, duration: 0.03, ease: 'none' }, 1.60);
+  tl.fromTo(cardFlip, { rotationY: 90, scale: 1.08, transformPerspective: 1800 },
+    { rotationY: 0, scale: 1, transformPerspective: 1800, duration: 0.25, ease: 'back.out(1.6)' }, 1.60);
+  tl.fromTo(sheen, { xPercent: -140, skewX: -18 }, { xPercent: 460, skewX: -18, duration: 0.32, ease: 'power2.inOut' }, 1.72);
+  tl.fromTo(subWords, { y: 46, opacity: 0 }, { y: 0, opacity: 1, duration: 0.26, ease: 'power3.out', stagger: 0.035 }, 1.80);
+  // 2.00 the card goes dead
+  tl.fromTo(cardImg, { filter: 'grayscale(0) brightness(1)' }, { filter: 'grayscale(1) brightness(0.3)', duration: 0.034, ease: 'none' }, 2.00);
+  tl.to(cardImg, { filter: 'grayscale(1) brightness(0.95)', duration: 0.033, ease: 'none' }, 2.034);
+  tl.to(cardImg, { filter: 'grayscale(1) brightness(0.45)', duration: 0.1, ease: 'power2.out' }, 2.067);
+  tl.fromTo(dead, { opacity: 0 }, { opacity: 1, duration: 0.01 }, 2.00);
+  tl.set(dead, { opacity: 0 }, 2.05);
+  tl.set(dead, { opacity: 1 }, 2.10);
+  tl.set(dead, { opacity: 0 }, 2.15);
+  tl.set(dead, { opacity: 0.9 }, 2.20);
+  tl.fromTo(cardDrop, { rotation: 0, y: 0 }, { rotation: 6, y: 26, duration: 0.3, ease: 'back.out(3)' }, 2.00);
+  tl.set(jitCard, { x: 14 }, 2.00);
+  tl.set(jitCard, { x: -10 }, 2.034);
+  tl.set(jitCard, { x: 5 }, 2.067);
+  tl.set(jitCard, { x: 0 }, 2.10);
+  LT('heat', 1.2, 0.9, 2.00, 0.3, 'power2.out');
+
+  /* ================= Scene 5 (2.40-3.20): REWIND ================= */
+  // tape roll on the downbeat
+  tl.fromTo(shake, { y: -40 }, { y: 0, duration: 0.14, ease: 'power2.out', immediateRender: false }, 2.40);
+  LT('heat', 0.9, 1.15, 2.40, 0.12, 'power2.out');
+  LT('flash', 0.22, 0, 2.40, 0.16, 'power2.out');
+  // rewind glyph blinks on 8ths
+  tl.fromTo(rew, { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.08, ease: 'power3.out' }, 2.40);
+  [2.52, 2.72, 2.92].forEach(function (t) { tl.set(rew, { opacity: 0 }, t); tl.set(rew, { opacity: 1 }, t + 0.08); });
+  // scanlines + VHS tracking bands scrolling up
+  tl.fromTo(scan, { opacity: 0 }, { opacity: 1, duration: 0.02 }, 2.40);
+  tl.fromTo(bands[0], { y: 1120 }, { y: -120, duration: 0.55, ease: 'none' }, 2.40);
+  tl.fromTo(bands[1], { y: 1180 }, { y: -140, duration: 0.70, ease: 'none' }, 2.44);
+  tl.fromTo(bands[2], { y: 1100 }, { y: -80, duration: 0.42, ease: 'none' }, 2.58);
+  // RGB split on all type (--gx 0 -> 18, stepping on 16ths)
+  tl.fromTo(jitType, { '--gxt': 0 }, { '--gxt': 18, duration: 0.6, ease: 'steps(6)' }, 2.40);
+  // type + card jitter (x +/-8 on 16ths)
+  for (var k = 0; k < 6; k++) {
+    var tk = 2.40 + k * 0.1, sg = k % 2 ? -1 : 1;
+    tl.set(jitType, { x: sg * Math.round(R(3, 8)) }, tk);
+    tl.set(jitCard, { x: -sg * Math.round(R(3, 8)) }, tk + 0.05);
+  }
+  tl.set(jitType, { x: 0 }, 3.0);
+  tl.set(jitCard, { x: 0 }, 3.0);
+
+  /* ================= CRT power-off (3.00-3.20) ================= */
+  var crtGroup = [$('lava'), $('embers'), crt];
+  tl.fromTo(crtWhite, { opacity: 0 }, { opacity: 1, duration: 0.07, ease: 'power2.in' }, 3.00);
+  tl.fromTo(crtGroup, { scaleY: 1, transformOrigin: '50% 50%' }, { scaleY: 0.008, duration: 0.08, ease: 'power2.in' }, 3.00);
+  tl.fromTo(beam, { opacity: 0 }, { opacity: 1, duration: 0.02 }, 3.065);
+  tl.fromTo(crtGroup, { scaleX: 1 }, { scaleX: 0, duration: 0.07, ease: 'power2.in', immediateRender: false }, 3.08);
+  tl.fromTo(beam, { scaleX: 1 }, { scaleX: 0.004, duration: 0.07, ease: 'power2.in' }, 3.08);
+  tl.fromTo(wdot, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1.25, duration: 0.05, ease: 'power2.out' }, 3.11);
+  tl.to(wdot, { scale: 0.85, duration: 0.04, ease: 'power1.out' }, 3.16);
+
+  draw();
+  window.__timelines[FID] = tl;
+})();
+</script>
+<script>
+  /* 60 s cut: this frame is the approved 35 s shot time-stretched x1.25 (150 -> 120 BPM).
+     The original timeline is driven by an outer timeline that tweens its playhead. */
+  (function () {
+    var id = "01-game-over", inner = window.__timelines[id], D = 3.2, S = 1.25;
+    var outer = gsap.timeline({ paused: true });
+    outer.to(inner, { time: D, duration: D * S, ease: "none" }, 0);
+    window.__timelines[id] = outer;
+  })();
+</script>
+</template>
