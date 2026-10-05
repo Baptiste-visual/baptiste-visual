@@ -8,10 +8,10 @@ CH=$(ls -d /root/.cache/hyperframes/chrome/chrome-headless-shell/*/chrome-headle
 mkdir -p .hyperframes/snaps
 OUTS=()
 for T in "$@"; do
-  O=".hyperframes/snaps/$F-$T.png"
+  O=".hyperframes/snaps/$(basename $F)-$T.png"
   timeout 60 "$CH" --no-sandbox --allow-file-access-from-files --use-angle=swiftshader --enable-unsafe-swiftshader \
     --hide-scrollbars --screenshot="$O" --window-size=1920,1080 --virtual-time-budget=6000 \
-    "file://$PWD/tools/frame-harness.html?f=$F&t=$T" >/dev/null 2>&1 || true
+    "file://$PWD/tools/frame-harness.html?f=$F&t=$T&id=${SNAP_ID:-$F}" >/dev/null 2>&1 || true
   OUTS+=("$O")
 done
 python3 - "$F" "${OUTS[@]}" <<'PY'
@@ -22,5 +22,6 @@ ims=[Image.open(x).convert('RGB').resize((640,360)) for x in files]
 cols=3; rows=(len(ims)+cols-1)//cols
 sheet=Image.new('RGB',(640*cols,360*rows),(0,0,0))
 for i,im in enumerate(ims): sheet.paste(im,((i%cols)*640,(i//cols)*360))
-out=f'.hyperframes/snaps/{f}-sheet.jpg'; sheet.save(out,quality=85); print(out)
+import os
+out='.hyperframes/snaps/'+os.path.basename(f)+'-sheet.jpg'; sheet.save(out,quality=85); print(out)
 PY
