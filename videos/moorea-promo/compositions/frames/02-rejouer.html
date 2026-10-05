@@ -79,15 +79,17 @@
 
         <!-- Scene 1: REJOUER ? -->
         <div id="02-rejouer-title" class="02-rejouer-title">
-          <div id="02-rejouer-titletx" class="mui-display fx-hot-white fx-rgb" style="--gx:0">REJOUER&nbsp;<span id="02-rejouer-q" class="02-rejouer-q">?</span></div>
+          <div id="02-rejouer-titletx" class="mui-display fx-hot-white">REJOUER&nbsp;<span id="02-rejouer-q" class="02-rejouer-q">?</span></div>
         </div>
 
         <!-- Scene 2: subline -->
         <div id="02-rejouer-sub" class="02-rejouer-sub"><span class="02-rejouer-wm"><span class="02-rejouer-w">Cette</span></span> <span class="02-rejouer-wm"><span class="02-rejouer-w">fois,</span></span> <span class="02-rejouer-wm"><span class="02-rejouer-w">avec</span></span> <span class="02-rejouer-wm"><span class="02-rejouer-w">l’appli.</span></span></div>
 
         <!-- press shockwaves (behind the button) -->
-        <div id="02-rejouer-ring" class="02-rejouer-ring 02-rejouer-ringo" style="opacity:0"></div>
-        <div id="02-rejouer-ring2" class="02-rejouer-ring 02-rejouer-ringw" style="opacity:0"></div>
+        <svg width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;overflow:visible;pointer-events:none">
+          <rect id="02-rejouer-ring" x="580" y="644" width="760" height="112" rx="30" fill="none" stroke="#e15311" stroke-width="6" style="opacity:0;filter:drop-shadow(0 0 13px rgba(255,106,31,0.9))"></rect>
+          <rect id="02-rejouer-ring2" x="580" y="644" width="760" height="112" rx="30" fill="none" stroke="#ffd9b0" stroke-width="3" style="opacity:0;filter:drop-shadow(0 0 8px rgba(255,190,120,0.75))"></rect>
+        </svg>
         <div id="02-rejouer-sparks" class="02-rejouer-full"></div>
 
         <!-- menu cursor chevrons -->
@@ -197,13 +199,15 @@
   /* ================= Scene 1 (0.00-0.40): CRT ON — REJOUER ? ================= */
   // the screen opens from a white-hot line (frame 01 ended on the CRT-off line/dot)
   tl.fromTo([bg, embers, crt], { scaleY: 0.008 }, { scaleY: 1, duration: 0.12, ease: 'power4.out' }, 0);
-  tl.fromTo(beam, { opacity: 1, scaleY: 1 }, { opacity: 0, scaleY: 3, duration: 0.1, ease: 'power2.in' }, 0);
-  tl.fromTo(crtWhite, { opacity: 1 }, { opacity: 0, duration: 0.2, ease: 'power2.out' }, 0.03);
+  tl.fromTo(beam, { opacity: 1, scaleY: 1 }, { opacity: 0, scaleY: 3, duration: 0.066, ease: 'power1.in' }, 0);
+  tl.fromTo(crtWhite, { opacity: 1 }, { opacity: 0, duration: 0.14, ease: 'power2.out' }, 0.02);
   tl.fromTo(scan, { opacity: 0.75 }, { opacity: 0.4, duration: 0.4, ease: 'none' }, 0);
   tl.set(scan, { opacity: 0 }, 0.40);
   // slam/stamp on the downbeat: scale 1.4 -> 1 back.out(3), tracking 0.3em -> 0.035em, RGB split decays
   tl.fromTo(titleW, { scale: 1.4 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' }, 0);
-  tl.fromTo(titleTx, { letterSpacing: '0.3em', '--gx': 16 }, { letterSpacing: '0.035em', '--gx': 0, duration: 0.3, ease: 'power3.out' }, 0);
+  // .fx-rgb chromatic split (kit recipe), decaying to fully transparent so nothing sits under the settled glyphs
+  tl.fromTo(titleTx, { textShadow: '16px 0px 0px rgba(255,30,60,0.85), -16px 0px 0px rgba(30,220,255,0.85)' },
+    { textShadow: '0px 0px 0px rgba(255,30,60,0), 0px 0px 0px rgba(30,220,255,0)', duration: 0.3, ease: 'power3.out' }, 0);
   doShake(0, 10, 0.3);
   LT('boost', 2.4, 1, 0, 0.4, 'power2.out');
   // the "?" kicks on the 8th
@@ -232,11 +236,14 @@
   tl.fromTo(btnW, { scale: 1.06 }, { scale: 1, duration: 0.24, ease: 'back.out(3)', immediateRender: false }, 0.94);
   // shockwave rings off the button outline
   tl.fromTo(ring, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: 'none' }, 0.80);
-  tl.fromTo(ring, { scale: 1 }, { scale: 4, duration: 0.4, ease: 'power2.out' }, 0.80);
-  tl.to(ring, { opacity: 0, duration: 0.39, ease: 'power1.in' }, 0.81);
+  // the outline grows outward by a uniform offset (constant 6 px stroke, stays a ring on screen)
+  tl.fromTo(ring, { attr: { x: 580, y: 644, width: 760, height: 112, rx: 30 } },
+    { attr: { x: 300, y: 364, width: 1320, height: 672, rx: 310 }, duration: 0.4, ease: 'power2.out' }, 0.80);
+  tl.to(ring, { opacity: 0, duration: 0.36, ease: 'none' }, 0.81);
   tl.fromTo(ring2, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: 'none' }, 0.84);
-  tl.fromTo(ring2, { scale: 1 }, { scale: 2.8, duration: 0.34, ease: 'power3.out' }, 0.84);
-  tl.to(ring2, { opacity: 0, duration: 0.33, ease: 'power1.in' }, 0.85);
+  tl.fromTo(ring2, { attr: { x: 580, y: 644, width: 760, height: 112, rx: 30 } },
+    { attr: { x: 410, y: 474, width: 1100, height: 452, rx: 200 }, duration: 0.34, ease: 'power3.out' }, 0.84);
+  tl.to(ring2, { opacity: 0, duration: 0.3, ease: 'none' }, 0.85);
   // glow doubles, label flashes white
   tl.fromTo(glow, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'power2.out' }, 0.80);
   tl.to(glow, { opacity: 0.8, duration: 0.3, ease: 'power2.out' }, 0.85);
@@ -272,8 +279,8 @@
   /* ================= Scene 4 (1.20-1.60): zoom-through INTO the button ================= */
   // slow push toward the button underneath Scenes 2-3, then the dive
   tl.fromTo(cam, { scale: 1 }, { scale: 1.04, duration: 0.8, ease: 'none' }, 0.40);
-  tl.fromTo(cam, { scale: 1.04, filter: 'blur(0px)' }, { scale: 7, filter: 'blur(18px)', duration: 0.4, ease: 'power3.in', immediateRender: false }, 1.20);
-  tl.fromTo(embers, { scale: 1 }, { scale: 2.3, duration: 0.4, ease: 'power3.in', immediateRender: false }, 1.20);
+  tl.fromTo(cam, { scale: 1.04, filter: 'blur(0px)' }, { scale: 7, filter: 'blur(18px)', duration: 0.4, ease: 'power2.in', immediateRender: false }, 1.20);
+  tl.fromTo(embers, { scale: 1 }, { scale: 2.3, duration: 0.4, ease: 'power2.in', immediateRender: false }, 1.20);
   LT('boost', 1.4, 3.4, 1.20, 0.4, 'power2.in');
   // speed lines streaking out of the button centre
   for (var k = 0; k < 30; k++) {
@@ -286,8 +293,8 @@
       { x: lc * d1, y: ls * d1, rotation: ldeg, scaleX: 2.2, duration: 1.6 - t0, ease: 'power2.in' }, t0);
   }
   // orange-to-white flash fills the frame
-  tl.fromTo(fOrange, { opacity: 0 }, { opacity: 1, duration: 0.08, ease: 'power2.in' }, 1.40);
-  tl.fromTo(fWhite, { opacity: 0 }, { opacity: 1, duration: 0.08, ease: 'power1.in' }, 1.48);
+  tl.fromTo(fOrange, { opacity: 0 }, { opacity: 0.92, duration: 0.12, ease: 'power2.in' }, 1.40);
+  tl.fromTo(fWhite, { opacity: 0 }, { opacity: 1, duration: 0.066, ease: 'power1.in' }, 1.50);
 
   draw();
   window.__timelines[FID] = tl;

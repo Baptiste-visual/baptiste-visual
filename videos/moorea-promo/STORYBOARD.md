@@ -27,7 +27,7 @@ music: original hard techno / hardstyle composed in-house (assets/audio), every 
 
 ## Frame 1 — GAME OVER
 
-- status: outline
+- status: animated
 - src: compositions/frames/01-game-over.html
 - duration: 3.2s
 - transition_in: cut
@@ -61,7 +61,7 @@ Frame 0 is already in motion — never a black or empty first frame.
 
 ## Frame 2 — REJOUER ?
 
-- status: outline
+- status: animated
 - src: compositions/frames/02-rejouer.html
 - duration: 1.6s
 - transition_in: cut
@@ -87,7 +87,7 @@ Frame 0 is already in motion — never a black or empty first frame.
 
 ## Frame 3 — NIVEAU 1 · les galères jaillissent
 
-- status: outline
+- status: animated
 - src: compositions/frames/03-niveau.html
 - duration: 3.2s
 - transition_in: cut
@@ -117,7 +117,7 @@ HUD zone active from this frame on: keep everything below y 150.
 
 ## Frame 4 — Bonus 1 & 2 : NAVETTE · SAC
 
-- status: outline
+- status: animated
 - src: compositions/frames/04-navette-sac.html
 - duration: 4.8s
 - transition_in: cut
@@ -161,7 +161,7 @@ during each whip-pan.
 
 ## Frame 5 — Bonus 3 & 4 : PERDU · ÇA CLASHE
 
-- status: outline
+- status: animated
 - src: compositions/frames/05-plan-planning.html
 - duration: 4.8s
 - transition_in: cut
@@ -201,7 +201,7 @@ during each whip-pan.
 
 ## Frame 6 — Bonus 5 & 6 : J'AI FAIM · BRACELET À SEC
 
-- status: outline
+- status: animated
 - src: compositions/frames/06-food-cash.html
 - duration: 4.8s
 - transition_in: cut
@@ -238,7 +238,7 @@ during each whip-pan.
 
 ## Frame 7 — Bonus 7 & 8 : T'ES OÙ ?! · 1000 QUESTIONS
 
-- status: outline
+- status: animated
 - src: compositions/frames/07-safety-mana.html
 - duration: 4.8s
 - transition_in: cut
@@ -283,7 +283,7 @@ Breakdown mood for 0–2.4: lava heat 0.55, embers boost 0.5 and slower; the bui
 
 ## Frame 8 — NIVEAU TERMINÉ (drop)
 
-- status: outline
+- status: animated
 - src: compositions/frames/08-niveau-termine.html
 - duration: 3.2s
 - transition_in: cut
@@ -314,7 +314,7 @@ Breakdown mood for 0–2.4: lava heat 0.55, embers boost 0.5 and slower; the bui
 
 ## Frame 9 — L'appli officielle (end card)
 
-- status: outline
+- status: animated
 - src: compositions/frames/09-end.html
 - duration: 4.8s
 - transition_in: cut

@@ -17,6 +17,7 @@
 
 /* film type */
 [class~="08-niveau-termine-hero"]{font-size:190px;line-height:190px;height:190px}
+[class~="08-niveau-termine-ghost"]{mix-blend-mode:screen;pointer-events:none}
 [class~="08-niveau-termine-orange"]{color:#e15311;
   text-shadow:0 0 26px rgba(255,106,31,0.85),0 0 70px rgba(225,83,17,0.55),0 0 140px rgba(225,60,10,0.35)}
 [id="08-niveau-termine-eight"]{top:560px;height:280px;display:flex;justify-content:center;align-items:center}
@@ -57,8 +58,8 @@
 [id="08-niveau-termine-youin"]{transform-origin:50% 100%}
 
 /* taglines */
-[id="08-niveau-termine-tagscrim"]{position:absolute;left:260px;top:660px;width:1400px;height:360px;opacity:0;pointer-events:none;
-  background:radial-gradient(closest-side,rgba(8,11,16,0.86) 0%,rgba(8,11,16,0.7) 55%,rgba(8,11,16,0) 100%)}
+[id="08-niveau-termine-tagscrim"]{position:absolute;left:200px;top:630px;width:1520px;height:420px;opacity:0;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(8,11,16,0.92) 0%,rgba(8,11,16,0.82) 50%,rgba(8,11,16,0) 100%)}
 [class~="08-niveau-termine-tag"]{font-size:96px;line-height:96px;height:96px}
 </style>
 <link rel="stylesheet" href="assets/kit/moorea-ui.css">
@@ -81,20 +82,11 @@
 
     <!-- ============ the path world (pull-back) ============ -->
     <div id="08-niveau-termine-world" class="08-niveau-termine-full">
-      <svg id="08-niveau-termine-trail" width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;overflow:visible">
-        <defs>
-          <mask id="08-niveau-termine-mbase" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
-            <path id="08-niveau-termine-mbasep" fill="none" stroke="#fff" stroke-width="40" pathLength="1000" stroke-dasharray="1000 1000" stroke-dashoffset="1000"></path>
-          </mask>
-          <mask id="08-niveau-termine-mdone" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
-            <path id="08-niveau-termine-mdonep" fill="none" stroke="#fff" stroke-width="40" pathLength="1000" stroke-dasharray="1000 1000" stroke-dashoffset="1000"></path>
-          </mask>
-        </defs>
-        <path id="08-niveau-termine-tbase" fill="none" stroke="rgba(255,238,222,0.55)" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 17" mask="url(#08-niveau-termine-mbase)"></path>
-        <path id="08-niveau-termine-tdone" fill="none" stroke="#ff6a1f" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 17" mask="url(#08-niveau-termine-mdone)"
-              style="filter:drop-shadow(0 0 6px rgba(255,106,31,0.95))"></path>
-      </svg>
       <div id="08-niveau-termine-patches"></div>
+      <svg id="08-niveau-termine-trail" width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;overflow:visible">
+        <g id="08-niveau-termine-tbase" fill="rgba(255,240,226,0.85)"></g>
+        <g id="08-niveau-termine-tdone" fill="#ff6a1f" style="filter:drop-shadow(0 0 6px rgba(255,106,31,0.95))"></g>
+      </svg>
       <div id="08-niveau-termine-plats"></div>
 
       <div id="08-niveau-termine-goal">
@@ -115,8 +107,16 @@
       <div id="08-niveau-termine-burst8"></div>
       <div id="08-niveau-termine-title" class="08-niveau-termine-full">
         <div id="08-niveau-termine-titleslam" class="08-niveau-termine-full">
-          <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display fx-hot-white fx-rgb" style="top:205px">Niveau</div>
-          <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display fx-hot-white fx-rgb" style="top:395px">Terminé</div>
+          <div id="08-niveau-termine-ghostR" class="08-niveau-termine-full 08-niveau-termine-ghost" style="color:#ff1e3c">
+            <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display" style="top:205px">Niveau</div>
+            <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display" style="top:395px">Terminé</div>
+          </div>
+          <div id="08-niveau-termine-ghostC" class="08-niveau-termine-full 08-niveau-termine-ghost" style="color:#1edcff">
+            <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display" style="top:205px">Niveau</div>
+            <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display" style="top:395px">Terminé</div>
+          </div>
+          <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display fx-hot-white" style="top:205px">Niveau</div>
+          <div class="08-niveau-termine-line 08-niveau-termine-hero mui-display fx-hot-white" style="top:395px">Terminé</div>
         </div>
       </div>
       <div id="08-niveau-termine-score" class="08-niveau-termine-full">
@@ -161,11 +161,25 @@
   var GOAL = [1640, 420];
   function bz(b, t) { var u = 1 - t; return [0, 1].map(function (k) { return u * u * u * b[0][k] + 3 * u * u * t * b[1][k] + 3 * u * t * t * b[2][k] + t * t * t * b[3][k]; }); }
   function blen(b) { var L = 0, p = bz(b, 0); for (var i = 1; i <= 400; i++) { var q = bz(b, i / 400); L += Math.hypot(q[0] - p[0], q[1] - p[1]); p = q; } return L; }
-  var L1 = blen(B1), L2 = blen(B2), LTOT = L1 + L2;
-  function frac(i) { return (i / 7) * L1 / LTOT; }
-  function pstr(b) { return 'C' + b[1].join(',') + ' ' + b[2].join(',') + ' ' + b[3].join(','); }
-  var D = 'M' + B1[0].join(',') + ' ' + pstr(B1) + ' ' + pstr(B2);
-  ['tbase', 'tdone', 'mbasep', 'mdonep'].forEach(function (n) { $(n).setAttribute('d', D); });
+  var B0 = [-140, 914];                                           // lead-in: the path you already walked (off-screen left)
+  var L0 = Math.hypot(B1[0][0] - B0[0], B1[0][1] - B0[1]), L1 = blen(B1), L2 = blen(B2), LTOT = L0 + L1 + L2;
+  function frac(i) { return (L0 + (i / 7) * L1) / LTOT; }
+  // dotted trail: one SVG dot every 22 px of arc length along lead-in + S-curve + last leg
+  var poly = [B0];
+  for (var q = 0; q <= 400; q++) poly.push(bz(B1, q / 400));
+  for (var q2 = 1; q2 <= 100; q2++) poly.push(bz(B2, q2 / 100));
+  var cum = [0];
+  for (var c = 1; c < poly.length; c++) cum.push(cum[c - 1] + Math.hypot(poly[c][0] - poly[c - 1][0], poly[c][1] - poly[c - 1][1]));
+  function at(sv) { var j = 1; while (j < cum.length - 1 && cum[j] < sv) j++; var u = (sv - cum[j - 1]) / ((cum[j] - cum[j - 1]) || 1);
+    return [poly[j - 1][0] + (poly[j][0] - poly[j - 1][0]) * u, poly[j - 1][1] + (poly[j][1] - poly[j - 1][1]) * u]; }
+  var SVGNS = 'http://www.w3.org/2000/svg', DOTS = [];
+  for (var sv = 11; sv < cum[cum.length - 1]; sv += 22) {
+    var pt = at(sv), c1 = document.createElementNS(SVGNS, 'circle'), c2 = document.createElementNS(SVGNS, 'circle');
+    c1.setAttribute('cx', pt[0].toFixed(1)); c1.setAttribute('cy', pt[1].toFixed(1)); c1.setAttribute('r', '4.5');
+    c2.setAttribute('cx', pt[0].toFixed(1)); c2.setAttribute('cy', pt[1].toFixed(1)); c2.setAttribute('r', '6.5');
+    $('tbase').appendChild(c1); $('tdone').appendChild(c2);
+    DOTS.push({ s: sv / LTOT, base: c1, done: c2 });
+  }
 
   /* ---------- generated DOM ---------- */
   var patches = $('patches'), plats = $('plats'), PW = [], CARD = [], ICO = [], HOT = [], PATCH = [], STEAM = [];
@@ -191,7 +205,7 @@
   var lava = MooreaLava.create($('lava'), { seed: 3 });
   var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 110 });
   var L = { t: FS, et: FS, boost: 4, escale: 1.45, heat: 2.0, zoom: 1.2, panX: 0, panY: 0, sx: 0, sy: 0, tilt: 0, horizon: 0.3,
-            coolR: 0, coolX: GOAL[0] / 1920, coolY: GOAL[1] / 1080, erupt: 0, eruptX: 0.5, eruptY: 0.37, flash: 0.85 };
+            coolR: 0, coolX: GOAL[0] / 1920, coolY: GOAL[1] / 1080, erupt: 0, eruptX: 0.5, eruptY: 0.37, flash: 0.55 };
   var P = {};
   function draw() {
     for (var key in L) P[key] = L[key];
@@ -205,7 +219,7 @@
   LT({ panY: -0.45, duration: DUR, ease: 'none' }, 0);
   LT({ et: FS + 3.0, duration: 1.2, ease: 'none' }, 0);                          // embers rising fast
   LT({ et: FS + 5.4, duration: 2.0, ease: 'none' }, 1.2);
-  LT({ flash: 0, duration: 0.35, ease: 'power2.out' }, 0);
+  LT({ flash: 0, duration: 0.3, ease: 'power2.out' }, 0);
   LT({ zoom: 1.3, duration: 1.2, ease: 'none' }, 0);                             // slow push-in under the title
   LT({ zoom: 0.55, duration: 0.9, ease: 'power3.out' }, 1.2);                    // PULL-BACK
   LT({ zoom: 0.6, duration: 0.8, ease: 'none' }, 2.4);
@@ -215,13 +229,13 @@
   LK([{ erupt: 1.3, eruptX: 0.5, eruptY: 0.37, duration: 0.001, ease: 'none' }, { erupt: 0, duration: 0.55, ease: 'power2.out' }], 0.1);
   LK([{ erupt: 0.8, eruptX: 0.5, eruptY: 0.65, duration: 0.001, ease: 'none' }, { erupt: 0, duration: 0.4, ease: 'power2.out' }], 0.7);
   LK([{ erupt: 0.75, eruptX: 1640 / 1920, eruptY: 400 / 1080, duration: 0.001, ease: 'none' }, { erupt: 0, duration: 0.45, ease: 'power2.out' }], 1.4);
-  LT({ coolR: 0.31, duration: 0.5, ease: 'expo.out' }, 2.25);                     // goal: the lava quenches around the festival
+  LT({ coolR: 0.28, duration: 0.5, ease: 'expo.out' }, 2.25);                     // goal: the lava quenches around the festival
 
   /* ---------- spark bursts (ember explosion), seeded, pure function of local time ---------- */
   var sctx = $('sparks').getContext('2d');
-  function burst(seed, t0, x, y, n, vmin, vmax, lmin, lmax, w) {
-    var r = rng(seed), arr = [];
-    for (var i = 0; i < n; i++) arr.push({ a: r() * 6.2832, v: vmin + (vmax - vmin) * Math.pow(r(), 0.8), life: lmin + (lmax - lmin) * r(),
+  function burst(seed, t0, x, y, n, vmin, vmax, lmin, lmax, w, a0, spread) {
+    var r = rng(seed), arr = [], sp = spread == null ? 6.2832 : spread;
+    for (var i = 0; i < n; i++) arr.push({ a: (a0 || 0) + (r() - 0.5) * sp, v: vmin + (vmax - vmin) * Math.pow(r(), 0.8), life: lmin + (lmax - lmin) * r(),
       w: (1.2 + r() * 3.4) * w, d: r() * 0.035, k: 2.2 + r() * 2.6, up: 60 + r() * 220, f: r() * 6.28 });
     return { t0: t0, x: x, y: y, p: arr };
   }
@@ -229,8 +243,10 @@
     burst(801, 0.06, 960, 395, 150, 700, 2500, 0.55, 1.3, 1.15),
     burst(802, 0.70, 960, 700, 56, 400, 1400, 0.35, 0.8, 0.85),
     burst(803, 2.25, 1640, 420, 80, 450, 1600, 0.4, 0.95, 0.95),
-    burst(804, 2.40, 960, 780, 34, 500, 1500, 0.25, 0.5, 0.7),
-    burst(805, 2.80, 960, 900, 34, 500, 1500, 0.25, 0.5, 0.7)
+    burst(804, 2.40, 490, 780, 26, 500, 1500, 0.25, 0.5, 0.75, Math.PI, 1.3),
+    burst(805, 2.40, 1430, 780, 26, 500, 1500, 0.25, 0.5, 0.75, 0, 1.3),
+    burst(806, 2.80, 520, 900, 26, 500, 1500, 0.25, 0.5, 0.75, Math.PI, 1.3),
+    burst(807, 2.80, 1400, 900, 26, 500, 1500, 0.25, 0.5, 0.75, 0, 1.3)
   ];
   function spos(b, p, tau) { var e = (1 - Math.exp(-p.k * tau)) / p.k;
     return [b.x + Math.cos(p.a) * p.v * e, b.y + Math.sin(p.a) * p.v * e * 0.72 - p.up * tau * tau]; }
@@ -283,7 +299,8 @@
   var tslam = $('titleslam');
   gsap.set(tslam, { transformOrigin: '960px 395px' });
   slamIn(tslam, 0, 2.4, 0.1);
-  tl.fromTo(tslam, { '--gx': 24 }, { '--gx': 0, duration: 0.42, ease: 'power3.out' }, 0);
+  tl.fromTo($('ghostR'), { x: 34, y: -5, opacity: 1 }, { x: 0, y: 0, opacity: 0, duration: 0.45, ease: 'power2.out' }, 0);
+  tl.fromTo($('ghostC'), { x: -34, y: 5, opacity: 1 }, { x: 0, y: 0, opacity: 0, duration: 0.45, ease: 'power2.out' }, 0);
   shake(0.1, SHAKE_BIG);
   gsap.set($('type'), { transformOrigin: '960px 540px' });
   tl.fromTo($('type'), { scale: 1 }, { scale: 1.035, duration: 0.85, ease: 'none' }, 0.35);   // slow push while 8/8 spins
@@ -300,7 +317,7 @@
   var gal = $('galeres');
   gsap.set(gal, { transformOrigin: '960px 27px' });
   tl.fromTo(gal, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, 0.7)
-    .fromTo(gal, { letterSpacing: '0.75em', paddingLeft: '0.75em', scale: 1.12 }, { letterSpacing: '0.2em', paddingLeft: '0.2em', scale: 1, duration: 0.3, ease: 'power3.out' }, 0.7);
+    .fromTo(gal, { scale: 1.12 }, { scale: 1, duration: 0.3, ease: 'power3.out' }, 0.7);
 
   /* ============ Scene 3 (1.20–2.40): PULL-BACK over the path of 8 cooled platforms ============ */
   // type -> results lockup in the top band (kept below the HUD's 150 px): [NIVEAU/TERMINÉ] | [8/8 · GALÈRES ÉVITÉES]
@@ -309,7 +326,9 @@
   gsap.set(score, { transformOrigin: '960px 738px' });
   tl.to($('type'), { scale: 1, duration: 0.45, ease: 'power4.out' }, 1.2);
   tl.fromTo(title, { x: 0, y: 0, scale: 1 }, { x: -186, y: -155, scale: 0.42, duration: 0.45, ease: 'power4.out' }, 1.2);
-  tl.fromTo(score, { x: 0, y: 0, scale: 1 }, { x: 214, y: -498, scale: 0.55, duration: 0.45, ease: 'power4.out' }, 1.2);
+  // the score swings right first, then rises (x fast, y eased in-out) so it never crosses the title
+  tl.fromTo(score, { x: 0, scale: 1 }, { x: 214, scale: 0.55, duration: 0.45, ease: 'power4.out' }, 1.2);
+  tl.fromTo(score, { y: 0 }, { y: -498, duration: 0.38, ease: 'power3.inOut' }, 1.2);
   gsap.set($('divider'), { transformOrigin: '50% 50%' });
   tl.fromTo($('divider'), { scaleY: 0 }, { scaleY: 1, duration: 0.2, ease: 'power3.out' }, 1.4);
   tl.to($('scrim'), { opacity: 0.45, duration: 0.4, ease: 'power2.out' }, 1.2);
@@ -317,10 +336,14 @@
   // camera pull-back over the world
   var world = $('world');
   gsap.set(world, { transformOrigin: '260px 880px' });
+  var WORIGIN2 = '1200px 640px';
   tl.fromTo(world, { scale: 1.5 }, { scale: 1, duration: 0.6, ease: 'power3.out' }, 1.2);
 
-  // trail draws on with the platforms
-  tl.fromTo($('mbasep'), { attr: { 'stroke-dashoffset': 1000 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 0.36, ease: 'power2.out' }, 1.2);
+  // trail draws on with the platforms (1.20–1.52), the walked part (lead-in) lights orange
+  DOTS.forEach(function (o) {
+    tl.fromTo(o.base, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: 'none' }, 1.2 + 0.32 * o.s);
+    if (o.s <= frac(0)) tl.fromTo(o.done, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, 1.2 + 0.1 * o.s / frac(0));
+  });
 
   // 8 platforms pop in red-hot and cool (1.20–1.48, stagger 0.04)
   PTS.forEach(function (p, i) {
@@ -351,15 +374,16 @@
   }
   tl.fromTo(youin, { scale: 0 }, { scale: 1, duration: 0.14, ease: 'back.out(3)' }, 1.22);
   light(0, 1.24);
-  tl.fromTo($('mdonep'), { attr: { 'stroke-dashoffset': 1000 } }, { attr: { 'stroke-dashoffset': 1000 }, duration: 0.01, ease: 'none' }, 1.2);
   for (var h = 0; h < 8; h++) {
     var a = STAND[h], b = STAND[h + 1], t0 = 1.3 + h * 0.12, d = h === 7 ? 0.11 : 0.12, lift = h === 7 ? 130 : 64;
     var apex = Math.min(a[1], b[1]) - lift, first = h === 0;
     tl.fromTo(you, { x: a[0] }, { x: b[0], duration: d, ease: 'none', immediateRender: first }, t0);
     tl.fromTo(you, { y: a[1] }, { y: apex, duration: d / 2, ease: 'power2.out', immediateRender: first }, t0);
     tl.fromTo(you, { y: apex }, { y: b[1], duration: d / 2, ease: 'power2.in', immediateRender: false }, t0 + d / 2);
-    var f0 = h === 0 ? 0 : frac(h), f1 = h === 7 ? 1 : frac(h + 1);
-    tl.fromTo($('mdonep'), { attr: { 'stroke-dashoffset': 1000 * (1 - f0) } }, { attr: { 'stroke-dashoffset': 1000 * (1 - f1) }, duration: d, ease: 'none', immediateRender: false }, t0);
+    var f0 = frac(h), f1 = h === 7 ? 1 : frac(h + 1);
+    DOTS.forEach(function (o) {   // the walked trail lights up behind the dot
+      if (o.s > f0 && o.s <= f1) tl.fromTo(o.done, { opacity: 0 }, { opacity: 1, duration: 0.04, ease: 'none' }, t0 + d * (o.s - f0) / (f1 - f0));
+    });
     tl.to(youin, { keyframes: [{ scaleX: 1.32, scaleY: 0.72, duration: 0.001, ease: 'none' }, { scaleX: 1, scaleY: 1, duration: 0.1, ease: 'back.out(3)' }] }, t0 + d);
     if (h < 7) light(h + 1, t0 + d);
   }
@@ -381,6 +405,7 @@
   hit(2.4, 0.45, 0.12); shake(2.4, SHAKE_MED);
   slamIn(tag2, 2.72, 2.3, 0.08);          // impact on 2.80
   hit(2.8, 0.45, 0.12); shake(2.8, SHAKE_MED);
+  tl.set(world, { transformOrigin: WORIGIN2 }, 2.4);
   tl.to(world, { scale: 1.035, duration: 0.8, ease: 'none' }, 2.4);       // slow push while the taglines hold
   // the goal keeps beating on the grid
   tl.to($('ringC'), { keyframes: [{ opacity: 0.9, scale: 0.5, duration: 0.001, ease: 'none' }, { opacity: 0, scale: 3.2, duration: 0.4, ease: 'power2.out' }] }, 2.8);

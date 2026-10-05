@@ -254,7 +254,7 @@
   }
   function stamp(el, at, fpx) {
     tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: 'none' }, at)
-      .fromTo(el, { scale: 1.4, letterSpacing: (fpx * 0.3) + 'px' }, { scale: 1, letterSpacing: (fpx * 0.035) + 'px', duration: 0.24, ease: 'back.out(3)' }, at);
+      .fromTo(el, { scale: 1.4 }, { scale: 1, duration: 0.24, ease: 'back.out(3)' }, at);
   }
   function petrify(wrap, hot, stone, at) {   // problem word cools to stone and sinks under the answer
     tl.fromTo(hot, { opacity: 1 }, { opacity: 0, duration: 0.06, ease: 'none', immediateRender: false }, at)

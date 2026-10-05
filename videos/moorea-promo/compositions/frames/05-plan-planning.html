@@ -279,7 +279,6 @@
   function stampWord(el, at, track) {
     ft(el, { scale: 1.4 }, { scale: 1, duration: 0.26, ease: 'back.out(3)' }, at);
     ft(el, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: 'none' }, at);
-    ft(el, { letterSpacing: track }, { letterSpacing: '0.035em', duration: 0.22, ease: 'power3.out' }, at);
   }
   function whipOut(stage, at) {
     ch(stage, { x: 0, filter: 'blur(0px)' }, { x: -1800, filter: 'blur(16px)', duration: 0.4, ease: 'power2.in' }, at);

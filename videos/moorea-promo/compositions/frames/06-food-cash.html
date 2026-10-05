@@ -278,7 +278,7 @@
   }
   function stamp(el, burst, t) {
     tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: .05, ease: 'none' }, t);
-    tl.fromTo(el, { scale: 1.4, letterSpacing: '33px' }, { scale: 1, letterSpacing: '3.85px', duration: .3, ease: 'back.out(3)' }, t);
+    tl.fromTo(el, { scale: 1.4 }, { scale: 1, duration: .3, ease: 'back.out(3)' }, t);
     tl.fromTo(burst, { scale: .5, opacity: .9 }, { scale: 1.5, opacity: 0, duration: .45, ease: 'power2.out', immediateRender: false }, t);
   }
   function hop(xEl, yEl, sEl, dipEl, x0, y0, peak, x1, y1, t, dur) {
