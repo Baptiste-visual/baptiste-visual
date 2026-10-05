@@ -10,7 +10,8 @@
       background: linear-gradient(180deg, rgba(15, 23, 34, 0.92) 0%, rgba(15, 23, 34, 0.55) 55%, rgba(15, 23, 34, 0) 100%); }
     #hud-lives { position: absolute; left: 56px; top: 36px; display: flex; gap: 14px; align-items: center; }
     #hud-lives img { width: 58px; height: 58px; display: block; filter: drop-shadow(0 0 10px rgba(225, 83, 17, 0.6)); }
-    #hud-level { position: absolute; left: 60px; top: 104px; font-size: 22px; letter-spacing: 0.2em; color: #69707a; font-weight: 600; }
+    #hud-level { position: absolute; left: 60px; top: 104px; font-size: 22px; letter-spacing: 0.2em; color: #aab1ba; font-weight: 600; }
+    #hud-counter .lbl { color: #aab1ba; }
     #hud-clock { position: absolute; left: 50%; top: 34px; margin-left: -190px; width: 380px; justify-content: center; gap: 18px; }
     #hud-clock .day { color: #b4bcc6; font-weight: 600; }
     #hud-clock .sep { width: 8px; height: 8px; border-radius: 50%; background: #e15311; display: block; }
@@ -28,7 +29,7 @@
     <div id="hud-band"></div>
     <div id="hud-lives"><img id="hud-life-0" src="assets/img/sun-orange.png" alt=""><img id="hud-life-1" src="assets/img/sun-orange.png" alt=""><img id="hud-life-2" src="assets/img/sun-orange.png" alt=""></div>
     <div id="hud-level">NIVEAU 1</div>
-    <div id="hud-clock" class="mui-seg on"><span class="day">VEN 5</span><i class="sep"></i><span class="time" id="hud-time"></span></div>
+    <div id="hud-clock" class="mui-seg on"><span class="day">VEN 5</span><i class="sep"></i><span class="time" id="hud-time" data-layout-allow-overflow></span></div>
     <div id="hud-counter" class="hud-counter">
       <div class="lbl">GALÈRES ÉVITÉES</div>
       <div class="val mui-display"><span class="num" id="hud-num-wrap"><b id="hud-num">0</b></span>/8</div>
