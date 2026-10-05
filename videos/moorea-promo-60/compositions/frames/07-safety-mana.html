@@ -23,6 +23,14 @@
 [id="07-safety-mana-needle"] svg{width:100%;height:100%;display:block}
 [class~="07-safety-mana-dot"]{position:absolute;width:46px;height:46px}
 [id="07-safety-mana-ping"]{position:absolute;left:-3px;top:-3px;width:280px;height:280px;border-radius:50%;border:4px solid #fff;opacity:0}
+[id="07-safety-mana-grow"]{position:relative;display:flex;gap:18px;margin-top:22px}
+[id="07-safety-mana-grow"] .mui-grpbtn{flex:1 1 0;position:relative}
+
+/* tap feedback: clipped ripple + touch indicator (film-only, on top of the real component) */
+[class~="07-safety-mana-rbox"]{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none}
+[class~="07-safety-mana-rip"]{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:rgba(255,255,255,0.34);opacity:0}
+[class~="07-safety-mana-touch"]{position:absolute;left:50%;top:50%;width:78px;height:78px;margin:-39px 0 0 -39px;border-radius:50%;
+  background:rgba(255,255,255,0.2);border:3px solid rgba(255,255,255,0.9);box-shadow:0 0 22px rgba(255,255,255,0.4);opacity:0;pointer-events:none}
 
 /* SOS glint */
 [class~="07-safety-mana-gmask"]{position:absolute;inset:0;border-radius:50%;overflow:hidden;pointer-events:none}
@@ -41,18 +49,20 @@
 [id="07-safety-mana-caret"]{display:block;width:3px;height:40px;margin-left:3px;background:#e15311;opacity:0;flex:none}
 [id="07-safety-mana-send"]{position:relative}
 [class~="07-safety-mana-ring"]{position:absolute;left:-6px;top:-6px;width:94px;height:94px;border-radius:50%;border:4px solid #ff6a1f;opacity:0;pointer-events:none}
+[id="07-safety-mana-hr"]{transform-origin:0 50%}
+[id="07-safety-mana-chip2"]{position:relative}
 
 [class~="07-safety-mana-streak"]{position:absolute;border-radius:4px;
   background:linear-gradient(90deg,rgba(255,217,160,0) 0%,rgba(255,226,180,0.85) 45%,rgba(255,140,40,0.6) 70%,rgba(255,140,40,0) 100%)}
 </style>
 <link rel="stylesheet" href="assets/kit/moorea-ui.css">
 
-<div id="root" data-composition-id="07-safety-mana" data-width="1920" data-height="1080" data-duration="4.8">
-  <canvas class="clip" id="07-safety-mana-lava" width="960" height="540" data-start="0" data-duration="4.8" data-track-index="0"
+<div id="root" data-composition-id="07-safety-mana" data-width="1920" data-height="1080" data-duration="10">
+  <canvas class="clip" id="07-safety-mana-lava" width="960" height="540" data-start="0" data-duration="10" data-track-index="0"
           style="position:absolute;inset:0;width:100%;height:100%"></canvas>
-  <div class="clip" id="07-safety-mana-scrim" data-start="0" data-duration="4.8" data-track-index="2"
+  <div class="clip" id="07-safety-mana-scrim" data-start="0" data-duration="10" data-track-index="2"
        style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 72% 68% at 50% 54%, rgba(7,10,15,0.28) 0%, rgba(7,10,15,0.42) 58%, rgba(7,10,15,0.66) 100%)"></div>
-  <canvas class="clip" id="07-safety-mana-embers" width="1920" height="1080" data-start="0" data-duration="4.8" data-track-index="1"
+  <canvas class="clip" id="07-safety-mana-embers" width="1920" height="1080" data-start="0" data-duration="10" data-track-index="1"
           style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
 
   <svg id="07-safety-mana-whipsvg" aria-hidden="true">
@@ -66,16 +76,24 @@
     <!-- ============ BREAKDOWN: T'ES OÙ ?! → SAFETY MODE ============ -->
     <div id="07-safety-mana-A">
 
-      <!-- Safety Mode card -->
-      <div id="07-safety-mana-cardwrap" style="position:absolute;left:220px;top:330px;width:831px">
+      <!-- Safety Mode card (source px, wrapper scaled 0.8 from its top so it sits 300 → ~955) -->
+      <div id="07-safety-mana-cardwrap" style="position:absolute;left:220px;top:300px;width:831px">
         <div class="mui-card" style="position:relative">
           <div style="display:flex;align-items:center;gap:22px;height:46px">
             <span class="mui-display" style="font-size:44px">Safety Mode</span>
             <span class="mui-badge">bêta</span>
           </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:36px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:36px;height:64px">
             <span style="font-weight:700;font-size:36px">Partage de position</span>
             <div class="mui-toggle" id="07-safety-mana-toggle"><div class="k" id="07-safety-mana-knob"></div></div>
+          </div>
+          <div style="margin-top:32px">
+            <div style="font-weight:700;font-size:34px;line-height:42px">Mon groupe</div>
+            <div style="font-weight:400;font-size:26px;line-height:34px;color:#69707a;margin-top:6px">Rejoignez pour les alertes SMS &amp; la boussole</div>
+            <div id="07-safety-mana-grow">
+              <div class="mui-grpbtn fill" id="07-safety-mana-create">Créer un groupe<span class="07-safety-mana-rbox"><i class="07-safety-mana-rip" id="07-safety-mana-rip0"></i></span><i class="07-safety-mana-touch" id="07-safety-mana-touch0"></i></div>
+              <div class="mui-grpbtn line">Rejoindre</div>
+            </div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;margin-top:30px">
             <div style="font-weight:700;font-size:34px;line-height:42px;color:#69707a">Boussole</div>
@@ -124,11 +142,11 @@
         </div>
         <div class="mui-bubble" id="07-safety-mana-bubble" style="margin-top:24px">
           <div class="txt">Dimanche, les douches sont ouvertes de 8h à 20h.</div>
-          <div class="hr"></div>
+          <div class="hr" id="07-safety-mana-hr"></div>
           <div class="mui-chips">
             <span class="mui-chip" id="07-safety-mana-chip0">Programme</span>
             <span class="mui-chip" id="07-safety-mana-chip1">Où manger ?</span>
-            <span class="mui-chip" id="07-safety-mana-chip2">Navettes</span>
+            <span class="mui-chip" id="07-safety-mana-chip2">Navettes<span class="07-safety-mana-rbox"><i class="07-safety-mana-rip" id="07-safety-mana-rip1"></i></span><i class="07-safety-mana-touch" id="07-safety-mana-touch1"></i></span>
             <span class="mui-chip" id="07-safety-mana-chip3">Artistes ce soir</span>
           </div>
         </div>
@@ -149,7 +167,7 @@
         <div class="07-safety-mana-layer mui-display fx-molten" id="07-safety-mana-probB-hot" style="font-size:120px">1000 questions</div>
         <div class="07-safety-mana-layer mui-display fx-stone" id="07-safety-mana-probB-stone" style="font-size:120px">1000 questions</div>
       </div>
-      <div class="07-safety-mana-word mui-display fx-hot-white" id="07-safety-mana-ansB" style="top:160px;font-size:110px">M.A.N.A répond.</div>
+      <div class="07-safety-mana-word mui-display fx-hot-white" id="07-safety-mana-ansB" style="top:165px;font-size:110px">M.A.N.A répond.</div>
     </div>
   </div>
 
@@ -162,7 +180,8 @@
 <script src="assets/kit/lava.js"></script>
 <script>
 (function () {
-  var ID = '07-safety-mana', FS = 22.4, DUR = 4.8;
+  /* 120 BPM grid: beat 0.5 s, 8th 0.25 s. P7 = 0.0, P8 = 5.0. Global start 40 s; lava time 32 → 40 (rate 0.8). */
+  var ID = '07-safety-mana', DUR = 10, LAVA_START = 32, LAVA_RATE = 0.8;
   var root = document.querySelector('[data-composition-id="' + ID + '"]');
   function $(n) { return document.getElementById(ID + '-' + n); }
   function rng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
@@ -178,7 +197,7 @@
     s.style.fontSize = (30 + Math.round(R() * 30)) + 'px';
     o.appendChild(s); swarm.appendChild(o);
     var r = 0.38 + 0.62 * Math.sqrt(R());
-    QS.push({ o: o, s: s, a0: R() * Math.PI * 2, r: r, w: 0.7 + 1.5 * (1 - r), d: (i % 8) * 0.006 + R() * 0.012, rot: (R() - 0.5) * 50 });
+    QS.push({ o: o, s: s, a0: R() * Math.PI * 2, r: r, w: 0.55 + 1.1 * (1 - r), d: (i % 8) * 0.006 + R() * 0.012, rot: (R() - 0.5) * 50 });
   }
   // whip streaks
   var streaks = $('streaks');
@@ -198,7 +217,7 @@
     phText.appendChild(cs); CH.push(cs);
   }
   // compass group dots on the rim at ~40deg ("ta bande")
-  [30, 40, 50].forEach(function (deg, j) {
+  [28, 40, 52].forEach(function (deg, j) {
     var a = deg * Math.PI / 180, cx = 137 + 138.5 * Math.sin(a), cy = 137 - 138.5 * Math.cos(a);
     var d = $('dot' + j); d.style.left = (cx - 23).toFixed(1) + 'px'; d.style.top = (cy - 23).toFixed(1) + 'px';
   });
@@ -209,36 +228,39 @@
   window.__timelines = window.__timelines || {};
   window.__timelines[ID] = tl;
 
-  /* lava world (seed 3, global time) — drawn only from proxy-tween onUpdate + once at build */
+  /* lava world (seed 3, global lava time) — drawn only from proxy-tween onUpdate + once at build */
+  var CARD_CX = 0.331, CARD_CY = 0.58, CARD_FOOT = 0.88;     // card centre / foot in screen units
   var lava = MooreaLava.create($('lava'), { seed: 3 });
   var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 70 });
-  var L = { t: FS, et: FS, boost: 0.5, heat: 0.55, zoom: 1.1, panX: 0, panY: 0, tilt: 0, horizon: 0.3,
-            coolR: 0, coolX: 0.331, coolY: 0.58, erupt: 1, eruptX: 0.5, eruptY: 0.27, flash: 0 };
+  var L = { t: LAVA_START, et: LAVA_START, boost: 0.5, heat: 0.55, zoom: 1.1, panX: 0, panY: 0, tilt: 0, horizon: 0.3,
+            coolR: 0, coolX: CARD_CX, coolY: CARD_CY, erupt: 1, eruptX: 0.5, eruptY: 0.27, flash: 0 };
   function draw() { lava.render(L); emb.render(L.et, { boost: L.boost }); }
   function LT(vars, pos) { vars.onUpdate = draw; return tl.to(L, vars, pos); }
   function LF(from, vars, pos) { vars.onUpdate = draw; vars.immediateRender = false; return tl.fromTo(L, from, vars, pos); }
 
-  LT({ t: FS + DUR, duration: DUR, ease: 'none' }, 0);
-  LT({ et: FS + 1.2, duration: 2.4, ease: 'none' }, 0);              // breakdown: embers drift at half speed
-  LT({ et: FS + 1.2 + 3.0, duration: 2.4, ease: 'none' }, 2.4);      // build: faster again
-  LT({ boost: 1.0, duration: 0.4, ease: 'power2.out' }, 2.4);
-  LT({ boost: 1.7, duration: 0.6, ease: 'power2.in' }, 4.2);
-  LT({ panY: -0.6, duration: DUR, ease: 'none' }, 0);
+  LT({ t: LAVA_START + DUR * LAVA_RATE, duration: DUR, ease: 'none' }, 0);   // 32 → 40, continuous across the film
+  LT({ et: LAVA_START + 2.0, duration: 5, ease: 'none' }, 0);                // breakdown: embers drift slowly
+  LT({ et: LAVA_START + DUR * LAVA_RATE, duration: 5, ease: 'none' }, 5);    // build: faster, lands back on the lava clock
+  LT({ boost: 1.0, duration: 0.5, ease: 'power2.out' }, 5);
+  LT({ boost: 1.7, duration: 1.0, ease: 'power2.in' }, 9);
+  LT({ panY: -1.0, duration: DUR, ease: 'none' }, 0);
   // erupt at the foot of "T'ES OÙ ?!"
   LF({ erupt: 1, eruptX: 0.5, eruptY: 0.27 }, { erupt: 0, eruptX: 0.5, eruptY: 0.27, duration: 0.5, ease: 'power2.out' }, 0);
-  // card lands soft: small splash + quench ring opening under it
-  LF({ erupt: 0.55, eruptX: 0.331, eruptY: 0.86 }, { erupt: 0, eruptX: 0.331, eruptY: 0.86, duration: 0.45, ease: 'power2.out' }, 0.8);
-  LT({ coolR: 0.5, duration: 0.45, ease: 'power2.out' }, 0.8);
-  // whip-pan: camera rushes right over the lava, the cooled ring leaves with the card
-  LT({ coolX: 0.331 - 2300 / 1920, duration: 0.28, ease: 'power3.in' }, 2.08);
-  LT({ panX: 3.5, zoom: 1.0, duration: 0.4, ease: 'power3.in' }, 2.0);
-  LT({ panX: 6.1, duration: 0.3, ease: 'power3.out' }, 2.4);
-  // build heats back up
-  LF({ erupt: 1, eruptX: 0.5, eruptY: 0.26 }, { erupt: 0, eruptX: 0.5, eruptY: 0.26, duration: 0.5, ease: 'power2.out' }, 2.4);
-  LT({ heat: 1.6, duration: 1.8, ease: 'power1.in' }, 2.4);
-  LT({ zoom: 1.15, duration: 2.4, ease: 'power1.in' }, 2.4);
-  LT({ heat: 1.8, duration: 0.6, ease: 'none' }, 4.2);
-  LT({ flash: 1, duration: 0.25, ease: 'power2.in' }, 4.55);
+  // card lands soft at 1.0: small splash + quench ring opening under it
+  LF({ erupt: 0.55, eruptX: CARD_CX, eruptY: CARD_FOOT }, { erupt: 0, eruptX: CARD_CX, eruptY: CARD_FOOT, duration: 0.45, ease: 'power2.out' }, 1.0);
+  LT({ coolR: 0.5, duration: 0.45, ease: 'power2.out' }, 1.0);
+  // whip-pan 4.5: camera rushes right over the lava, the cooled ring leaves with the card
+  LT({ coolX: CARD_CX - 2300 / 1920, duration: 0.28, ease: 'power3.in' }, 4.58);
+  LT({ panX: 3.5, zoom: 1.0, duration: 0.4, ease: 'power3.in' }, 4.5);
+  LT({ panX: 6.1, duration: 0.3, ease: 'power3.out' }, 4.9);
+  // build heats back up from 5.0
+  LF({ erupt: 1, eruptX: 0.5, eruptY: 0.26 }, { erupt: 0, eruptX: 0.5, eruptY: 0.26, duration: 0.5, ease: 'power2.out' }, 5.0);
+  LT({ heat: 1.1, duration: 0.5, ease: 'power2.out' }, 5.0);
+  LT({ heat: 1.6, duration: 3.5, ease: 'power1.in' }, 5.5);
+  LT({ zoom: 1.15, duration: 4.0, ease: 'power1.in' }, 5.0);
+  // riser 9.0 → 10.0: blazing, white-out 9.5 → 10.0
+  LT({ heat: 1.8, zoom: 1.22, duration: 1.0, ease: 'power1.in' }, 9.0);
+  LT({ flash: 1, duration: 0.5, ease: 'power2.in' }, 9.5);
 
   var A = $('A'), B = $('B'), stage = $('stage'), flash = $('flash');
   function hit(at, amt) { tl.fromTo(flash, { opacity: amt }, { opacity: 0, duration: 0.14, ease: 'power2.out', immediateRender: false }, at); }
@@ -252,7 +274,7 @@
       .fromTo(el, { y: 120, scaleY: 0.3, filter: 'blur(12px)' }, { y: 0, scaleY: 1.15, filter: 'blur(0px)', duration: 0.2, ease: 'power3.out' }, at)
       .to(el, { scaleY: 1, duration: 0.2, ease: 'back.out(2)' }, at + 0.2);
   }
-  function stamp(el, at, fpx) {
+  function stamp(el, at) {
     tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: 'none' }, at)
       .fromTo(el, { scale: 1.4 }, { scale: 1, duration: 0.24, ease: 'back.out(3)' }, at);
   }
@@ -264,115 +286,139 @@
   function pop(el, at, sc, dur, ease) {
     tl.fromTo(el, { scale: 0 }, { scale: sc || 1, duration: dur || 0.18, ease: ease || 'back.out(3)' }, at);
   }
+  function tap(touch, rip, at) {             // finger lands on the beat: touch ring + clipped ripple
+    tl.fromTo(touch, { scale: 1.45, opacity: 0 }, { scale: 1, opacity: 0.95, duration: 0.08, ease: 'power2.out' }, at - 0.08)
+      .to(touch, { scale: 0.86, opacity: 0, duration: 0.3, ease: 'power2.out' }, at + 0.12);
+    tl.fromTo(rip, { scale: 0, opacity: 0.55 }, { scale: 9, opacity: 0, duration: 0.45, ease: 'power2.out' }, at);
+  }
 
-  /* Scene 1 (0.00–0.40): T'ES OÙ ?! erupts from the lava */
+  /* Scene 1 (0.0–0.5): T'ES OÙ ?! erupts from the lava (breakdown mood, heat 0.55) */
   erupt($('probA'), 0);
 
-  /* Scene 2 (0.40–0.80): Safety Mode card falls, still warm (hot overlay 0.6) */
+  /* Scene 2 (0.5–1.0): the Safety Mode card falls, still warm (hot overlay 0.6) */
   var card = $('cardwrap');
-  gsap.set(card, { transformOrigin: '50% 100%' });
-  tl.fromTo(card, { y: -1060, rotation: -4, filter: 'blur(5px)' }, { y: 0, rotation: 0, filter: 'blur(0px)', duration: 0.4, ease: 'power3.in' }, 0.4);
-  tl.fromTo($('hot'), { opacity: 0.6 }, { opacity: 0, duration: 0.4, ease: 'power2.out' }, 0.8);
-  tl.fromTo($('rim'), { opacity: 0.6 }, { opacity: 0, duration: 0.45, ease: 'power2.out' }, 0.8);
+  gsap.set(card, { scale: 0.8, transformOrigin: '50% 0%' });
+  tl.fromTo(card, { y: -1080, rotation: -4, filter: 'blur(5px)' }, { y: 0, rotation: 0, filter: 'blur(0px)', duration: 0.5, ease: 'power3.in' }, 0.5);
+  tl.fromTo($('hot'), { opacity: 0.6 }, { opacity: 0, duration: 0.4, ease: 'power2.out' }, 1.0);
+  tl.fromTo($('rim'), { opacity: 0.6 }, { opacity: 0, duration: 0.45, ease: 'power2.out' }, 1.0);
 
-  /* Scene 3 (0.80–1.20): soft land + quench, toggle ON, compass spins and locks at 40deg */
-  tl.to(card, { keyframes: [{ y: -14, duration: 0.1, ease: 'power2.out' }, { y: 0, duration: 0.12, ease: 'power2.in' }] }, 0.8);
-  tl.fromTo($('knob'), { x: 0 }, { x: 44, duration: 0.16, ease: 'power3.out' }, 0.8);
-  tl.fromTo($('toggle'), { backgroundColor: '#2a3442' }, { backgroundColor: '#e15311', duration: 0.12, ease: 'none' }, 0.8);
+  /* Scene 3 (1.0–1.5): soft land + quench, toggle ON at 1.0, compass spins and LOCKS at 1.5 (40deg) */
+  tl.to(card, { keyframes: [{ y: -14, duration: 0.1, ease: 'power2.out' }, { y: 0, duration: 0.12, ease: 'power2.in' }] }, 1.0);
+  tl.fromTo($('knob'), { x: 0 }, { x: 44, duration: 0.16, ease: 'power3.out' }, 1.0);
+  tl.fromTo($('toggle'), { backgroundColor: '#2a3442' }, { backgroundColor: '#e15311', duration: 0.12, ease: 'none' }, 1.0);
   var needle = $('needle');
-  tl.fromTo(needle, { rotation: 0 }, { rotation: 432, duration: 0.3, ease: 'power3.out' }, 0.8)
-    .to(needle, { rotation: 400, duration: 0.1, ease: 'power2.inOut' }, 1.1);
-  tl.fromTo($('ping'), { scale: 1, opacity: 0.95 }, { scale: 1.5, opacity: 0, duration: 0.4, ease: 'power2.out', immediateRender: false }, 1.2);
-  pop($('dot0'), 1.2, 0.5); pop($('dot1'), 1.25, 0.5); pop($('dot2'), 1.3, 0.5);
+  tl.fromTo(needle, { rotation: 0 }, { rotation: 470, duration: 0.36, ease: 'power3.out' }, 1.0)
+    .to(needle, { rotation: 391, duration: 0.1, ease: 'power2.inOut' }, 1.36)
+    .to(needle, { rotation: 400, duration: 0.04, ease: 'power2.out' }, 1.46);
+  tl.fromTo($('ping'), { scale: 1, opacity: 0.95 }, { scale: 1.5, opacity: 0, duration: 0.4, ease: 'power2.out', immediateRender: false }, 1.5);
 
-  /* Scene 4 (1.20–1.60): RETROUVE TA BANDE. stamps; the problem word turns to stone */
-  petrify($('probA'), $('probA-hot'), $('probA-stone'), 1.2);
-  stamp($('ansA'), 1.2, 110);
-  hit(1.2, 0.32);
-  shake(A, 1.2, 9);
+  /* Scene 4 (1.5–2.0): RETROUVE TA BANDE. stamps (HUD +1 at 1.5); the problem word turns to stone */
+  petrify($('probA'), $('probA-hot'), $('probA-stone'), 1.5);
+  stamp($('ansA'), 1.5);
+  hit(1.5, 0.32);
+  shake(A, 1.5, 9);
 
-  /* Scene 5 (1.40–2.00): glossy SOS (glint) + CHAT + the app's line */
-  pop($('sos'), 1.4, 0.95, 0.22, 'back.out(2.2)');
-  tl.fromTo($('glint'), { x: -230 }, { x: 320, duration: 0.36, ease: 'power2.inOut' }, 1.46);
-  pop($('chat'), 1.6, 0.95, 0.2, 'back.out(2.4)');
-  tl.fromTo($('glint2'), { x: -230 }, { x: 240, duration: 0.3, ease: 'power2.inOut' }, 1.66);
-  tl.fromTo($('hint'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.2, ease: 'power2.out' }, 1.7);
-  gsap.set(A, { transformOrigin: '50% 55%' });
-  tl.fromTo(A, { scale: 1 }, { scale: 1.03, duration: 1.6, ease: 'none' }, 0.4);   // macro push underneath
+  /* Scene 5 (2.0–4.5) SHOWCASE — the card stays big; one detail per beat / 8th */
+  // 2.0  "Créer un groupe" pressed
+  tap($('touch0'), $('rip0'), 2.0);
+  tl.fromTo($('create'), { scale: 0.95 }, { scale: 1, duration: 0.25, ease: 'back.out(3)', immediateRender: false }, 2.0);
+  // 2.5 / 2.75 / 3.0  the group appears: three avatar dots pop on the compass rim around 40deg
+  pop($('dot0'), 2.5, 0.5); pop($('dot1'), 2.75, 0.5); pop($('dot2'), 3.0, 0.5);
+  tl.fromTo($('ping'), { scale: 1, opacity: 0.55 }, { scale: 1.32, opacity: 0, duration: 0.4, ease: 'power2.out', immediateRender: false }, 3.0);
+  // 3.0  glossy SOS pops with a glint sweep (no alarm flashing)
+  pop($('sos'), 3.0, 0.95, 0.22, 'back.out(2.2)');
+  tl.fromTo($('glint'), { x: -230 }, { x: 320, duration: 0.36, ease: 'power2.inOut' }, 3.06);
+  // 3.5  gold CHAT pops; 4.0 the app's two-line hint
+  pop($('chat'), 3.5, 0.95, 0.2, 'back.out(2.4)');
+  tl.fromTo($('glint2'), { x: -230 }, { x: 240, duration: 0.3, ease: 'power2.inOut' }, 3.56);
+  tl.fromTo($('hint'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.2, ease: 'power2.out' }, 4.0);
+  gsap.set(A, { transformOrigin: '50% 60%' });
+  tl.fromTo(A, { scale: 1 }, { scale: 1.025, duration: 4.0, ease: 'none' }, 0.5);   // macro push underneath
 
-  /* Scene 6 (2.00–2.40): WHIP-PAN out — directional blur + light streaks, lava rushes */
-  tl.to(A, { x: 40, duration: 0.08, ease: 'power2.out' }, 2.0)
-    .to(A, { x: -2300, duration: 0.28, ease: 'power3.in' }, 2.08)
-    .set(A, { filter: 'url(#' + ID + '-whipblur)' }, 2.1)
-    .fromTo($('whipdev'), { attr: { stdDeviation: '0 0' } }, { attr: { stdDeviation: '80 0' }, duration: 0.26, ease: 'power2.in', immediateRender: false }, 2.1);
-  tl.fromTo(streaks, { x: 1900 }, { x: -2100, duration: 0.42, ease: 'power1.in' }, 2.08)
-    .fromTo(streaks, { opacity: 0 }, { opacity: 1, duration: 0.1, ease: 'none', immediateRender: false }, 2.1)
-    .to(streaks, { opacity: 0, duration: 0.1, ease: 'none' }, 2.42);
-  tl.to($('scrim'), { opacity: 0.5, duration: 0.3, ease: 'power1.inOut' }, 2.2);
+  /* Scene 6 (4.5–5.0): WHIP-PAN out — directional blur + light streaks, lava rushes */
+  tl.to(A, { x: 40, duration: 0.08, ease: 'power2.out' }, 4.5)
+    .to(A, { x: -2300, duration: 0.28, ease: 'power3.in' }, 4.58)
+    .set(A, { filter: 'url(#' + ID + '-whipblur)' }, 4.6)
+    .fromTo($('whipdev'), { attr: { stdDeviation: '0 0' } }, { attr: { stdDeviation: '80 0' }, duration: 0.26, ease: 'power2.in', immediateRender: false }, 4.6);
+  tl.fromTo(streaks, { x: 1900 }, { x: -2100, duration: 0.42, ease: 'power1.in' }, 4.58)
+    .fromTo(streaks, { opacity: 0 }, { opacity: 1, duration: 0.1, ease: 'none', immediateRender: false }, 4.6)
+    .to(streaks, { opacity: 0, duration: 0.1, ease: 'none' }, 4.92);
+  tl.to($('scrim'), { opacity: 0.5, duration: 0.3, ease: 'power1.inOut' }, 4.7);
 
-  /* Scene 7 (2.40–2.80): 1000 QUESTIONS erupts; 40 "?" pop on 32nds and orbit */
-  erupt($('probB'), 2.4);
-  hit(2.4, 0.22);
+  /* Scene 7 (5.0–5.5): 1000 QUESTIONS erupts (P8); 40 "?" pop on 32nds and orbit */
+  erupt($('probB'), 5.0);
+  hit(5.0, 0.22);
+  var T0 = 5.0, TS = 6.5;                                   // swarm born / sucked into send
   var CX = 960, CY = 500, RX = 860, RY = 318, SX = 1376, SY = 880;
-  function orb(q, t) { var a = q.a0 + q.w * (t - 2.4); return { x: CX + Math.cos(a) * RX * q.r, y: CY + Math.sin(a) * RY * q.r }; }
+  function orb(q, t) { var a = q.a0 + q.w * (t - T0); return { x: CX + Math.cos(a) * RX * q.r, y: CY + Math.sin(a) * RY * q.r }; }
   QS.forEach(function (q, i) {
-    var p0 = orb(q, 2.4);
+    var p0 = orb(q, T0);
     gsap.set(q.o, { x: p0.x, y: p0.y });
     gsap.set(q.s, { rotation: q.rot });
-    tl.fromTo(q.s, { scale: 0 }, { scale: 1, duration: 0.15, ease: 'back.out(3)' }, 2.4 + (i % 8) * 0.05);
-    var tEnd = 3.4 + q.d, N = 10, kf = [];
-    for (var k = 1; k <= N; k++) { var p = orb(q, 2.4 + (tEnd - 2.4) * k / N); kf.push({ x: p.x, y: p.y, duration: (tEnd - 2.4) / N, ease: 'none' }); }
-    tl.to(q.o, { keyframes: kf }, 2.4);
-    /* Scene 9: sucked into the send button 3.40–3.60 */
+    tl.fromTo(q.s, { scale: 0 }, { scale: 1, duration: 0.15, ease: 'back.out(3)' }, T0 + (i % 8) * 0.0625);
+    var tEnd = TS + q.d, N = 18, kf = [];
+    for (var k = 1; k <= N; k++) { var p = orb(q, T0 + (tEnd - T0) * k / N); kf.push({ x: p.x, y: p.y, duration: (tEnd - T0) / N, ease: 'none' }); }
+    tl.to(q.o, { keyframes: kf }, T0);
+    /* 6.5: sucked into the send button */
     tl.to(q.o, { x: SX, duration: 0.14, ease: 'power2.in' }, tEnd)
       .to(q.o, { y: SY, duration: 0.14, ease: 'power3.in' }, tEnd)
       .to(q.o, { scale: 0.2, duration: 0.14, ease: 'power2.in' }, tEnd)
       .set(q.o, { autoAlpha: 0 }, tEnd + 0.14);
   });
   gsap.set(B, { transformOrigin: '50% 50%' });
-  tl.fromTo(B, { scale: 1 }, { scale: 1.02, duration: 1.8, ease: 'none' }, 2.4);
+  tl.fromTo(B, { scale: 1 }, { scale: 1.02, duration: 4.0, ease: 'none' }, 5.0);
 
-  /* Scene 8 (2.60–3.40): input slides up, the question types in (1 char / 0.017 s), send pressed */
+  /* Scene 8 (5.5–6.5): input slides up 5.5, the question types in 5.75–6.5, send pressed 6.5 */
   var inwrap = $('inwrap');
   gsap.set(inwrap, { scale: 1.12, transformOrigin: '50% 50%' });
-  tl.fromTo(inwrap, { y: 300, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.26, ease: 'back.out(1.3)' }, 2.6);
-  tl.set($('phold'), { display: 'none' }, 2.8)
-    .set($('ph'), { attr: { 'class': 'ph typed' } }, 2.8)
-    .set($('caret'), { opacity: 1 }, 2.8)
-    .set($('caret'), { opacity: 0 }, 3.4)
+  tl.fromTo(inwrap, { y: 300, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.26, ease: 'back.out(1.3)' }, 5.5);
+  tl.set($('phold'), { display: 'none' }, 5.75)
+    .set($('ph'), { attr: { 'class': 'ph typed' } }, 5.75)
+    .set($('caret'), { opacity: 1 }, 5.75)
+    .set($('caret'), { opacity: 0 }, 6.5)
     /* sent: the field empties back to its placeholder (the question went into the send button) */
-    .set($('phtext'), { display: 'none' }, 3.44)
-    .set($('phold'), { display: 'inline' }, 3.44)
-    .set($('ph'), { attr: { 'class': 'ph' } }, 3.44);
-  CH.forEach(function (cs, j) { tl.set(cs, { display: 'inline' }, 2.8 + j * 0.017); });
+    .set($('phtext'), { display: 'none' }, 6.54)
+    .set($('phold'), { display: 'inline' }, 6.54)
+    .set($('ph'), { attr: { 'class': 'ph' } }, 6.54);
+  var STEP = 0.72 / CH.length;
+  CH.forEach(function (cs, j) { tl.set(cs, { display: 'inline' }, 5.75 + j * STEP); });
   gsap.set([$('ring0'), $('ring1')], { x: 756, y: 19 });
-  tl.fromTo($('send'), { scale: 0.85 }, { scale: 1, duration: 0.22, ease: 'back.out(3)', immediateRender: false }, 3.4);
-  tl.fromTo($('ring0'), { scale: 1, opacity: 0.95 }, { scale: 1.9, opacity: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, 3.4);
+  tl.fromTo($('send'), { scale: 0.85 }, { scale: 1, duration: 0.22, ease: 'back.out(3)', immediateRender: false }, 6.5);
+  tl.fromTo($('ring0'), { scale: 1, opacity: 0.95 }, { scale: 1.9, opacity: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, 6.5);
+  tl.fromTo($('ring1'), { scale: 1, opacity: 1 }, { scale: 2.4, opacity: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, 6.65);
 
-  /* Scene 9 (3.40–4.20): M.A.N.A header, answer bubble, chips on 16ths, warning */
-  tl.fromTo($('mhead'), { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18, ease: 'back.out(2)' }, 3.4);
-  tl.fromTo($('ring1'), { scale: 1, opacity: 1 }, { scale: 2.4, opacity: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, 3.6);
+  /* 6.5: M.A.N.A RÉPOND. stamps (HUD +1); the stone word sinks */
+  petrify($('probB'), $('probB-hot'), $('probB-stone'), 6.5);
+  stamp($('ansB'), 6.5);
+  hit(6.5, 0.3);
+  shake(B, 6.5, 8);
+
+  /* Scene 9 (6.75–8.5) SHOWCASE: header, answer bubble, rule, chips per 8th, warning, chip tap */
+  tl.fromTo($('bscrim'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: 'power1.out' }, 6.75);
+  tl.fromTo($('mhead'), { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18, ease: 'back.out(2)' }, 6.75);
   var bubble = $('bubble');
   gsap.set(bubble, { transformOrigin: '0% 100%' });
-  tl.fromTo(bubble, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: 'none' }, 3.6)
-    .fromTo(bubble, { scale: 0.6 }, { scale: 1.04, duration: 0.12, ease: 'power2.out' }, 3.6)
-    .to(bubble, { scale: 1, duration: 0.12, ease: 'power2.inOut' }, 3.72);
-  [0, 1, 2, 3].forEach(function (n) { pop($('chip' + n), 3.8 + n * 0.1, 1, 0.18, 'back.out(3)'); });
-  tl.fromTo($('bscrim'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: 'power1.out' }, 3.5);
-  tl.fromTo($('warn'), { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18, ease: 'power2.out' }, 3.9);
+  tl.fromTo(bubble, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: 'none' }, 7.0)
+    .fromTo(bubble, { scale: 0.6 }, { scale: 1.04, duration: 0.12, ease: 'power2.out' }, 7.0)
+    .to(bubble, { scale: 1, duration: 0.12, ease: 'power2.inOut' }, 7.12);
+  tl.fromTo($('hr'), { scaleX: 0 }, { scaleX: 1, duration: 0.22, ease: 'power3.out' }, 7.25);
+  [0, 1, 2, 3].forEach(function (n) { pop($('chip' + n), 7.5 + n * 0.25, 1, 0.18, 'back.out(3)'); });
+  tl.fromTo($('warn'), { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18, ease: 'power2.out' }, 8.0);
+  // 8.5: "Navettes" tapped → .mui-chip.on (navy)
+  var chip2 = $('chip2');
+  tap($('touch1'), $('rip1'), 8.5);
+  tl.fromTo(chip2, { backgroundColor: 'rgba(34,54,79,0)', borderColor: '#445162', color: '#b4bcc6' },
+    { backgroundColor: '#22364f', borderColor: '#3a4a61', color: '#ffffff', duration: 0.1, ease: 'none', immediateRender: false }, 8.5);
+  tl.to(chip2, { keyframes: [{ scale: 0.93, duration: 0.05, ease: 'power2.out' }, { scale: 1, duration: 0.22, ease: 'back.out(3)' }] }, 8.5);
 
-  /* Scene 10 (3.60–4.20): M.A.N.A RÉPOND. stamps; the stone word sinks */
-  petrify($('probB'), $('probB-hot'), $('probB-stone'), 3.6);
-  stamp($('ansB'), 3.6, 110);
-  hit(3.6, 0.3);
-  shake(B, 3.6, 8);
-
-  /* Scene 11 (4.20–4.80): riser — everything vibrates on 32nds, white-out into the drop */
-  var vib = [4, -4, 3, -4, 4, -3, 4, -4, 3, -4, 4, -4];
-  vib.forEach(function (v, j) { tl.set(stage, { x: v, y: (j % 2 ? 1.5 : -1.5) }, 4.2 + j * 0.05); });
+  /* Scene 10 (9.0–10.0): riser — everything vibrates (growing), white-out 9.5 → 10.0 into the drop */
+  for (var j = 0; j < 20; j++) {
+    var amp = 2 + 4.5 * j / 19, sg = (j % 2 ? -1 : 1);
+    tl.set(stage, { x: sg * amp * (j % 3 === 1 ? 0.8 : 1), y: -sg * amp * 0.35 }, 9.0 + j * 0.05);
+  }
   gsap.set(stage, { transformOrigin: '50% 50%' });
-  tl.fromTo(stage, { scale: 1 }, { scale: 1.04, duration: 0.6, ease: 'power2.in', immediateRender: false }, 4.2);
-  tl.fromTo(flash, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.in', immediateRender: false }, 4.55);
+  tl.fromTo(stage, { scale: 1 }, { scale: 1.04, duration: 1.0, ease: 'power2.in', immediateRender: false }, 9.0);
+  tl.fromTo(flash, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.in', immediateRender: false }, 9.5);
 
   draw();
 })();

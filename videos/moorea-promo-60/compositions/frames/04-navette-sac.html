@@ -50,48 +50,68 @@
 [class~="04-navette-sac-title"] { font-weight: 700; font-size: 40px; color: #fff; }
 [class~="04-navette-sac-ico"] { display: flex; }
 [class~="04-navette-sac-arr"] { font-size: 26px; color: #8e98a6; font-weight: 500; }
+/* showcase: lit row tint inside a route sub-card (the app's navy) */
+[class~="04-navette-sac-tint"] { position: absolute; left: 16px; right: 16px; height: 55px; border-radius: 14px; background: #22364f;
+  box-shadow: inset 0 0 0 2px #3a4a61; }
+/* the app's bold line under the routes */
+[class~="04-navette-sac-resa"] { margin-top: 22px; height: 88px; font-weight: 700; font-size: 35px; line-height: 44px; color: #fff; white-space: normal; }
+/* "Appuyer pour zoomer" tap */
+[class~="04-navette-sac-tap"] { position: absolute; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.55) 60%, rgba(255,255,255,0) 100%); }
+[class~="04-navette-sac-tapring"] { position: absolute; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
+  border: 5px solid #ffffff; box-shadow: 0 0 18px rgba(255,255,255,0.65), inset 0 0 12px rgba(255,255,255,0.4); }
 </style>
 <link rel="stylesheet" href="assets/kit/moorea-ui.css">
 
-<div id="root" data-composition-id="04-navette-sac" data-width="1920" data-height="1080" data-duration="4.8">
+<div id="root" data-composition-id="04-navette-sac" data-width="1920" data-height="1080" data-duration="10">
   <!-- full-bleed background layers -->
-  <canvas class="clip" id="04-navette-sac-lava" width="960" height="540" data-start="0" data-duration="4.8" data-track-index="0"
+  <canvas class="clip" id="04-navette-sac-lava" width="960" height="540" data-start="0" data-duration="10" data-track-index="0"
           style="position:absolute;inset:0;width:100%;height:100%"></canvas>
-  <canvas class="clip" id="04-navette-sac-embers" width="1920" height="1080" data-start="0" data-duration="4.8" data-track-index="1"
+  <canvas class="clip" id="04-navette-sac-embers" width="1920" height="1080" data-start="0" data-duration="10" data-track-index="1"
           style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
 
   <!-- whip-pan speed streaks -->
   <div id="04-navette-sac-streaks" class="04-navette-sac-full" style="pointer-events:none"></div>
 
   <!-- camera (slow push) > shake -->
-  <div id="04-navette-sac-cam" class="mui 04-navette-sac-full" style="transform-origin:960px 540px">
+  <div id="04-navette-sac-cam" class="mui 04-navette-sac-full" style="transform-origin:960px 760px">
     <div id="04-navette-sac-shake" class="04-navette-sac-full">
 
       <!-- ============ POWER-UP 1 : NAVETTE ============ -->
       <div id="04-navette-sac-ga" class="04-navette-sac-full">
         <div id="04-navette-sac-fxa" class="04-navette-sac-full"></div>
 
-        <div class="04-navette-sac-pos" style="left:544.5px;top:640px">
-          <div class="04-navette-sac-center">
-            <div id="04-navette-sac-falla" style="position:relative;transform-origin:50% 50%">
-              <div id="04-navette-sac-traila" class="04-navette-sac-trail"></div>
-              <div id="04-navette-sac-squasha" style="transform-origin:50% 100%">
-                <div class="mui-card r-lg" style="position:relative">
+        <!-- card top pinned at y=330; the card frame grows and its content scrolls (app-like) during the showcase -->
+        <div class="04-navette-sac-pos" style="left:544.5px;top:330px">
+          <div id="04-navette-sac-falla" style="position:relative;width:831px;transform-origin:50% 0%">
+            <div id="04-navette-sac-traila" class="04-navette-sac-trail"></div>
+            <div id="04-navette-sac-squasha" style="position:relative;transform-origin:50% 459px">
+              <div id="04-navette-sac-viewa" class="mui-card r-lg" style="position:relative;padding:0;height:848px;clip-path:inset(0px 0px 389px 0px round 37px)">
+                <div id="04-navette-sac-scrolla" style="padding:37px">
                   <div class="04-navette-sac-head">
                     <div class="mui-tile navy"><span class="04-navette-sac-ico" data-mui-icon="mdiBusSide"></span></div>
                     <div class="04-navette-sac-title">Navettes officielles</div>
                   </div>
-                  <div class="mui-route">
-                    <div class="head"><span class="from">Gare de Tours</span><span class="04-navette-sac-arr">&#8594;</span><span class="to">Moorea Festival</span><span class="price" id="04-navette-sac-price">12&nbsp;&euro;</span></div>
-                    <div class="line"><span class="d">Ven. 5 juin</span><span class="h"><span id="04-navette-sac-h14">14h</span><i></i><span id="04-navette-sac-h16">16h</span><i></i><span id="04-navette-sac-h18">18h</span></span></div>
-                    <div class="line"><span class="d">Sam. 6 juin</span><span class="h"><span>15h</span><i></i><span>17h</span></span></div>
-                    <div class="line"><span class="d">Dim. 7 juin</span><span class="h"><span>15h</span><i></i><span>17h</span></span></div>
+                  <div class="mui-route" style="position:relative">
+                    <div id="04-navette-sac-tint0" class="04-navette-sac-tint" style="top:68px"></div>
+                    <div id="04-navette-sac-tint1" class="04-navette-sac-tint" style="top:123px"></div>
+                    <div class="head" style="height:38px;position:relative"><span class="from">Gare de Tours</span><span class="04-navette-sac-arr">&#8594;</span><span class="to">Moorea Festival</span><span class="price" id="04-navette-sac-price">12&nbsp;&euro;</span></div>
+                    <div class="line" style="position:relative"><span class="d" id="04-navette-sac-d0">Ven. 5 juin</span><span class="h"><span id="04-navette-sac-h14">14h</span><i></i><span id="04-navette-sac-h16">16h</span><i></i><span id="04-navette-sac-h18">18h</span></span></div>
+                    <div class="line" style="position:relative"><span class="d" id="04-navette-sac-d1">Sam. 6 juin</span><span class="h"><span id="04-navette-sac-h15">15h</span><i></i><span id="04-navette-sac-h17">17h</span></span></div>
+                    <div class="line" style="position:relative"><span class="d">Dim. 7 juin</span><span class="h"><span>15h</span><i></i><span>17h</span></span></div>
                   </div>
-                  <div class="fx-hot-overlay" id="04-navette-sac-hota"></div>
-                  <div class="fx-hot-rim" id="04-navette-sac-rima"></div>
-                  <div class="04-navette-sac-sheenclip"><div class="04-navette-sac-sheen" id="04-navette-sac-sheena"></div></div>
+                  <div class="mui-route" id="04-navette-sac-routeb" style="position:relative;margin-top:20px">
+                    <div class="head" style="height:38px"><span class="to">Moorea Festival</span><span class="04-navette-sac-arr">&#8594;</span><span class="from">Gare de Tours</span><span class="price">12&nbsp;&euro;</span></div>
+                    <div class="line"><span class="d">Sam. 6 juin</span><span class="h"><span id="04-navette-sac-r0">2h45</span></span></div>
+                    <div class="line"><span class="d">Dim. 7 juin</span><span class="h"><span id="04-navette-sac-r1">2h45</span></span></div>
+                    <div class="line"><span class="d">Lun. 8 juin</span><span class="h"><span>1h45</span><i></i><span>12h</span></span></div>
+                  </div>
+                  <div id="04-navette-sac-resa" class="04-navette-sac-resa">Réservation obligatoire via la billetterie du festival.</div>
                 </div>
+                <div class="fx-hot-overlay" id="04-navette-sac-hota" style="bottom:auto;height:459px"></div>
+                <div class="04-navette-sac-sheenclip" style="bottom:auto;height:459px"><div class="04-navette-sac-sheen" id="04-navette-sac-sheena"></div></div>
               </div>
+              <div class="fx-hot-rim" id="04-navette-sac-rima" style="inset:auto;left:-3px;top:-3px;width:837px;height:465px;border-radius:40px"></div>
             </div>
           </div>
         </div>
@@ -101,7 +121,7 @@
           <div id="04-navette-sac-stonea" class="mui-display fx-stone" style="position:absolute;left:0;top:0;width:100%;font-size:150px">NAVETTE ?</div>
         </div>
 
-        <div class="04-navette-sac-ans" style="top:190px;height:110px">
+        <div class="04-navette-sac-ans" style="top:186px;height:110px">
           <div id="04-navette-sac-ansa" class="mui-display fx-hot-white" style="font-size:110px">NAVETTE CALÉE.</div>
         </div>
 
@@ -123,11 +143,14 @@
                 <div class="mui-ban" style="position:relative">
                   <div class="hd">
                     <div class="mui-dot-title"><span class="mui-display">Festival</span></div>
-                    <span class="z">Appuyer pour zoomer</span>
+                    <span class="z" id="04-navette-sac-zlabel">Appuyer pour zoomer</span>
                   </div>
-                  <div style="position:relative">
-                    <img src="assets/img/interdits-festival.jpg" alt="">
-                    <div id="04-navette-sac-brands" style="position:absolute;inset:0;pointer-events:none"></div>
+                  <div id="04-navette-sac-imgwrap" style="position:relative;overflow:hidden;border-radius:20px;clip-path:inset(0px round 20px)">
+                    <div id="04-navette-sac-zoom" style="position:relative;transform-origin:0 0">
+                      <img src="assets/img/interdits-festival.jpg" alt="" style="border-radius:0">
+                      <div id="04-navette-sac-brands" style="position:absolute;inset:0;pointer-events:none"></div>
+                    </div>
+                    <div id="04-navette-sac-taps" style="position:absolute;inset:0;pointer-events:none"></div>
                   </div>
                   <div class="fx-hot-overlay" id="04-navette-sac-hotb"></div>
                   <div class="fx-hot-rim" id="04-navette-sac-rimb"></div>
@@ -143,7 +166,7 @@
           <div id="04-navette-sac-stoneb" class="mui-display fx-stone" style="position:absolute;left:0;top:0;width:100%;font-size:150px">SAC RECALÉ ?</div>
         </div>
 
-        <div class="04-navette-sac-ans" style="top:190px;height:110px">
+        <div class="04-navette-sac-ans" style="top:186px;height:110px">
           <div id="04-navette-sac-ansb" class="mui-display fx-hot-white" style="font-size:110px">TU SAIS AVANT.</div>
         </div>
 
@@ -165,7 +188,8 @@
 <script src="assets/kit/lava.js"></script>
 <script>
 (function () {
-  var FID = '04-navette-sac', FRAME_START = 8, DUR = 4.8;
+  // 120 BPM grid: beat 0.5 s. Frame = 10 s at global 10 s; lava time runs 8 -> 16 (0.8x film rate).
+  var FID = '04-navette-sac', DUR = 10, LAVA_START = 8, LAVA_RATE = 0.8;
   function $(id) { return document.getElementById(FID + '-' + id); }
   var cam = $('cam');
   var root = (cam && cam.closest('[data-composition-id="' + FID + '"]')) || document;
@@ -181,7 +205,7 @@
   function split(node) {
     var txt = node.textContent, out = []; node.textContent = '';
     for (var i = 0; i < txt.length; i++) {
-      var s = document.createElement('span'); s.textContent = txt[i] === ' ' ? ' ' : txt[i];
+      var s = document.createElement('span'); s.textContent = txt[i] === ' ' ? ' ' : txt[i];
       node.appendChild(s); out.push(s);
     }
     return out;
@@ -190,10 +214,10 @@
   /* ---------- lava world (seek-safe, one redraw per seek) ---------- */
   var lava = MooreaLava.create($('lava'), { seed: 3 });
   var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 70 });
-  var S = { t: FRAME_START, heat: 1, whip: 0, coolR: 0, coolX: 0.5, coolY: 0.6, erupt: 0, eruptX: 0.5, eruptY: 0.3, flash: 0, boost: 1 };
+  var S = { t: LAVA_START, heat: 1, whip: 0, coolR: 0, coolX: 0.5, coolY: 0.6, erupt: 0, eruptX: 0.5, eruptY: 0.3, flash: 0, boost: 1 };
   var P = { tilt: 0.55, horizon: 0.16, zoom: 1, panY: 0 };
   function draw() {
-    P.t = S.t; P.heat = S.heat; P.panX = 0.14 * (S.t - FRAME_START) + S.whip;
+    P.t = S.t; P.heat = S.heat; P.panX = 0.14 * (S.t - LAVA_START) + S.whip;
     P.coolR = S.coolR; P.coolX = S.coolX; P.coolY = S.coolY;
     P.erupt = S.erupt; P.eruptX = S.eruptX; P.eruptY = S.eruptY; P.flash = S.flash;
     lava.render(P); emb.render(S.t, { boost: S.boost });
@@ -215,7 +239,7 @@
   tl.to(DP, { a: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
   tl.add(lt, 0);
   tl.to(DP, { b: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
-  lt.to(L, { t: FRAME_START + DUR, duration: DUR, ease: 'none' }, 0);
+  lt.to(L, { t: LAVA_START + DUR * LAVA_RATE, duration: DUR, ease: 'none' }, 0);   // 8 -> 16
 
   /* ---------- markup completion ---------- */
   MUI.hydrate(root);
@@ -227,19 +251,23 @@
       sheen: $('sheen' + k), word: $('word' + k), molten: $('molten' + k), stone: $('stone' + k), ans: $('ans' + k),
       dot: $('dot' + k), dotB: $('dotb' + k), pulse: $('pulse' + k), trail: $('trail' + k)
     };
-    G.pos = G.fall.parentNode.parentNode;
+    G.pos = G.fall.closest('[class~="04-navette-sac-pos"]');
     G.mChars = split(G.molten); split(G.stone);
     for (var key in o) G[key] = o[key];
     return G;
   }
-  // card geometry (visual, after wrapper scale): A 831x459 @1.15, B 831x584 @1.05, both centred (960, 640)
-  var A = group('a', { P0: 0,   scale: 1.15, top: 376, bottom: 904, left: 482, right: 1438, coolY: 0.6,  dotX: 700, dotSink: 22, whipTo: 2.5 });
-  var B = group('b', { P0: 2.4, scale: 1.05, top: 334, bottom: 947, left: 524, right: 1396, coolY: 0.62, dotX: 985, dotSink: 26, whipTo: 5.0 });
+  // card geometry (visual, after wrapper scale):
+  //  A  831 wide @0.92, top pinned at 330; landing frame 459 src px -> bottom 752 (grows to 945 in the showcase)
+  //  B  831x584 @1.05 centred (960, 640) -> 334..947
+  var A = group('a', { P0: 0, scale: 0.92, origin: '50% 0%', top: 330, bottom: 752, left: 578, right: 1342, coolY: 0.52,
+    dotX: 700, dotSink: 14, whipTo: 2.5 });
+  var B = group('b', { P0: 5, scale: 1.05, origin: '50% 50%', top: 334, bottom: 947, left: 524, right: 1396, coolY: 0.62,
+    dotX: 985, dotSink: 26, whipTo: 5.0 });
 
   /* ---------- build-time initial states ---------- */
   [A, B].forEach(function (G) {
     gsap.set(G.pos, { autoAlpha: 0 });
-    gsap.set(G.fall, { scale: G.scale });
+    gsap.set(G.fall, { scale: G.scale, transformOrigin: G.origin });
     gsap.set(G.sq, { scaleX: 0.96, scaleY: 1.07 });
     gsap.set(G.stone, { opacity: 0 });
     gsap.set(G.g, { filter: 'blur(0px)' });
@@ -247,8 +275,9 @@
     gsap.set(G.dotB, { scale: 1.6 });
     gsap.set(G.pulse, { opacity: 0, scale: 1.6 });
   });
+  gsap.set(A.sq, { transformOrigin: '50% 459px' });
   gsap.set(B.g, { autoAlpha: 0 });
-  gsap.set(cam, { scale: 1 });
+  gsap.set(cam, { scale: 1, transformOrigin: '960px 760px' });
 
   /* ---------- reusable beats ---------- */
   function doShake(t, a) {
@@ -288,7 +317,7 @@
   }
 
   function flare(G, t) {
-    var f = el(G.fx, '04-navette-sac-flare', 'left:210px;top:226px;width:1500px;height:12px');
+    var f = el(G.fx, '04-navette-sac-flare', 'left:210px;top:222px;width:1500px;height:12px');
     gsap.set(f, { scaleX: 0, opacity: 0 });
     tl.set(f, { opacity: 1 }, t);
     tl.to(f, { scaleX: 1, duration: 0.18, ease: 'power3.out' }, t);
@@ -337,45 +366,46 @@
     }
   }
 
-  function streaks(t) {
+  function streaks(t, len) {
     var host = $('streaks');
     for (var i = 0; i < 9; i++) {
       var h = R(2, 6), w = R(380, 820), y = R(170, 960);
       var s = el(host, '04-navette-sac-streak', 'top:' + y + 'px;width:' + w + 'px;height:' + h + 'px');
       gsap.set(s, { x: 1960, opacity: 0 });
-      var ts = t + 0.06 + i * 0.025, dur = Math.min(R(0.2, 0.28), t + 0.4 - ts);
+      var ts = t + 0.12 + i * 0.03, dur = Math.min(R(0.2, 0.28), t + len - ts);
       tl.set(s, { opacity: R(0.45, 0.9) }, ts);
       tl.to(s, { x: -w - 80, duration: dur, ease: 'power1.in' }, ts);
     }
   }
 
-  function hop(G, t) {
-    var land = t + 0.2, landY = G.top + G.dotSink;
-    tl.fromTo(G.dot, { x: -60 }, { x: G.dotX, duration: 0.2, ease: 'none' }, t);
-    tl.fromTo(G.dot, { y: 560 }, { y: 240, duration: 0.1, ease: 'power2.out' }, t);
-    tl.to(G.dot, { y: landY, duration: 0.1, ease: 'power2.in' }, t + 0.1);
-    tl.to(G.dotB, { scaleX: 1.42, scaleY: 1.82, duration: 0.1, ease: 'power1.out' }, t);
-    tl.to(G.dotB, { scaleX: 1.6, scaleY: 1.6, duration: 0.1, ease: 'power1.in' }, t + 0.1);
+  // the orange "toi" dot jumps in from the bottom-left on a parabola (one beat of air time) and lands on the card's top edge
+  function hop(G, t, dur) {
+    var half = dur / 2, land = t + dur, landY = G.top + G.dotSink;
+    tl.fromTo(G.dot, { x: -60 }, { x: G.dotX, duration: dur, ease: 'none' }, t);
+    tl.fromTo(G.dot, { y: 720 }, { y: 238, duration: half, ease: 'power2.out' }, t);
+    tl.to(G.dot, { y: landY, duration: half, ease: 'power2.in' }, t + half);
+    tl.to(G.dotB, { scaleX: 1.42, scaleY: 1.82, duration: half, ease: 'power1.out' }, t);
+    tl.to(G.dotB, { scaleX: 1.6, scaleY: 1.6, duration: half, ease: 'power1.in' }, t + half);
     tl.set(G.dotB, { scaleX: 2.0, scaleY: 1.28 }, land);
     tl.to(G.dotB, { scaleX: 1.6, scaleY: 1.6, duration: 0.26, ease: 'back.out(3)' }, land);
     tl.set(G.pulse, { opacity: 0.95, scale: 1.6 }, land);
     tl.to(G.pulse, { scale: 4.6, opacity: 0, duration: 0.42, ease: 'power2.out' }, land);
   }
 
-  /* ---------- one power-up: erupt · fall · land+quench · stamp · hop · whip ---------- */
+  /* ---------- one power-up: erupt · fall · land+quench · stamp · (showcase) · hop · whip ---------- */
   function powerUp(G) {
     var P0 = G.P0;
-    // Scene 1/7 — the problem word erupts from the lava
+    // erupt (P+0) — the problem word bursts from the lava
     eruptWord(G, P0);
 
-    // Scene 2/8 — the app card falls red-hot
-    var tF = P0 + 0.4;
+    // fall (P+0.5) — the app card drops red-hot
+    var tF = P0 + 0.5;
     tl.set(G.pos, { autoAlpha: 1 }, tF);
-    tl.fromTo(G.fall, { y: -720, rotation: -8 }, { y: 0, rotation: 0, duration: 0.4, ease: 'power1.in' }, tF);
-    tl.to(G.trail, { opacity: 0, duration: 0.08, ease: 'power1.out' }, P0 + 0.8);
+    tl.fromTo(G.fall, { y: -820, rotation: -8 }, { y: 0, rotation: 0, duration: 0.5, ease: 'power2.in' }, tF);
 
-    // Scene 3/9 — LAND + QUENCH
-    var tL = P0 + 0.8;
+    // land + quench (P+1.0)
+    var tL = P0 + 1.0;
+    tl.to(G.trail, { opacity: 0, duration: 0.08, ease: 'power1.out' }, tL);
     tl.set(G.sq, { scaleX: 1.04, scaleY: 0.94 }, tL);
     tl.to(G.sq, { scaleX: 1, scaleY: 1, duration: 0.3, ease: 'back.out(2.2)' }, tL);
     doShake(tL, 10);
@@ -392,8 +422,8 @@
     tl.to(G.stone, { opacity: 1, duration: 0.2, ease: 'power1.out' }, tL);
     tl.to(G.word, { y: 30, opacity: 0.35, duration: 0.4, ease: 'power2.out' }, tL);
 
-    // Scene 4/10 — the answer stamps where the word was (stone word knocked into the lava)
-    var tA = P0 + 1.2;
+    // answer (P+1.5) — stamps where the word was (stone word knocked into the lava); HUD counter ticks here
+    var tA = P0 + 1.5;
     tl.to(G.word, { y: 120, scaleY: 0.5, opacity: 0, duration: 0.16, ease: 'power2.in' }, tA);
     tl.fromTo(G.ans, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, tA);
     tl.fromTo(G.ans, { scale: 1.4 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' }, tA);
@@ -402,43 +432,82 @@
     lt.set(L, { flash: 0.12 }, tA);
     lt.to(L, { flash: 0, duration: 0.2, ease: 'power2.out' }, tA);
 
-    // Scene 5/11 — the "toi" dot hops onto the new platform
-    hop(G, P0 + 1.6);
+    // hop (P+3.5 -> lands P+4.0)
+    hop(G, P0 + 3.5, 0.5);
 
-    // Scene 6/12 — WHIP-PAN out
-    var tW = P0 + 2.0;
-    tl.to(G.g, { x: -1800, filter: 'blur(16px)', duration: 0.4, ease: 'power2.in' }, tW);
-    lt.to(L, { whip: G.whipTo, coolX: 0.5 - 1800 / 1920, duration: 0.4, ease: 'power2.in' }, tW);
-    streaks(tW);
+    // whip-pan out (P+4.5 -> P+5.0)
+    var tW = P0 + 4.5;
+    tl.to(G.g, { x: -1800, filter: 'blur(16px)', duration: 0.5, ease: 'power2.in' }, tW);
+    lt.to(L, { whip: G.whipTo, coolX: 0.5 - 1800 / 1920, duration: 0.5, ease: 'power2.in' }, tW);
+    streaks(tW, 0.5);
   }
 
-  /* ---------- camera: slow push under each power-up ---------- */
-  tl.to(cam, { scale: 1.035, duration: 2.4, ease: 'none' }, 0);
-  tl.set(cam, { scale: 1 }, 2.4);
-  tl.to(cam, { scale: 1.035, duration: 2.4, ease: 'none' }, 2.4);
+  function flashTime(s, t) {
+    tl.to(s, { color: '#ff6a1f', scale: 1.24, textShadow: '0 0 20px rgba(255,106,31,0.95)', duration: 0.05, ease: 'power2.out' }, t);
+    tl.to(s, { color: '#ffffff', scale: 1, textShadow: '0 0 0px rgba(255,106,31,0)', duration: 0.3, ease: 'power2.inOut' }, t + 0.12);
+  }
 
-  /* ---------- POWER-UP 1 : NAVETTE ---------- */
+  /* ================= POWER-UP 1 : NAVETTE (0 – 5 s) ================= */
   powerUp(A);
-  // 1.30 — the price pulses; Friday departures light up on the 16ths
+
+  // 1.5 — the price pulses with the stamp
   var price = $('price');
   gsap.set(price, { transformOrigin: '100% 50%', textShadow: '0 0 0px rgba(255,106,31,0)' });
-  tl.to(price, { scale: 1.25, textShadow: '0 0 26px rgba(255,106,31,1)', duration: 0.04, ease: 'power2.out' }, 1.3);
-  tl.to(price, { scale: 1, textShadow: '0 0 0px rgba(255,106,31,0)', duration: 0.36, ease: 'power2.out' }, 1.34);
-  ['h14', 'h16', 'h18'].forEach(function (id, i) {
-    var s = $(id), t = 1.3 + i * 0.1;
-    gsap.set(s, { color: '#ffffff', textShadow: '0 0 0px rgba(255,106,31,0)' });
-    tl.to(s, { color: '#ff6a1f', scale: 1.22, textShadow: '0 0 20px rgba(255,106,31,0.95)', duration: 0.05, ease: 'power2.out' }, t);
-    tl.to(s, { color: '#ffffff', scale: 1, textShadow: '0 0 0px rgba(255,106,31,0)', duration: 0.26, ease: 'power2.inOut' }, t + 0.12);
-  });
-  tl.set(A.g, { visibility: 'hidden' }, 2.4);
+  tl.to(price, { scale: 1.3, textShadow: '0 0 26px rgba(255,106,31,1)', duration: 0.05, ease: 'power2.out' }, 1.5);
+  tl.to(price, { scale: 1, textShadow: '0 0 0px rgba(255,106,31,0)', duration: 0.4, ease: 'power2.out' }, 1.55);
 
-  /* ---------- POWER-UP 2 : SAC ---------- */
-  tl.set(B.g, { autoAlpha: 1 }, 2.4);
+  // 2.0 – 4.5 — SHOWCASE: slow camera push on the card
+  tl.to(cam, { scale: 1.06, duration: 2.5, ease: 'power1.inOut' }, 2.0);
+
+  ['h14', 'h16', 'h18', 'h15', 'h17', 'r0', 'r1'].forEach(function (id) {
+    gsap.set($(id), { color: '#ffffff', textShadow: '0 0 0px rgba(255,106,31,0)' });
+  });
+  var tints = [$('tint0'), $('tint1')], dates = [$('d0'), $('d1')];
+  gsap.set(tints, { opacity: 0, scaleX: 0.97 });
+  gsap.set(dates, { color: '#919cab' });
+  function lightRow(i, t) {
+    tl.to(tints[i], { opacity: 1, scaleX: 1, duration: 0.12, ease: 'power3.out' }, t);
+    tl.to(dates[i], { color: '#ffffff', duration: 0.12, ease: 'power2.out' }, t);
+  }
+  function dimRow(i, t) {
+    tl.to(tints[i], { opacity: 0, duration: 0.25, ease: 'power2.out' }, t);
+    tl.to(dates[i], { color: '#919cab', duration: 0.25, ease: 'power2.out' }, t);
+  }
+  // 2.0 Friday line lights, its times flash on the 8ths
+  lightRow(0, 2.0);
+  flashTime($('h14'), 2.0); flashTime($('h16'), 2.25); flashTime($('h18'), 2.5);
+  // 2.5 Saturday line lights
+  dimRow(0, 2.5);
+  lightRow(1, 2.5);
+  flashTime($('h15'), 2.625); flashTime($('h17'), 2.75);
+  // 3.0 the return sub-card slides down open under (a); the card grows and its content scrolls up (app scroll)
+  dimRow(1, 3.0);
+  var viewA = $('viewa'), scrollA = $('scrolla'), routeB = $('routeb');
+  gsap.set(routeB, { clipPath: 'inset(0% 0% 100% 0% round 22px)' });
+  tl.fromTo(routeB, { y: -26 }, { y: 0, duration: 0.25, ease: 'back.out(1.7)' }, 3.0);
+  tl.fromTo(routeB, { clipPath: 'inset(0% 0% 100% 0% round 22px)' }, { clipPath: 'inset(0% 0% 0% 0% round 22px)', duration: 0.25, ease: 'back.out(1.7)', immediateRender: false }, 3.0);
+  tl.to(scrollA, { y: -143, duration: 0.3, ease: 'power3.out' }, 3.0);
+  tl.fromTo(viewA, { clipPath: 'inset(0px 0px 389px 0px round 37px)' }, { clipPath: 'inset(0px 0px 253px 0px round 37px)', duration: 0.3, ease: 'power3.out', immediateRender: false }, 3.0);
+  flashTime($('r0'), 3.125); flashTime($('r1'), 3.25);
+  // 3.5 the app's bold line types in under the routes
+  var resaChars = split($('resa'));
+  gsap.set(resaChars, { opacity: 0 });
+  tl.to(resaChars, { opacity: 1, duration: 0.02, ease: 'none', stagger: 0.3 / resaChars.length }, 3.5);
+  tl.to(scrollA, { y: -180, duration: 0.3, ease: 'power2.out' }, 3.5);
+  tl.fromTo(viewA, { clipPath: 'inset(0px 0px 253px 0px round 37px)' }, { clipPath: 'inset(0px 0px 180px 0px round 37px)', duration: 0.3, ease: 'power2.out', immediateRender: false }, 3.5);
+
+  tl.set(A.g, { visibility: 'hidden' }, 5.0);
+
+  /* ================= POWER-UP 2 : SAC (5 – 10 s) ================= */
+  tl.set(cam, { scale: 1, transformOrigin: '960px 540px' }, 5.0);
+  tl.set(B.g, { autoAlpha: 1 }, 5.0);
+  tl.to(cam, { scale: 1.03, duration: 4.5, ease: 'none' }, 5.0);
   powerUp(B);
-  // 3.30–3.90 — BRANDING: the 8 sign columns flash one per 32nd note
+
+  // 6.1 – 6.6 — BRANDING: the 8 sign columns flash one per 32nd note (0.0625 s)
   var brands = $('brands'), XS = [102, 183, 263, 344, 424, 504, 585, 666], YS = [92, 202, 313];
   XS.forEach(function (x, c) {
-    var tc = 3.3 + c * 0.075;
+    var tc = 6.1 + c * 0.0625;
     YS.forEach(function (y) {
       var lx = (x / 766 * 100) + '%', ly = (y / 431 * 100) + '%';
       var puff = el(brands, '04-navette-sac-puff', 'left:' + lx + ';top:' + ly);
@@ -450,6 +519,39 @@
       tl.to(puff, { scale: 1.6, y: -22, opacity: 0, duration: 0.42, ease: 'power2.out' }, tc);
     });
   });
+
+  // 7.0 – 8.8 — SHOWCASE "Appuyer pour zoomer": tap, zoom x2.1 into the grid, pan, zoom back out
+  var zoom = $('zoom'), taps = $('taps'), zlabel = $('zlabel');
+  var K = 767 / 766, Z = 2.1;                        // displayed px per image px
+  gsap.set(zoom, { transformOrigin: '0px 0px', x: 0, y: 0, scale: 1 });
+  function view(t, wx, wy, z, dur, ease) {           // show the image window whose top-left is (wx, wy) image px at zoom z
+    tl.to(zoom, { x: -z * wx * K, y: -z * wy * K, scale: z, duration: dur, ease: ease }, t);
+  }
+  // tap ripple on the image (centre of the first window)
+  var TX = 220 * K, TY = 132 * K;
+  var tap = el(taps, '04-navette-sac-tap', 'left:' + TX + 'px;top:' + TY + 'px');
+  var tring = el(taps, '04-navette-sac-tapring', 'left:' + TX + 'px;top:' + TY + 'px');
+  gsap.set(tap, { opacity: 0, scale: 0.6 });
+  gsap.set(tring, { opacity: 0, scale: 0.4 });
+  tl.set(tap, { opacity: 0.95 }, 7.0);
+  tl.to(tap, { scale: 1, duration: 0.08, ease: 'power2.out' }, 7.0);
+  tl.to(tap, { opacity: 0, scale: 1.3, duration: 0.3, ease: 'power2.in' }, 7.08);
+  tl.set(tring, { opacity: 1 }, 7.0);
+  tl.to(tring, { scale: 2.6, opacity: 0, duration: 0.45, ease: 'power2.out' }, 7.0);
+  gsap.set(zlabel, { color: '#69707a', textShadow: '0 0 0px rgba(255,106,31,0)' });
+  tl.to(zlabel, { color: '#ffffff', textShadow: '0 0 16px rgba(255,106,31,0.9)', duration: 0.05, ease: 'power2.out' }, 7.0);
+  tl.to(zlabel, { color: '#69707a', textShadow: '0 0 0px rgba(255,106,31,0)', duration: 0.5, ease: 'power2.inOut' }, 7.15);
+  // 7.0 top row, left half (BOISSONS · ENGINS PYROTECHNIQUES · ARMES · CASQUES)
+  view(7.02, 30, 26, Z, 0.3, 'power3.out');
+  view(7.32, 40, 30, Z, 0.18, 'sine.inOut');
+  // 7.5 top row, right half (MÉGAPHONES · INSTRUMENTS · VÉLOS ET TROTTINETTES · MATÉRIEL DE CAMPING)
+  view(7.5, 390, 26, Z, 0.3, 'power3.inOut');
+  view(7.8, 400, 30, Z, 0.2, 'sine.inOut');
+  // 8.0 down to the middle row (DRONES · POINTEURS LASERS · … · ANIMAUX), drifting right
+  view(8.0, 46, 142, Z, 0.3, 'power3.inOut');
+  view(8.3, 104, 146, Z, 0.2, 'sine.inOut');
+  // 8.5 back out to the full grid
+  view(8.5, 0, 0, 1, 0.3, 'power3.out');
 
   draw();
   window.__timelines[FID] = tl;

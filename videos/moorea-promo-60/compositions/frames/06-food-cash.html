@@ -22,12 +22,16 @@
 [class~="06-food-cash-burst"] { position: absolute; left: 50%; top: 50%; width: 1100px; height: 240px; margin: -120px 0 0 -550px; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 150, 40, 0.75), rgba(225, 83, 17, 0.35) 55%, rgba(225, 83, 17, 0) 100%); opacity: 0; }
 
-/* category tiles: a slice of the app page (#0f1722) carrying the real tiles */
+/* category tiles: a slice of the app page (#0f1722) carrying the real tiles + the app's veggie line */
+[id="06-food-cash-tiles"] { display: flex; flex-direction: column; align-items: center; transform-origin: 50% 0%; }
 [id="06-food-cash-plate"] { display: flex; gap: 28px; padding: 26px 34px 22px; border-radius: 37px; background: #0f1722;
   box-shadow: 0 26px 60px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.04); }
 [class~="06-food-cash-catimg"] { width: 166px; height: 166px; border-radius: 30px; display: block; }
+[id="06-food-cash-veg"] { margin-top: 14px; padding: 4px 26px 6px; border-radius: 24px; background: rgba(15, 23, 34, 0.82);
+  font-weight: 400; font-size: 38px; color: #b4bcc6; white-space: nowrap; }
 
-/* food cards */
+/* food cards: stack, then carousel */
+[id="06-food-cash-stack"] { z-index: 0; }
 [class~="06-food-cash-s072"] { transform: scale(0.72); }
 [class~="06-food-cash-sq"] { position: relative; box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6); }
 [class~="06-food-cash-flash"] { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
@@ -53,13 +57,22 @@
   box-shadow: 0 0 0 3px rgba(255, 106, 31, 0.95), 0 0 46px 10px rgba(255, 106, 31, 0.55); }
 [class~="06-food-cash-puff"] { position: absolute; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; opacity: 0;
   background: radial-gradient(closest-side, rgba(236, 240, 246, 0.75), rgba(190, 200, 214, 0.35) 55%, rgba(190, 200, 214, 0) 100%); filter: blur(4px); }
+
+/* payment security strip (the app's slim info row under the steps) */
+[id="06-food-cash-strip"] { display: flex; align-items: center; height: 70px; padding: 0 32px 0 10px; border-radius: 22px; background: #142030;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55), 0 0 0 2px rgba(255, 255, 255, 0.04); }
+[class~="06-food-cash-sit"] { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 26px; color: #fff; white-space: nowrap; }
+[class~="06-food-cash-stile"] { width: 50px; height: 50px; border-radius: 12px; background: #0f1722; color: #fff; flex: none;
+  display: flex; align-items: center; justify-content: center; }
+[class~="06-food-cash-stile"] svg { width: 28px; height: 28px; }
+[class~="06-food-cash-ssep"] { width: 2px; height: 36px; background: #2f3b4b; margin: 0 26px; flex: none; }
 </style>
 <link rel="stylesheet" href="assets/kit/moorea-ui.css">
 
-<div id="root" data-composition-id="06-food-cash" data-width="1920" data-height="1080" data-duration="4.8">
-  <canvas class="clip" id="06-food-cash-lava" width="960" height="540" data-start="0" data-duration="4.8" data-track-index="0"
+<div id="root" data-composition-id="06-food-cash" data-width="1920" data-height="1080" data-duration="10">
+  <canvas class="clip" id="06-food-cash-lava" width="960" height="540" data-start="0" data-duration="10" data-track-index="0"
           style="position:absolute;inset:0;width:100%;height:100%"></canvas>
-  <canvas class="clip" id="06-food-cash-embers" width="1920" height="1080" data-start="0" data-duration="4.8" data-track-index="1"
+  <canvas class="clip" id="06-food-cash-embers" width="1920" height="1080" data-start="0" data-duration="10" data-track-index="1"
           style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
 
   <div class="mui 06-food-cash-layer" id="06-food-cash-content">
@@ -68,7 +81,7 @@
     <div class="06-food-cash-layer" id="06-food-cash-p5">
       <div class="06-food-cash-layer" id="06-food-cash-shake5">
 
-        <!-- problem word (molten, then stone) -->
+        <!-- problem word (molten, then stone) — centre (960, 230) -->
         <div class="06-food-cash-slot" style="top:130px;height:200px">
           <div class="06-food-cash-stackword 06-food-cash-problem" id="06-food-cash-w5">
             <span class="mui-display fx-molten" id="06-food-cash-w5m">J’AI FAIM</span>
@@ -76,51 +89,58 @@
           </div>
         </div>
 
-        <!-- category tiles row -->
+        <!-- category tiles row + the app's veggie line -->
         <div class="06-food-cash-slot-top" style="top:322px">
-          <div id="06-food-cash-tiles" style="transform-origin:50% 0%">
+          <div id="06-food-cash-tiles">
             <div id="06-food-cash-plate">
               <div class="mui-cat" id="06-food-cash-t1"><img class="06-food-cash-catimg" src="assets/img/cat-restaurants.png" alt=""><div class="l">Restaurants</div></div>
               <div class="mui-cat" id="06-food-cash-t2"><img class="06-food-cash-catimg" src="assets/img/cat-bars.png" alt=""><div class="l">Bars</div></div>
               <div class="mui-cat" id="06-food-cash-t3"><img class="06-food-cash-catimg" src="assets/img/cat-pizza.png" alt=""><div class="l">Pizza</div></div>
               <div class="mui-cat" id="06-food-cash-t4"><img class="06-food-cash-catimg" src="assets/img/cat-glaces.png" alt=""><div class="l">Glaces</div></div>
             </div>
+            <div id="06-food-cash-veg">Tous les restaurants proposent du végétarien</div>
           </div>
         </div>
 
-        <!-- food-truck card stack (centre 960, 776) -->
+        <!-- food-truck cards: fanned stack (centre 960, 776) → carousel (y 712) -->
         <div class="06-food-cash-layer" id="06-food-cash-stack">
-          <div class="06-food-cash-slot" style="top:364px;height:800px">
+          <div class="06-food-cash-slot" style="top:376px;height:800px">
             <div id="06-food-cash-c1"><div class="06-food-cash-s072"><div class="06-food-cash-sq" id="06-food-cash-c1q">
               <div class="mui-food">
-                <div class="ph"><img src="assets/img/food-sto-dimos.jpg" alt=""><span class="mui-sign" data-mui-icon="mdiSignDirection"></span></div>
+                <div class="ph"><img src="assets/img/food-sto-dimos.jpg" alt="">
+                  <span class="06-food-cash-ring" id="06-food-cash-ring1"></span>
+                  <span class="mui-sign" id="06-food-cash-sign1" data-mui-icon="mdiSignDirection"></span></div>
                 <div class="tx"><div class="n">Sto Dimos</div><div class="d">Viens manger des spécialités Grecques</div></div>
               </div>
               <div class="06-food-cash-dim" id="06-food-cash-c1d"></div>
               <div class="06-food-cash-flash" id="06-food-cash-c1f"></div>
             </div></div></div>
           </div>
-          <div class="06-food-cash-slot" style="top:364px;height:800px">
+          <div class="06-food-cash-slot" style="top:376px;height:800px">
             <div id="06-food-cash-c2"><div class="06-food-cash-s072"><div class="06-food-cash-sq" id="06-food-cash-c2q">
               <div class="mui-food">
-                <div class="ph"><img src="assets/img/food-bali-napoli.jpg" alt=""><span class="mui-local">Local</span><span class="mui-sign" data-mui-icon="mdiSignDirection"></span></div>
+                <div class="ph"><img src="assets/img/food-bali-napoli.jpg" alt=""><span class="mui-local">Local</span>
+                  <span class="06-food-cash-ring" id="06-food-cash-ring2"></span>
+                  <span class="mui-sign" id="06-food-cash-sign2" data-mui-icon="mdiSignDirection"></span></div>
                 <div class="tx"><div class="n">Bali Napoli</div><div class="d">Des pizzas au feu de bois</div></div>
               </div>
               <div class="06-food-cash-dim" id="06-food-cash-c2d"></div>
               <div class="06-food-cash-flash" id="06-food-cash-c2f"></div>
             </div></div></div>
           </div>
-          <div class="06-food-cash-slot" style="top:364px;height:800px">
+          <div class="06-food-cash-slot" style="top:376px;height:800px">
             <div id="06-food-cash-c3"><div class="06-food-cash-s072"><div class="06-food-cash-sq" id="06-food-cash-c3q">
               <div class="mui-food">
-                <div class="ph"><img src="assets/img/food-pasta.jpg" alt=""><span class="mui-sign" data-mui-icon="mdiSignDirection"></span></div>
+                <div class="ph"><img src="assets/img/food-pasta.jpg" alt="">
+                  <span class="06-food-cash-ring" id="06-food-cash-ring3"></span>
+                  <span class="mui-sign" id="06-food-cash-sign3" data-mui-icon="mdiSignDirection"></span></div>
                 <div class="tx"><div class="n">Pasta é Basta</div><div class="d">Des pâtes préparées dans la meule du Parmesan</div></div>
               </div>
               <div class="06-food-cash-dim" id="06-food-cash-c3d"></div>
               <div class="06-food-cash-flash" id="06-food-cash-c3f"></div>
             </div></div></div>
           </div>
-          <div class="06-food-cash-slot" style="top:364px;height:800px">
+          <div class="06-food-cash-slot" style="top:376px;height:800px">
             <div id="06-food-cash-c4"><div class="06-food-cash-s072"><div class="06-food-cash-sq" id="06-food-cash-c4q">
               <div class="mui-food">
                 <div class="ph"><img src="assets/img/food-cabane-burger.jpg" alt=""><span class="mui-local">Local</span>
@@ -128,6 +148,7 @@
                   <span class="mui-sign" id="06-food-cash-sign4" data-mui-icon="mdiSignDirection"></span></div>
                 <div class="tx"><div class="n">La Cabane à Burger</div><div class="d">Viens manger des burgers gourmands</div></div>
               </div>
+              <div class="06-food-cash-dim" id="06-food-cash-c4d"></div>
               <div class="06-food-cash-flash" id="06-food-cash-c4f"></div>
             </div></div></div>
           </div>
@@ -159,12 +180,23 @@
 
         <!-- steps row (centre 960, 770) -->
         <div class="06-food-cash-slot" style="top:570px;height:400px">
-          <div class="06-food-cash-s105">
+          <div id="06-food-cash-stepsy"><div class="06-food-cash-s105">
             <div class="mui-steps">
               <div class="mui-step" id="06-food-cash-st1"><div class="n mui-display" id="06-food-cash-n1">1</div><div class="l">Choisis ton<br>montant</div></div>
               <div class="mui-step" id="06-food-cash-st2"><div class="n mui-display" id="06-food-cash-n2">2</div><div class="l">Paie en<br>sécurité</div></div>
               <div class="mui-step" id="06-food-cash-st3"><div class="n mui-display" id="06-food-cash-n3">3</div><div class="l">Profite du<br>festival</div></div>
             </div>
+          </div></div>
+        </div>
+
+        <!-- payment security strip (centre 960, 952) -->
+        <div class="06-food-cash-slot" style="top:917px;height:70px">
+          <div id="06-food-cash-strip">
+            <div class="06-food-cash-sit" id="06-food-cash-si1"><span class="06-food-cash-stile" data-mui-icon="mdiShieldCheck"></span><span>3D Secure</span></div>
+            <i class="06-food-cash-ssep"></i>
+            <div class="06-food-cash-sit" id="06-food-cash-si2"><span class="06-food-cash-stile" data-mui-icon="mdiShield"></span><span>Paiement chiffré</span></div>
+            <i class="06-food-cash-ssep"></i>
+            <div class="06-food-cash-sit" id="06-food-cash-si3"><span class="06-food-cash-stile" data-mui-icon="mdiCreditCardOutline"></span><span>CB, Visa, Mastercard</span></div>
           </div>
         </div>
 
@@ -207,7 +239,8 @@
 <script src="assets/kit/lava.js"></script>
 <script>
 (function () {
-  var ID = '06-food-cash', DUR = 4.8, FS = 17.6;
+  /* 120 BPM grid: beat 0.5 s, 8th 0.25 s. P5 = 0.0, P6 = 5.0 (HUD counter ticks at 1.5 and 6.5). */
+  var ID = '06-food-cash', DUR = 10, LAVA_START = 24, LAVA_RATE = 0.8;
   function $(s) { return document.getElementById(ID + '-' + s); }
   var root = document.querySelector('[data-composition-id="' + ID + '"]');
   if (window.MUI) MUI.hydrate(root);
@@ -225,25 +258,27 @@
   var p2in = gsap.parseEase('power2.in'), p2out = gsap.parseEase('power2.out'), p3out = gsap.parseEase('power3.out');
   function c01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
   // [start, x, y, amount, decay]
-  var ERUPT = [[0, .5, .28, 1.0, .5], [.8, .5, .97, .55, .2], [1.0, .5, .97, .5, .2], [1.2, .5, .97, .5, .2], [1.4, .5, .97, .7, .35],
-               [2.4, .5, .28, 1.0, .5], [3.2, .5, .53, 1.0, .55]];
+  var ERUPT = [[0, .5, .28, 1.0, .5], [1.0, .5, .97, .55, .2], [1.25, .5, .97, .5, .2], [1.5, .5, .97, .5, .2], [1.75, .5, .97, .7, .35],
+               [5.0, .5, .28, 1.0, .5], [6.0, .5, .53, 1.0, .55]];
   // [start, amount, decay]
-  var FLASH = [[0, .35, .25], [.8, .1, .14], [1.0, .1, .14], [1.2, .16, .16], [1.4, .12, .16], [2.4, .35, .25], [3.2, .3, .25], [3.6, .12, .2]];
+  var FLASH = [[0, .35, .25], [1.0, .1, .14], [1.25, .1, .14], [1.5, .16, .16], [1.75, .12, .16],
+               [2.0, .06, .14], [2.5, .05, .12], [3.0, .05, .12], [3.5, .05, .12], [4.0, .06, .14],
+               [5.0, .35, .25], [6.0, .3, .25], [6.5, .12, .2], [7.0, .04, .1], [7.5, .04, .1], [8.0, .05, .12], [8.5, .05, .12], [9.0, .06, .14]];
   function last(list, lt) { var e = null; for (var i = 0; i < list.length; i++) if (list[i][0] <= lt) e = list[i]; return e; }
-  var L = { t: FS, heat: 1, zoom: 1, panX: 0, panY: 0, tilt: .55, horizon: .16, coolR: 0, coolX: .5, coolY: .435,
+  var L = { t: LAVA_START, heat: 1, zoom: 1, panX: 0, panY: 0, tilt: .55, horizon: .16, coolR: 0, coolX: .5, coolY: .435,
             erupt: 0, eruptX: .5, eruptY: .5, flash: 0 };
   var lastLt = -1;
   function draw(lt) {
     lt = +lt; if (lt === lastLt) return; lastLt = lt;
-    L.t = FS + lt;
-    var w1 = 2.5 * p2in(c01((lt - 2.0) / .4)), w2 = 2.5 * p2in(c01((lt - 4.4) / .4));
-    L.panX = .1 * lt + w1 + w2;
-    L.panY = -.12 * lt;
+    L.t = LAVA_START + lt * LAVA_RATE;                       // 24 → 32 over the 10 s
+    var w1 = 2.5 * p2in(c01((lt - 4.5) / .5)), w2 = 2.5 * p2in(c01((lt - 9.5) / .5));
+    L.panX = .08 * lt + w1 + w2;
+    L.panY = -.096 * lt;
     var e = last(ERUPT, lt);
     if (e) { L.erupt = e[3] * (1 - p2out(c01((lt - e[0]) / e[4]))); L.eruptX = e[1]; L.eruptY = e[2]; } else L.erupt = 0;
     var f = last(FLASH, lt); L.flash = f ? f[1] * (1 - c01((lt - f[0]) / f[2])) : 0;
-    L.coolR = lt < 3.2 ? 0 : .45 * p3out(c01((lt - 3.2) / .5));
-    L.coolX = .5 - .9375 * p2in(c01((lt - 4.4) / .4));
+    L.coolR = lt < 6.0 ? 0 : .45 * p3out(c01((lt - 6.0) / .5));
+    L.coolX = .5 - .9375 * p2in(c01((lt - 9.5) / .5));     // the quench ring rides the whip
     L.heat = 1 + .35 * L.erupt;
     L.zoom = 1 + .05 * L.flash;
     lava.render(L);
@@ -281,38 +316,46 @@
     tl.fromTo(el, { scale: 1.4 }, { scale: 1, duration: .3, ease: 'back.out(3)' }, t);
     tl.fromTo(burst, { scale: .5, opacity: .9 }, { scale: 1.5, opacity: 0, duration: .45, ease: 'power2.out', immediateRender: false }, t);
   }
-  function hop(xEl, yEl, sEl, dipEl, x0, y0, peak, x1, y1, t, dur) {
+  function hop(xEl, yEl, sEl, dipEl, dip, x0, y0, peak, x1, y1, t, dur) {
     tl.fromTo(xEl, { x: x0 }, { x: x1, duration: dur, ease: 'none' }, t);
     tl.fromTo(yEl, { y: y0 }, { y: peak, duration: dur / 2, ease: 'power2.out' }, t);
     tl.to(yEl, { y: y1, duration: dur / 2, ease: 'power2.in' }, t + dur / 2);
-    tl.fromTo(sEl, { scaleX: .82, scaleY: 1.22 }, { scaleX: 1, scaleY: 1, duration: dur * .6, ease: 'power2.out' }, t);
+    tl.fromTo(sEl, { scaleX: .82, scaleY: 1.22 }, { scaleX: 1, scaleY: 1, duration: .3, ease: 'power2.out' }, t);
     tl.fromTo(sEl, { scaleX: 1.25, scaleY: .8 }, { scaleX: 1, scaleY: 1, duration: .22, ease: 'back.out(3)', immediateRender: false }, t + dur);
-    tl.fromTo(dipEl, { y: 0 }, { y: 9, duration: .06, ease: 'power2.out', immediateRender: false }, t + dur);
+    tl.fromTo(dipEl, { y: 0 }, { y: dip, duration: .06, ease: 'power2.out', immediateRender: false }, t + dur);
     tl.to(dipEl, { y: 0, duration: .2, ease: 'back.out(2)' }, t + dur + .06);
   }
-  function whip(layer, t) {
-    tl.fromTo(layer, { x: 0, filter: 'blur(0px)' }, { x: -1800, filter: 'blur(16px)', duration: .4, ease: 'power2.in', immediateRender: false }, t);
+  function whip(layer, t, dist) {
+    tl.fromTo(layer, { x: 0, filter: 'blur(0px)' }, { x: -dist, filter: 'blur(16px)', duration: .5, ease: 'power2.in', immediateRender: false }, t);
+  }
+  var SIGN_OFF = { scale: 1, backgroundColor: 'rgba(10,12,16,0.78)', boxShadow: '0 0 0px 0px rgba(225,83,17,0)' };
+  function signPulse(n, t, stay) {
+    var s = $('sign' + n);
+    tl.fromTo(s, SIGN_OFF, { scale: 1.35, backgroundColor: '#e15311', boxShadow: '0 0 34px 8px rgba(225,83,17,0.85)', duration: .1, ease: 'power2.out', immediateRender: false }, t);
+    tl.to(s, { scale: 1, duration: .26, ease: 'back.out(3)' }, t + .1);
+    if (!stay) tl.to(s, { backgroundColor: SIGN_OFF.backgroundColor, boxShadow: SIGN_OFF.boxShadow, duration: .3, ease: 'power2.in' }, t + .3);
+    tl.fromTo($('ring' + n), { scale: 1, opacity: 1 }, { scale: 2.7, opacity: 0, duration: .45, ease: 'power2.out', immediateRender: false }, t);
   }
 
   /* ===================== PART 5 — J'AI FAIM ===================== */
-  // Scene 1 (0.00): problem word erupts
+  // Scene 1 (0.0–0.5): problem word erupts
   erupt($('w5'), 0);
   shake($('shake5'), 0.02, 8, false);
 
-  // Scene 2 (0.40–1.00): tiles pop on 8ths
-  tl.fromTo($('plate'), { scaleX: 0, scaleY: .55 }, { scaleX: 1, scaleY: 1, duration: .16, ease: 'expo.out' }, .34);
+  // Scene 2 (0.5–1.25): tiles pop on 8ths, then the app's veggie line
+  tl.fromTo($('plate'), { scaleX: 0, scaleY: .55 }, { scaleX: 1, scaleY: 1, duration: .16, ease: 'expo.out' }, .44);
   ['t1', 't2', 't3', 't4'].forEach(function (k, i) {
-    var at = .4 + .2 * i;
+    var at = .5 + .25 * i;
     tl.fromTo($(k), { scale: 0 }, { scale: 1.12, duration: .1, ease: 'power3.out' }, at);
     tl.to($(k), { scale: 1, duration: .12, ease: 'power2.inOut' }, at + .1);
   });
-  // 0.80: row moves up + scales to 0.85 to make room
-  tl.fromTo($('tiles'), { y: 0, scale: 1 }, { y: -24, scale: .85, duration: .3, ease: 'power3.out', immediateRender: false }, .8);
+  // 1.0: the row moves up + shrinks to make room for the stack
+  tl.fromTo($('tiles'), { y: 0, scale: 1 }, { y: -32, scale: .8, duration: .3, ease: 'power3.out', immediateRender: false }, 1.0);
+  tl.fromTo($('veg'), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .22, ease: 'power3.out' }, 1.25);
 
-  // Scene 3 (0.80–1.40): food-truck cards slam onto the stack on 8ths
-  // dealt stack: older cards keep a small fan offset so all four trucks read
-  var CARDS = [{ rot: -4, from: -14, dx: -128, dy: -12, land: .8 }, { rot: 3, from: 12, dx: 128, dy: -8, land: 1.0 },
-               { rot: -2, from: -10, dx: -54, dy: -4, land: 1.2 }, { rot: 0, from: 7, dx: 0, dy: 0, land: 1.4 }];
+  // Scene 3 (1.0–1.75): food-truck cards slam onto a fanned stack on 8ths
+  var CARDS = [{ rot: -3.5, from: -14, dx: -128, dy: -10, land: 1.0 }, { rot: 2.5, from: 12, dx: 128, dy: -6, land: 1.25 },
+               { rot: -1.5, from: -10, dx: -54, dy: -3, land: 1.5 }, { rot: 0, from: 7, dx: 0, dy: 0, land: 1.75 }];
   CARDS.forEach(function (c, i) {
     var n = i + 1;
     tl.fromTo($('c' + n), { x: c.dx * 2.2, y: 800, rotation: c.from, scale: 1.3 },
@@ -323,34 +366,55 @@
     shake($('shake5'), c.land, i === 3 ? 12 : 9, true);
   });
 
-  // Scene 4 (1.20–1.60): answer stamps, problem word turns to stone; 1.40 signpost pulses orange
-  stone($('w5'), $('w5m'), $('w5s'), 1.2);
-  stamp($('a5'), $('b5'), 1.2);
-  tl.fromTo($('sign4'), { scale: 1, backgroundColor: 'rgba(10,12,16,0.78)', boxShadow: '0 0 0px 0px rgba(225,83,17,0)' },
-                        { scale: 1.35, backgroundColor: '#e15311', boxShadow: '0 0 34px 8px rgba(225,83,17,0.85)', duration: .1, ease: 'power2.out', immediateRender: false }, 1.4);
-  tl.to($('sign4'), { scale: 1, duration: .26, ease: 'back.out(3)' }, 1.5);
-  tl.fromTo($('ring4'), { scale: 1, opacity: 1 }, { scale: 2.7, opacity: 0, duration: .45, ease: 'power2.out', immediateRender: false }, 1.4);
+  // 1.5: answer stamps (HUD +1), problem word turns to stone
+  stone($('w5'), $('w5m'), $('w5s'), 1.5);
+  stamp($('a5'), $('b5'), 1.5);
 
-  // Scene 5 (1.60–2.00): toi dot hops onto the top card
-  hop($('d5x'), $('d5y'), $('d5s'), $('stack'), -70, 470, 350, 730, 544, 1.6, .2);
+  // Scene 4 (2.0–3.75) SHOWCASE: the stack spreads into a carousel (cards at 0.5, 24 px gaps, y 712)
+  var PITCH = 923 * .5 + 24, CY = 712 - 776, CS = .5 / .72;
+  CARDS.forEach(function (c, i) {
+    tl.to($('c' + (i + 1)), { x: (i - 1.5) * PITCH, y: CY, rotation: 0, scale: CS, duration: .34, ease: 'power3.out' }, 2.0);
+  });
+  tl.to($('tiles'), { y: -38, scale: .78, duration: .3, ease: 'power3.out' }, 2.0);
+  // one card per beat: focus ×1.12, the others dim to 0.55, its signpost pulses orange; the track scrolls to keep it whole
+  var FOCUS = [2.0, 2.5, 3.0, 3.5], TRACK = [30, 10, -10, -30];
+  FOCUS.forEach(function (T, i) {
+    var n = i + 1;
+    tl.to($('stack'), { x: TRACK[i], duration: .3, ease: 'power3.out' }, T);
+    tl.set($('c' + n), { zIndex: 2 }, T);
+    tl.to($('c' + n + 'q'), { scale: 1.12, duration: .22, ease: 'back.out(2)' }, T);
+    tl.to($('c' + n + 'd'), { opacity: 0, duration: .12, ease: 'power1.out' }, T);
+    tl.fromTo($('c' + n + 'f'), { opacity: .3 }, { opacity: 0, duration: .14, ease: 'none', immediateRender: false }, T);
+    if (i === 0) {
+      [2, 3, 4].forEach(function (m) { tl.to($('c' + m + 'd'), { opacity: .45, duration: .15, ease: 'power1.out' }, T); });
+    } else {
+      tl.to($('c' + i + 'q'), { scale: 1, duration: .2, ease: 'power2.out' }, T);
+      tl.to($('c' + i + 'd'), { opacity: .45, duration: .15, ease: 'power1.out' }, T);
+    }
+    signPulse(n, T + .02, false);
+  });
 
-  // Scene 6 (2.00–2.40): whip-pan out
-  whip($('p5'), 2.0);
+  // Scene 5 (3.5–4.0): the toi dot leaps onto the focused card (lands 4.0), its signpost opens the map
+  hop($('d5x'), $('d5y'), $('d5s'), $('c4q'), 18, -80, 640, 330, 1560, 524, 3.5, .5);
+  signPulse(4, 4.0, true);
+
+  // Scene 6 (4.5–5.0): whip-pan out
+  whip($('p5'), 4.5, 2300);   // the carousel bleeds to the right edge: travel far enough to clear it
 
   /* ===================== PART 6 — BRACELET À SEC ===================== */
-  // Scene 7 (2.40): problem word erupts
-  erupt($('w6'), 2.4);
-  shake($('shake6'), 2.42, 8, false);
+  // Scene 7 (5.0–5.5): problem word erupts
+  erupt($('w6'), 5.0);
+  shake($('shake6'), 5.02, 8, false);
 
-  // Scene 8 (2.80–3.20): the glow button falls red-hot
-  tl.fromTo($('bfall'), { y: -640, rotation: -9, scale: 1.12 }, { y: 0, rotation: 0, scale: 1, duration: .4, ease: 'power1.in' }, 2.8);
-  tl.fromTo($('hot'), { opacity: 1 }, { opacity: 0, duration: .4, ease: 'power2.out' }, 3.2);
-  tl.fromTo($('rim'), { opacity: 1 }, { opacity: 0, duration: .5, ease: 'power2.out' }, 3.2);
+  // Scene 8 (5.5–6.0): the glow button falls red-hot
+  tl.fromTo($('bfall'), { y: -760, rotation: -9, scale: 1.12 }, { y: 0, rotation: 0, scale: 1, duration: .5, ease: 'power2.in' }, 5.5);
+  tl.fromTo($('hot'), { opacity: 1 }, { opacity: 0, duration: .4, ease: 'power2.out' }, 6.0);
+  tl.fromTo($('rim'), { opacity: 1 }, { opacity: 0, duration: .5, ease: 'power2.out' }, 6.0);
 
-  // Scene 9 (3.20–3.60): LAND + QUENCH, steps pop on 8ths
-  tl.fromTo($('bsq'), { scaleX: 1.07, scaleY: .84 }, { scaleX: 1, scaleY: 1, duration: .3, ease: 'back.out(2)', immediateRender: false }, 3.2);
-  shake($('shake6'), 3.2, 13, false);
-  stone($('w6'), $('w6m'), $('w6s'), 3.2);
+  // Scene 9 (6.0–6.5): LAND + QUENCH
+  tl.fromTo($('bsq'), { scaleX: 1.07, scaleY: .84 }, { scaleX: 1, scaleY: 1, duration: .3, ease: 'back.out(2)', immediateRender: false }, 6.0);
+  shake($('shake6'), 6.0, 13, false);
+  stone($('w6'), $('w6m'), $('w6s'), 6.0);
   // steam burst off the quenched button (seeded)
   var steam = $('steam');
   for (var k = 0; k < 12; k++) {
@@ -360,43 +424,55 @@
     var pf = document.createElement('div'); pf.className = '06-food-cash-puff';
     pf.style.left = px.toFixed(1) + 'px'; pf.style.top = py.toFixed(1) + 'px';
     steam.appendChild(pf);
-    var st = 3.2 + k * .018, sc = 1.4 + rnd() * .9;
+    var st = 6.0 + k * .018, sc = 1.4 + rnd() * .9;
     tl.fromTo(pf, { opacity: 0 }, { opacity: .3 + rnd() * .15, duration: .06, ease: 'none' }, st);
     tl.fromTo(pf, { x: 0, y: 0, scale: .4 }, { x: (rnd() - .5) * 70, y: -(90 + rnd() * 90), scale: sc, duration: .6, ease: 'power2.out' }, st);
     tl.to(pf, { opacity: 0, duration: .45, ease: 'power1.in' }, st + .12);
   }
   // pssht-TING: shine sweep across the cooled button
-  tl.fromTo($('shine'), { x: 0 }, { x: 1250, duration: .3, ease: 'power2.inOut' }, 3.32);
-  // steps 1·2·3 pop, number circles flash orange then settle to the app's dark circle
+  tl.fromTo($('shine'), { x: 0 }, { x: 1250, duration: .3, ease: 'power2.inOut' }, 6.12);
+
+  // embers inside the button: explicit seeded flicker on 8ths, from the fall to the whip
+  ['e1', 'e2', 'e3', 'e4'].forEach(function (k, i) {
+    var el = $(k), at = 5.5 + i * .05;
+    tl.fromTo(el, { opacity: .5 }, { opacity: 1, duration: .25, ease: 'sine.inOut' }, at);
+    for (var j = 1; j < 16; j++) tl.to(el, { opacity: j % 2 ? .45 + rnd() * .2 : 1, duration: .25, ease: 'sine.inOut' }, at + j * .25);
+  });
+
+  // 6.5: answer stamps (HUD +1); the button charges
+  stamp($('a6'), $('b6'), 6.5);
+  tl.fromTo($('charge'), { opacity: 0 }, { opacity: .85, duration: .07, ease: 'none', immediateRender: false }, 6.5);
+  tl.to($('charge'), { opacity: 0, duration: .45, ease: 'power2.in' }, 6.57);
+  ['e1', 'e2', 'e3', 'e4'].forEach(function (k, i) {
+    tl.fromTo($(k), { scale: 1 }, { scale: 2.4, duration: .08, ease: 'power2.out', immediateRender: false }, 6.5 + i * .02);
+    tl.to($(k), { scale: 1, duration: .3, ease: 'power2.in' }, 6.58 + i * .02);
+  });
+
+  // Scene 10 (7.0–8.5) SHOWCASE: one step per beat, its number circle flashes orange then settles
   [1, 2, 3].forEach(function (n, i) {
-    var at = 3.2 + .2 * i;
+    var at = 7.0 + .5 * i;
     tl.fromTo($('st' + n), { scale: 0, y: 40 }, { scale: 1.15, y: 0, duration: .1, ease: 'power3.out' }, at);
     tl.to($('st' + n), { scale: 1, duration: .12, ease: 'power2.inOut' }, at + .1);
     tl.fromTo($('n' + n), { backgroundColor: '#ff6a1f', boxShadow: '0 0 40px 10px rgba(255,106,31,0.85)' },
-                          { backgroundColor: '#0f1722', boxShadow: '0 0 0px 0px rgba(255,106,31,0)', duration: .34, ease: 'power2.in' }, at + .1);
+                          { backgroundColor: '#0f1722', boxShadow: '0 0 0px 0px rgba(255,106,31,0)', duration: .4, ease: 'power2.in' }, at + .12);
+    tl.fromTo($('n' + n), { scale: 1 }, { scale: 1.18, duration: .08, ease: 'power2.out', immediateRender: false }, at + .1);
+    tl.to($('n' + n), { scale: 1, duration: .22, ease: 'back.out(3)' }, at + .18);
+  });
+  // 8.5: the security strip slides in under the steps; the steps make room
+  tl.fromTo($('stepsy'), { y: 0 }, { y: -30, duration: .3, ease: 'power3.out', immediateRender: false }, 8.5);
+  tl.fromTo($('strip'), { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: .28, ease: 'power3.out' }, 8.5);
+  ['si1', 'si2', 'si3'].forEach(function (k, i) {
+    tl.fromTo($(k), { scale: .6, opacity: 0 }, { scale: 1, opacity: 1, duration: .22, ease: 'back.out(2.5)' }, 8.56 + i * .06);
   });
 
-  // embers inside the button: explicit seeded flicker
-  ['e1', 'e2', 'e3', 'e4'].forEach(function (k, i) {
-    var el = $(k), at = 2.8 + i * .05;
-    tl.fromTo(el, { opacity: .5 }, { opacity: 1, duration: .2, ease: 'sine.inOut' }, at);
-    for (var j = 1; j < 10; j++) tl.to(el, { opacity: j % 2 ? .45 + rnd() * .2 : 1, duration: .2, ease: 'sine.inOut' }, at + j * .2);
-  });
+  // Scene 11 (8.5–9.0): the toi dot hops onto the button (lands 9.0)
+  hop($('d6x'), $('d6y'), $('d6s'), $('bdip'), 9, -80, 430, 230, 650, 352, 8.5, .5);
+  tl.fromTo($('charge'), { opacity: 0 }, { opacity: .6, duration: .06, ease: 'none', immediateRender: false }, 9.0);
+  tl.to($('charge'), { opacity: 0, duration: .4, ease: 'power2.in' }, 9.06);
+  tl.fromTo($('shine'), { x: 0 }, { x: 1250, duration: .3, ease: 'power2.inOut', immediateRender: false }, 9.04);
 
-  // Scene 10 (3.60–4.00): answer stamps; the button charges
-  stamp($('a6'), $('b6'), 3.6);
-  tl.fromTo($('charge'), { opacity: 0 }, { opacity: .85, duration: .07, ease: 'none', immediateRender: false }, 3.6);
-  tl.to($('charge'), { opacity: 0, duration: .45, ease: 'power2.in' }, 3.67);
-  ['e1', 'e2', 'e3', 'e4'].forEach(function (k, i) {
-    tl.fromTo($(k), { scale: 1 }, { scale: 2.4, duration: .08, ease: 'power2.out', immediateRender: false }, 3.6 + i * .02);
-    tl.to($(k), { scale: 1, duration: .3, ease: 'power2.in' }, 3.68 + i * .02);
-  });
-
-  // Scene 11 (4.00–4.40): toi dot hops onto the button
-  hop($('d6x'), $('d6y'), $('d6s'), $('bdip'), -70, 330, 250, 650, 352, 4.0, .2);
-
-  // Scene 12 (4.40–4.80): whip-pan out
-  whip($('p6'), 4.4);
+  // Scene 12 (9.5–10.0): whip-pan out
+  whip($('p6'), 9.5, 1800);   // matches the coolX drift of the quench ring
 
   window.__timelines = window.__timelines || {};
   window.__timelines[ID] = tl;
