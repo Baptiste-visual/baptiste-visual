@@ -56,10 +56,11 @@
 /* the app's bold line under the routes */
 [class~="04-navette-sac-resa"] { margin-top: 22px; height: 88px; font-weight: 700; font-size: 35px; line-height: 44px; color: #fff; white-space: normal; }
 /* "Appuyer pour zoomer" tap */
-[class~="04-navette-sac-tap"] { position: absolute; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.55) 60%, rgba(255,255,255,0) 100%); }
-[class~="04-navette-sac-tapring"] { position: absolute; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
-  border: 5px solid #ffffff; box-shadow: 0 0 18px rgba(255,255,255,0.65), inset 0 0 12px rgba(255,255,255,0.4); }
+[class~="04-navette-sac-tap"] { position: absolute; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 62%, rgba(255,255,255,0) 100%);
+  box-shadow: 0 0 30px 6px rgba(255,255,255,0.45); }
+[class~="04-navette-sac-tapring"] { position: absolute; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%;
+  border: 7px solid #ffffff; box-shadow: 0 0 22px 2px rgba(255,255,255,0.75), inset 0 0 14px rgba(255,255,255,0.5); }
 </style>
 <link rel="stylesheet" href="assets/kit/moorea-ui.css">
 
@@ -202,10 +203,10 @@
   var rnd = mulberry(4048);
   function R(a, b) { return a + (b - a) * rnd(); }
   function el(parent, cls, css) { var d = document.createElement('div'); d.className = cls; if (css) d.style.cssText = css; parent.appendChild(d); return d; }
-  function split(node) {
+  function split(node, wrap) {   // wrap=true keeps breakable spaces (multi-line copy); display words use NBSP
     var txt = node.textContent, out = []; node.textContent = '';
     for (var i = 0; i < txt.length; i++) {
-      var s = document.createElement('span'); s.textContent = txt[i] === ' ' ? ' ' : txt[i];
+      var s = document.createElement('span'); s.textContent = txt[i] === ' ' ? (wrap ? ' ' : '\u00a0') : txt[i];
       node.appendChild(s); out.push(s);
     }
     return out;
@@ -260,9 +261,9 @@
   //  A  831 wide @0.92, top pinned at 330; landing frame 459 src px -> bottom 752 (grows to 945 in the showcase)
   //  B  831x584 @1.05 centred (960, 640) -> 334..947
   var A = group('a', { P0: 0, scale: 0.92, origin: '50% 0%', top: 330, bottom: 752, left: 578, right: 1342, coolY: 0.52,
-    dotX: 700, dotSink: 14, whipTo: 2.5 });
+    dotX: 612, dotSink: 12, apex: 280, whipTo: 2.5 });
   var B = group('b', { P0: 5, scale: 1.05, origin: '50% 50%', top: 334, bottom: 947, left: 524, right: 1396, coolY: 0.62,
-    dotX: 985, dotSink: 26, whipTo: 5.0 });
+    dotX: 985, dotSink: 26, apex: 270, whipTo: 5.0 });
 
   /* ---------- build-time initial states ---------- */
   [A, B].forEach(function (G) {
@@ -382,7 +383,7 @@
   function hop(G, t, dur) {
     var half = dur / 2, land = t + dur, landY = G.top + G.dotSink;
     tl.fromTo(G.dot, { x: -60 }, { x: G.dotX, duration: dur, ease: 'none' }, t);
-    tl.fromTo(G.dot, { y: 720 }, { y: 238, duration: half, ease: 'power2.out' }, t);
+    tl.fromTo(G.dot, { y: 720 }, { y: G.apex, duration: half, ease: 'power2.out' }, t);
     tl.to(G.dot, { y: landY, duration: half, ease: 'power2.in' }, t + half);
     tl.to(G.dotB, { scaleX: 1.42, scaleY: 1.82, duration: half, ease: 'power1.out' }, t);
     tl.to(G.dotB, { scaleX: 1.6, scaleY: 1.6, duration: half, ease: 'power1.in' }, t + half);
@@ -490,7 +491,7 @@
   tl.fromTo(viewA, { clipPath: 'inset(0px 0px 389px 0px round 37px)' }, { clipPath: 'inset(0px 0px 253px 0px round 37px)', duration: 0.3, ease: 'power3.out', immediateRender: false }, 3.0);
   flashTime($('r0'), 3.125); flashTime($('r1'), 3.25);
   // 3.5 the app's bold line types in under the routes
-  var resaChars = split($('resa'));
+  var resaChars = split($('resa'), true);
   gsap.set(resaChars, { opacity: 0 });
   tl.to(resaChars, { opacity: 1, duration: 0.02, ease: 'none', stagger: 0.3 / resaChars.length }, 3.5);
   tl.to(scrollA, { y: -180, duration: 0.3, ease: 'power2.out' }, 3.5);
@@ -533,17 +534,18 @@
   var tring = el(taps, '04-navette-sac-tapring', 'left:' + TX + 'px;top:' + TY + 'px');
   gsap.set(tap, { opacity: 0, scale: 0.6 });
   gsap.set(tring, { opacity: 0, scale: 0.4 });
-  tl.set(tap, { opacity: 0.95 }, 7.0);
-  tl.to(tap, { scale: 1, duration: 0.08, ease: 'power2.out' }, 7.0);
-  tl.to(tap, { opacity: 0, scale: 1.3, duration: 0.3, ease: 'power2.in' }, 7.08);
+  tl.set(tap, { opacity: 1 }, 7.0);
+  tl.to(tap, { scale: 1, duration: 0.06, ease: 'power2.out' }, 7.0);
+  tl.to(tap, { opacity: 0, scale: 1.25, duration: 0.3, ease: 'power2.in' }, 7.1);
   tl.set(tring, { opacity: 1 }, 7.0);
-  tl.to(tring, { scale: 2.6, opacity: 0, duration: 0.45, ease: 'power2.out' }, 7.0);
+  tl.to(tring, { scale: 2.4, duration: 0.42, ease: 'power2.out' }, 7.0);
+  tl.to(tring, { opacity: 0, duration: 0.3, ease: 'power1.in' }, 7.12);
   gsap.set(zlabel, { color: '#69707a', textShadow: '0 0 0px rgba(255,106,31,0)' });
   tl.to(zlabel, { color: '#ffffff', textShadow: '0 0 16px rgba(255,106,31,0.9)', duration: 0.05, ease: 'power2.out' }, 7.0);
   tl.to(zlabel, { color: '#69707a', textShadow: '0 0 0px rgba(255,106,31,0)', duration: 0.5, ease: 'power2.inOut' }, 7.15);
   // 7.0 top row, left half (BOISSONS · ENGINS PYROTECHNIQUES · ARMES · CASQUES)
-  view(7.02, 30, 26, Z, 0.3, 'power3.out');
-  view(7.32, 40, 30, Z, 0.18, 'sine.inOut');
+  view(7.0625, 30, 26, Z, 0.3, 'power3.out');
+  view(7.3625, 40, 30, Z, 0.1375, 'sine.inOut');
   // 7.5 top row, right half (MÉGAPHONES · INSTRUMENTS · VÉLOS ET TROTTINETTES · MATÉRIEL DE CAMPING)
   view(7.5, 390, 26, Z, 0.3, 'power3.inOut');
   view(7.8, 400, 30, Z, 0.2, 'sine.inOut');
