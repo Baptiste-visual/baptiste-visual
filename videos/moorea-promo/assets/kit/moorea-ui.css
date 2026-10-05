@@ -1,0 +1,277 @@
+/* ==========================================================================
+   MOOREA UI KIT — the Moorea Festival app's real components, rebuilt.
+   Every value is measured on the app screenshots (sources/moorea-app-screens),
+   in SOURCE PIXELS of the 923-px-wide phone screen (1pt = 2.349px).
+   Build a component at these sizes, then scale its wrapper with GSAP.
+   Fonts are declared per frame (@font-face): 'Turret Road' (display, 800)
+   and 'Montserrat' (UI). Use .mui-display for the app's techno caps titles.
+   ========================================================================== */
+
+:root {
+  --mui-bg: #0f1722;          /* page background, inset wells */
+  --mui-card: #142030;        /* cards, rows */
+  --mui-card-2: #19283d;      /* nested sub-card (navette route) */
+  --mui-navy: #22364f;        /* primary button, active pill, navy tile */
+  --mui-navy-border: #3a4a61;
+  --mui-pill-off: #1b232e;
+  --mui-pill-off-border: #272f3a;
+  --mui-divider: #2f3b4b;
+  --mui-row-divider: #1a222d;
+  --mui-orange: #e15311;      /* THE accent */
+  --mui-orange-hot: #ff6a1f;
+  --mui-orange-deep: #b8400a;
+  --mui-text: #ffffff;
+  --mui-text-2: #b4bcc6;
+  --mui-text-3: #69707a;
+  --mui-time: #9aa1ab;
+  --mui-teal: #039283;        /* HALO stage pill */
+  --mui-crimson: #9c1736;     /* MAINSTAGE pill */
+  --mui-green: #4cad52;       /* check circles */
+  --mui-local: #2d7d32;       /* "Local" tag */
+  --mui-eco: #5ca82e;
+  --mui-red: #ef4444;
+  --mui-chat: #1b2b3b;        /* M.A.N.A bubble */
+  --mui-chip-border: #445162;
+  --mui-input: #19253b;
+  --mui-tabbar-border: #242c39;
+  --mui-icon-grey: #85868a;
+  --mui-checkbox: #464e58;
+  --mui-pin-navy: #0c1c52;
+  --mui-pin-orange: #e59013;
+  --mui-pin-red: #d63e3b;
+  --mui-pin-cyan: #69cfe9;
+  --mui-ember-core: #ffcf2d;
+  --mui-ember-halo: #b06116;
+  --mui-gold-1: #ffd27a;
+  --mui-gold-2: #e8a33a;
+  --mui-gold-3: #9a5a12;
+}
+
+/* ---------- type ---------- */
+.mui, .mui * { box-sizing: border-box; }
+.mui { font-family: 'Montserrat', sans-serif; color: var(--mui-text); -webkit-font-smoothing: antialiased; }
+/* App display font: techno unicase caps (N, M drawn like n / m). Turret Road
+   800 thickened with a same-colour stroke reproduces the app's heavy weight. */
+.mui-display {
+  font-family: 'Turret Road', sans-serif; font-weight: 800; text-transform: uppercase;
+  -webkit-text-stroke: 0.075em currentColor; paint-order: stroke fill;
+  letter-spacing: 0.035em; line-height: 1;
+}
+.mui-orange-text { color: var(--mui-orange); }
+
+/* ---------- screen shell ---------- */
+.mui-screen { position: relative; width: 923px; background: var(--mui-bg); overflow: hidden; }
+.mui-navbar { position: relative; height: 140px; display: flex; align-items: center; gap: 46px; padding-left: 84px; }
+.mui-navbar .mui-back { width: 26px; height: 44px; }
+.mui-navbar .mui-title { font-size: 44px; }
+
+/* ---------- cards ---------- */
+.mui-card { background: var(--mui-card); border-radius: 22px; padding: 37px; }
+.mui-card.r-lg { border-radius: 37px; }
+.mui-subcard { background: var(--mui-card-2); border-radius: 22px; padding: 31px 38px; }
+.mui-section { display: flex; align-items: center; gap: 26px; height: 42px; }
+.mui-section::before { content: ''; width: 7px; height: 42px; border-radius: 4px; background: var(--mui-orange); flex: none; }
+.mui-section .t { font-weight: 700; font-size: 40px; }
+.mui-section .t.mui-display { font-weight: 800; font-size: 40px; }
+.mui-dot-title { display: flex; align-items: center; gap: 26px; }
+.mui-dot-title::before { content: ''; width: 22px; height: 22px; border-radius: 50%; background: var(--mui-orange); flex: none; }
+
+/* key | value row */
+.mui-kv { display: flex; align-items: center; height: 97px; border-radius: 22px; background: var(--mui-card); }
+.mui-kv .k { width: 322px; padding-left: 36px; font-weight: 500; font-size: 34.5px; color: var(--mui-text-2); }
+.mui-kv .sep { width: 2px; height: 56px; background: var(--mui-divider); }
+.mui-kv .v { padding-left: 29px; font-weight: 600; font-size: 35px; }
+.mui-kv .v.time { color: var(--mui-orange); font-weight: 700; }
+
+/* navette route sub-card */
+.mui-route { background: var(--mui-card-2); border-radius: 22px; padding: 30px 38px 26px; width: 756px; }
+.mui-route .head { display: flex; align-items: center; gap: 18px; font-size: 31px; }
+.mui-route .from { font-weight: 500; color: #b8bfca; }
+.mui-route .to { font-weight: 700; }
+.mui-route .price { margin-left: auto; font-weight: 700; color: var(--mui-orange); }
+.mui-route .line { display: flex; align-items: center; height: 55px; font-size: 31px; }
+.mui-route .line .d { color: #919cab; font-weight: 400; }
+.mui-route .line .h { margin-left: auto; font-weight: 700; display: flex; align-items: center; gap: 25px; }
+.mui-route .line .h i { width: 7px; height: 7px; border-radius: 50%; background: #fff; display: block; }
+
+/* icon tiles */
+.mui-tile { width: 92px; height: 92px; border-radius: 17px; display: flex; align-items: center; justify-content: center; flex: none; }
+.mui-tile svg { width: 40px; height: 40px; }
+.mui-tile.navy { background: var(--mui-navy); color: #bcc4cf; }
+.mui-tile.inset { background: var(--mui-bg); color: #fff; }
+.mui-tile.brown { width: 100px; height: 100px; background: #32272b; color: var(--mui-orange); }
+.mui-tile.grey { background: #353f4b; color: #b8b8b9; }
+.mui-tile.green { background: #21382f; color: #60a23e; }
+
+/* buttons */
+.mui-btn { display: flex; align-items: center; justify-content: center; height: 101px; border-radius: 18px;
+  background: var(--mui-navy); font-weight: 700; font-size: 36px; color: #fff; }
+.mui-btn-orange { display: flex; align-items: center; justify-content: center; height: 112px; border-radius: 30px;
+  background: linear-gradient(90deg, #e3550f 0%, #cf4a0c 55%, #b8400a 100%);
+  box-shadow: 0 18px 50px rgba(225, 83, 17, 0.35); color: #fff; }
+.mui-btn-orange .mui-display { font-size: 36px; letter-spacing: 0.06em; }
+.mui-btn-glow { display: flex; align-items: center; justify-content: center; height: 157px; border-radius: 37px;
+  background: var(--mui-bg); border: 3px solid #686f78; box-shadow: 0 0 26px 2px rgba(255, 255, 255, 0.06);
+  font-weight: 600; font-size: 40px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* numbered steps */
+.mui-steps { display: flex; gap: 23px; }
+.mui-step { width: 261px; height: 295px; border-radius: 34px; background: var(--mui-card); display: flex; flex-direction: column; align-items: center; padding-top: 45px; }
+.mui-step .n { width: 101px; height: 101px; border-radius: 50%; background: var(--mui-bg); display: flex; align-items: center; justify-content: center; font-size: 46px; }
+.mui-step .l { margin-top: 30px; font-weight: 600; font-size: 33px; line-height: 42px; text-align: center; }
+
+/* stage pills */
+.mui-stage { display: inline-flex; align-items: center; height: 46px; padding: 0 16px; border-radius: 23px; color: #fff; font-size: 25px; }
+.mui-stage.halo { background: var(--mui-teal); }
+.mui-stage.mainstage { background: var(--mui-crimson); }
+
+/* "Mon planning" sheet + rows */
+.mui-sheet { width: 923px; background: var(--mui-bg); border-radius: 56px 56px 0 0; padding: 22px 37px 0; }
+.mui-sheet .grab { width: 76px; height: 9px; border-radius: 5px; background: #474e58; margin: 0 auto; }
+.mui-sheet .head { display: flex; align-items: center; justify-content: space-between; height: 130px; padding: 0 10px; }
+.mui-sheet .head .mui-display { font-size: 42px; }
+.mui-sheet .head .count { font-size: 33px; color: var(--mui-time); font-weight: 400; }
+.mui-dayline { display: flex; align-items: center; gap: 24px; height: 60px; color: var(--mui-orange); font-size: 30px; padding-left: 2px; }
+.mui-dayline::after { content: ''; flex: 1; height: 2px; background: #3b2927; }
+.mui-prow { display: flex; align-items: center; height: 170px; border-bottom: 2px solid var(--mui-row-divider); }
+.mui-prow .thumb { width: 120px; height: 120px; border-radius: 18px; object-fit: cover; flex: none; }
+.mui-prow .info { margin-left: 34px; display: flex; flex-direction: column; gap: 14px; }
+.mui-prow .name { font-weight: 500; font-size: 35px; }
+.mui-prow .meta { display: flex; align-items: center; gap: 14px; font-size: 31px; color: var(--mui-time); font-weight: 400; }
+.mui-check { margin-left: auto; width: 60px; height: 60px; border-radius: 14px; border: 3px solid var(--mui-checkbox); position: relative; flex: none; }
+.mui-check .fill { position: absolute; inset: -3px; border-radius: 14px; background: var(--mui-orange); }
+.mui-check svg { position: absolute; inset: 9px; width: 36px; height: 36px; color: #fff; }
+
+/* tab bar */
+.mui-tabbar { position: relative; width: 923px; height: 200px; background: var(--mui-bg); border-top: 2px solid var(--mui-tabbar-border); display: flex; }
+.mui-tabbar .it { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--mui-icon-grey); font-weight: 600; font-size: 27px; padding-top: 6px; }
+.mui-tabbar .it img { width: 46px; height: 46px; opacity: 0.55; }
+.mui-tabbar .it.on { color: var(--mui-orange); }
+.mui-tabbar .center { position: absolute; left: 50%; top: -80px; width: 170px; height: 170px; margin-left: -85px; border-radius: 50%; background: var(--mui-bg); border: 2px solid #232a32; display: flex; align-items: center; justify-content: center; }
+.mui-tabbar .center img { width: 92px; height: 92px; }
+
+/* M.A.N.A chat */
+.mui-bubble { width: 870px; background: var(--mui-chat); border-radius: 30px; padding: 34px 31px 26px; }
+.mui-bubble .txt { font-weight: 400; font-size: 34px; line-height: 50px; }
+.mui-bubble .hr { height: 2px; background: #2a3a4c; margin: 22px 0 22px; }
+.mui-chips { display: flex; flex-wrap: wrap; gap: 14px; }
+.mui-chip { height: 66px; padding: 0 26px; border-radius: 33px; border: 2px solid var(--mui-chip-border); display: inline-flex; align-items: center; font-size: 29px; color: var(--mui-text-2); letter-spacing: 0.02em; }
+.mui-chip.on { background: var(--mui-navy); border-color: var(--mui-navy-border); color: #fff; }
+.mui-input { width: 852px; height: 120px; border-radius: 60px; background: var(--mui-input); border: 2px solid #22324a; display: flex; align-items: center; padding: 0 12px 0 40px; gap: 28px; }
+.mui-input .mic { width: 36px; height: 44px; color: #9aa3ae; }
+.mui-input .ph { font-size: 34px; color: #6d7682; letter-spacing: 0.02em; flex: 1; }
+.mui-input .ph.typed { color: #fff; }
+.mui-send { width: 82px; height: 82px; border-radius: 50%; background: var(--mui-orange); display: flex; align-items: center; justify-content: center; flex: none; }
+.mui-send svg { width: 46px; height: 46px; color: #fff; }
+.mui-warn { font-size: 25px; color: #d9534f; letter-spacing: 0.02em; text-align: center; }
+
+/* map pins + weather */
+.mui-pin { width: 64px; height: 64px; border-radius: 50%; border: 4px solid #fff; display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 30px; color: #fff; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35); }
+.mui-pin.navy { background: var(--mui-pin-navy); }
+.mui-pin.orange { background: var(--mui-pin-orange); }
+.mui-pin.red { background: var(--mui-pin-red); }
+.mui-pin.cyan { background: var(--mui-pin-cyan); }
+.mui-you { width: 46px; height: 46px; border-radius: 50%; background: var(--mui-orange); border: 6px solid #fff; box-shadow: 0 0 0 10px rgba(225, 83, 17, 0.25); }
+.mui-weather { width: 128px; height: 128px; border-radius: 50%; background: rgba(20, 18, 22, 0.75); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.mui-weather .deg { font-size: 30px; }
+
+/* day tabs + filter chips (line-up) */
+.mui-daytabs { display: flex; width: 923px; }
+.mui-daytabs .d { flex: 1; text-align: center; font-size: 38px; color: var(--mui-text-3); font-weight: 400; position: relative; padding-bottom: 34px; }
+.mui-daytabs .d.on { color: #fff; font-weight: 600; }
+.mui-daytabs .d.on::after { content: ''; position: absolute; left: 50%; bottom: 0; width: 111px; height: 6px; margin-left: -55px; border-radius: 3px; background: var(--mui-orange); }
+.mui-fchip { height: 66px; padding: 0 38px; border-radius: 16px; border: 2px solid #464a53; display: inline-flex; align-items: center; font-size: 30px; color: #9aa0a8; }
+.mui-fchip.on { background: #383c46; color: #fff; font-weight: 600; }
+.mui-seg { height: 79px; padding: 0 45px; border-radius: 40px; display: inline-flex; align-items: center; font-size: 34px; background: var(--mui-pill-off); border: 2px solid var(--mui-pill-off-border); color: #717780; }
+.mui-seg.on { background: var(--mui-navy); border-color: var(--mui-navy-border); color: #fff; font-weight: 700; }
+
+/* artist card (line-up timetable) */
+.mui-artist { position: relative; border-radius: 16px; overflow: hidden; }
+.mui-artist img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mui-artist .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 70px 0 22px; text-align: center; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.55)); }
+.mui-artist .cap .n { font-weight: 700; font-size: 30px; }
+.mui-artist .cap .h { font-weight: 700; font-size: 22px; margin-top: 6px; }
+
+/* food row */
+.mui-food { width: 923px; background: var(--mui-bg); }
+.mui-food .ph { position: relative; height: 350px; }
+.mui-food .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mui-local { position: absolute; left: 0; top: 34px; height: 60px; padding: 0 30px; border-radius: 0 30px 30px 0; background: var(--mui-local); font-size: 30px; display: flex; align-items: center; }
+.mui-sign { position: absolute; right: 32px; top: 30px; width: 78px; height: 78px; border-radius: 50%; background: rgba(10, 12, 16, 0.78); display: flex; align-items: center; justify-content: center; color: #fff; }
+.mui-sign svg { width: 44px; height: 44px; }
+.mui-food .tx { padding: 30px 38px 40px; }
+.mui-food .tx .n { font-weight: 700; font-size: 42px; }
+.mui-food .tx .d { font-weight: 300; font-size: 33px; color: var(--mui-text-2); margin-top: 8px; line-height: 44px; }
+.mui-cat { width: 166px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.mui-cat .tile { width: 166px; height: 166px; border-radius: 30px; background: #1e2430; display: flex; align-items: center; justify-content: center; }
+.mui-cat .tile img { width: 110px; height: 110px; object-fit: contain; }
+.mui-cat .l { font-size: 31px; }
+
+/* objets interdits card */
+.mui-ban { width: 831px; background: var(--mui-card); border-radius: 30px; padding: 40px 32px 32px; }
+.mui-ban .hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
+.mui-ban .hd .mui-display { font-size: 44px; }
+.mui-ban .hd .z { font-size: 29px; color: var(--mui-text-3); }
+.mui-ban img { width: 767px; border-radius: 20px; display: block; }
+
+/* Safety Mode (bêta) */
+.mui-badge { height: 46px; padding: 0 16px; border-radius: 10px; border: 2px solid var(--mui-navy-border); background: var(--mui-navy); font-size: 26px; color: #c9d1dc; display: inline-flex; align-items: center; }
+.mui-toggle { width: 108px; height: 64px; border-radius: 32px; background: #2a3442; position: relative; }
+.mui-toggle .k { position: absolute; left: 6px; top: 6px; width: 52px; height: 52px; border-radius: 50%; background: #fff; }
+.mui-toggle.on { background: var(--mui-orange); }
+.mui-compass { width: 280px; height: 280px; border-radius: 50%; border: 3px solid #222c3a; position: relative; }
+.mui-sos { width: 290px; height: 290px; border-radius: 50%; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 35%, #f04040 0%, #d81f22 45%, #a8141a 100%);
+  box-shadow: 0 0 0 16px rgba(160, 30, 36, 0.45), 0 0 50px rgba(240, 50, 50, 0.45), inset 0 -10px 22px rgba(80, 0, 0, 0.45); }
+.mui-sos::before { content: ''; position: absolute; top: 40px; left: 72px; right: 72px; height: 56px; border-radius: 28px; background: rgba(255, 255, 255, 0.28); }
+.mui-sos .lbl { font-weight: 800; font-size: 62px; letter-spacing: 0.04em; margin-top: 10px; }
+.mui-sos svg { width: 92px; height: 92px; color: #fff; }
+.mui-chatbtn { width: 200px; height: 200px; border-radius: 50%; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 35%, #f5c33a 0%, #d99a12 50%, #a86d08 100%);
+  box-shadow: 0 0 0 12px rgba(150, 110, 20, 0.45), 0 0 40px rgba(230, 170, 40, 0.35); }
+.mui-chatbtn::before { content: ''; position: absolute; top: 28px; left: 50px; right: 50px; height: 40px; border-radius: 20px; background: rgba(255, 255, 255, 0.28); }
+.mui-chatbtn .lbl { font-weight: 700; font-size: 34px; letter-spacing: 0.08em; color: #fff3cf; }
+.mui-chatbtn svg { width: 60px; height: 60px; color: #fff3cf; }
+.mui-grpbtn { height: 90px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 33px; }
+.mui-grpbtn.fill { background: var(--mui-navy); border: 2px solid var(--mui-navy-border); color: #fff; }
+.mui-grpbtn.line { border: 2px solid #3a4352; color: #9aa3ae; }
+
+/* home round buttons (torch / SOS / profile / €) */
+.mui-roundbtn { width: 128px; height: 128px; border-radius: 50%; background: rgba(15, 23, 34, 0.86); border: 2px solid #2a3542; display: flex; align-items: center; justify-content: center; color: #fff; }
+.mui-roundbtn svg { width: 54px; height: 54px; }
+.mui-roundbtn .mui-display { font-size: 34px; }
+
+/* ==========================================================================
+   FX — film-only treatments built on the app's palette (not app UI).
+   ========================================================================== */
+/* molten letters (problem words, eruptions): yellow-hot core, orange rim, glow.
+   Use with .mui-display (its stroke becomes the rim colour). */
+.fx-molten { color: #ffd76a; -webkit-text-stroke-color: #ff6a12 !important;
+  text-shadow: 0 0 18px rgba(255, 120, 20, 0.85), 0 0 60px rgba(225, 83, 17, 0.6), 0 0 120px rgba(225, 60, 10, 0.35); }
+/* GAME OVER: red-hot core, crimson rim, red glow */
+.fx-gameover { color: #ff9a7a; -webkit-text-stroke-color: #e0121e !important;
+  text-shadow: 0 0 20px rgba(255, 40, 30, 0.85), 0 0 70px rgba(220, 10, 20, 0.6), 0 0 140px rgba(200, 0, 10, 0.4); }
+/* cooled stone letters */
+.fx-stone { color: #2b3442; -webkit-text-stroke-color: #2b3442; }
+/* white app headline with orange glow */
+.fx-hot-white { color: #fff; filter: drop-shadow(0 0 22px rgba(225, 83, 17, 0.55)); }
+/* chromatic split for glitch moments: animate --gx with GSAP (px) */
+.fx-rgb { text-shadow: calc(var(--gx, 0) * 1px) 0 rgba(255, 30, 60, 0.85), calc(var(--gx, 0) * -1px) 0 rgba(30, 220, 255, 0.85); }
+/* white-hot "just landed" glow on a UI card while it cools (animate opacity of an overlay child) */
+.fx-hot-overlay { position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(120% 120% at 50% 50%, rgba(255, 246, 216, 0.95) 0%, rgba(255, 170, 40, 0.85) 35%, rgba(225, 83, 17, 0.75) 65%, rgba(120, 20, 0, 0.6) 100%);
+  mix-blend-mode: screen; }
+.fx-hot-rim { position: absolute; inset: -3px; border-radius: inherit; pointer-events: none; box-shadow: 0 0 0 3px rgba(255, 140, 40, 0.9), 0 0 40px 8px rgba(255, 110, 20, 0.7); }
+
+/* ==========================================================================
+   HUD — the game layer, assembled ONLY from app components.
+   ========================================================================== */
+.hud-counter { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.hud-counter .lbl { font-size: 22px; letter-spacing: 0.18em; color: var(--mui-text-3); font-weight: 600; }
+.hud-counter .val { font-size: 64px; }
+.hud-counter .val b { color: var(--mui-orange); font-weight: inherit; }
+.hud-bonus { display: inline-flex; align-items: center; gap: 16px; height: 74px; padding: 0 30px 0 18px; border-radius: 37px;
+  background: var(--mui-navy); border: 2px solid var(--mui-navy-border); }
+.hud-bonus .plus { width: 46px; height: 46px; border-radius: 50%; background: var(--mui-orange); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 30px; }
+.hud-bonus .t { font-size: 30px; }
