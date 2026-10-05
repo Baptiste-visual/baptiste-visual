@@ -1,0 +1,380 @@
+<template>
+<style>
+@font-face{font-family:"Montserrat";font-weight:300;font-display:block;src:url("assets/fonts/Montserrat-300.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:400;font-display:block;src:url("assets/fonts/Montserrat-400.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:500;font-display:block;src:url("assets/fonts/Montserrat-500.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:block;src:url("assets/fonts/Montserrat-600.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:block;src:url("assets/fonts/Montserrat-700.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:800;font-display:block;src:url("assets/fonts/Montserrat-800.woff2") format("woff2");}
+@font-face{font-family:"Turret Road";font-weight:800;font-display:block;src:url("assets/fonts/TurretRoad-800.woff2") format("woff2");}
+
+#root{position:absolute;inset:0;overflow:hidden}
+[id="07-safety-mana-stage"],[id="07-safety-mana-A"],[id="07-safety-mana-B"],[id="07-safety-mana-swarm"],[id="07-safety-mana-streaks"]{position:absolute;left:0;top:0;width:1920px;height:1080px}
+[id="07-safety-mana-streaks"]{pointer-events:none;opacity:0}
+[id="07-safety-mana-flash"]{position:absolute;inset:0;background:#fff6e8;opacity:0;pointer-events:none}
+[id="07-safety-mana-whipsvg"]{position:absolute;width:0;height:0;overflow:hidden}
+
+/* film type: problem words + answer stamps */
+[class~="07-safety-mana-word"]{position:absolute;left:0;width:1920px;text-align:center;white-space:nowrap}
+[class~="07-safety-mana-layer"]{position:absolute;left:0;top:0;width:100%;text-align:center}
+
+/* Safety Mode card internals (layout only; components untouched) */
+[id="07-safety-mana-needle"]{position:absolute;left:92px;top:92px;width:90px;height:90px;color:#fff;filter:drop-shadow(0 0 10px rgba(255,255,255,0.45))}
+[id="07-safety-mana-needle"] svg{width:100%;height:100%;display:block}
+[class~="07-safety-mana-dot"]{position:absolute;width:46px;height:46px}
+[id="07-safety-mana-ping"]{position:absolute;left:-3px;top:-3px;width:280px;height:280px;border-radius:50%;border:4px solid #fff;opacity:0}
+
+/* SOS glint */
+[class~="07-safety-mana-gmask"]{position:absolute;inset:0;border-radius:50%;overflow:hidden;pointer-events:none}
+[class~="07-safety-mana-glint"]{position:absolute;left:0;top:0;width:200px;height:100%;
+  background:linear-gradient(105deg,rgba(255,255,255,0) 22%,rgba(255,255,255,0.75) 50%,rgba(255,255,255,0) 78%);mix-blend-mode:screen}
+
+/* "?" swarm */
+[class~="07-safety-mana-q"]{position:absolute;left:0;top:0;width:0;height:0}
+[class~="07-safety-mana-qi"]{position:absolute;left:-50px;top:-50px;width:100px;height:100px;display:flex;align-items:center;justify-content:center;
+  color:#ff6a1f;text-shadow:0 0 14px rgba(225,83,17,0.85),0 3px 8px rgba(0,0,0,0.65)}
+
+/* M.A.N.A input: long question scrolls like a real text field */
+[id="07-safety-mana-input"] .mic svg{width:100%;height:100%;display:block}
+[id="07-safety-mana-ph"]{display:flex;justify-content:flex-end;overflow:hidden;white-space:nowrap;min-width:0}
+[id="07-safety-mana-phline"]{flex:0 0 auto;min-width:100%;display:flex;align-items:center}
+[id="07-safety-mana-caret"]{display:block;width:3px;height:40px;margin-left:3px;background:#e15311;opacity:0;flex:none}
+[id="07-safety-mana-send"]{position:relative}
+[class~="07-safety-mana-ring"]{position:absolute;left:-6px;top:-6px;width:94px;height:94px;border-radius:50%;border:4px solid #ff6a1f;opacity:0;pointer-events:none}
+
+[class~="07-safety-mana-streak"]{position:absolute;border-radius:4px;
+  background:linear-gradient(90deg,rgba(255,217,160,0) 0%,rgba(255,226,180,0.85) 45%,rgba(255,140,40,0.6) 70%,rgba(255,140,40,0) 100%)}
+</style>
+<link rel="stylesheet" href="assets/kit/moorea-ui.css">
+
+<div id="root" data-composition-id="07-safety-mana" data-width="1920" data-height="1080" data-duration="4.8">
+  <canvas class="clip" id="07-safety-mana-lava" width="960" height="540" data-start="0" data-duration="4.8" data-track-index="0"
+          style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+  <div class="clip" id="07-safety-mana-scrim" data-start="0" data-duration="4.8" data-track-index="2"
+       style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 72% 68% at 50% 54%, rgba(7,10,15,0.28) 0%, rgba(7,10,15,0.42) 58%, rgba(7,10,15,0.66) 100%)"></div>
+  <canvas class="clip" id="07-safety-mana-embers" width="1920" height="1080" data-start="0" data-duration="4.8" data-track-index="1"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+
+  <svg id="07-safety-mana-whipsvg" aria-hidden="true">
+    <filter id="07-safety-mana-whipblur" x="-60%" y="-10%" width="220%" height="120%" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="07-safety-mana-whipdev" stdDeviation="0 0"></feGaussianBlur>
+    </filter>
+  </svg>
+
+  <div id="07-safety-mana-stage" class="mui">
+
+    <!-- ============ BREAKDOWN: T'ES OÙ ?! → SAFETY MODE ============ -->
+    <div id="07-safety-mana-A">
+
+      <!-- Safety Mode card -->
+      <div id="07-safety-mana-cardwrap" style="position:absolute;left:220px;top:330px;width:831px">
+        <div class="mui-card" style="position:relative">
+          <div style="display:flex;align-items:center;gap:22px;height:46px">
+            <span class="mui-display" style="font-size:44px">Safety Mode</span>
+            <span class="mui-badge">bêta</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:36px">
+            <span style="font-weight:700;font-size:36px">Partage de position</span>
+            <div class="mui-toggle" id="07-safety-mana-toggle"><div class="k" id="07-safety-mana-knob"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;margin-top:30px">
+            <div style="font-weight:700;font-size:34px;line-height:42px;color:#69707a">Boussole</div>
+            <div class="mui-compass" id="07-safety-mana-compass" style="margin-top:20px">
+              <div id="07-safety-mana-ping"></div>
+              <div id="07-safety-mana-needle" data-mui-icon="mdiNavigation"></div>
+              <div class="07-safety-mana-dot" id="07-safety-mana-dot0"><div class="mui-you"></div></div>
+              <div class="07-safety-mana-dot" id="07-safety-mana-dot1"><div class="mui-you"></div></div>
+              <div class="07-safety-mana-dot" id="07-safety-mana-dot2"><div class="mui-you"></div></div>
+            </div>
+          </div>
+          <div class="fx-hot-overlay" id="07-safety-mana-hot"></div>
+          <div class="fx-hot-rim" id="07-safety-mana-rim"></div>
+        </div>
+      </div>
+
+      <!-- SOS + CHAT -->
+      <div id="07-safety-mana-sos" style="position:absolute;left:1275px;top:415px;width:290px;height:290px">
+        <div class="mui-sos"><span data-mui-icon="mdiAlert"></span><span class="lbl">SOS</span></div>
+        <div class="07-safety-mana-gmask"><div class="07-safety-mana-glint" id="07-safety-mana-glint"></div></div>
+      </div>
+      <div id="07-safety-mana-chat" style="position:absolute;left:1580px;top:540px;width:200px;height:200px">
+        <div class="mui-chatbtn"><span data-mui-icon="mdiMessage"></span><span class="lbl">CHAT</span></div>
+        <div class="07-safety-mana-gmask"><div class="07-safety-mana-glint" id="07-safety-mana-glint2"></div></div>
+      </div>
+      <div id="07-safety-mana-hint" style="position:absolute;left:1150px;top:798px;width:800px;text-align:center;font-weight:400;font-size:30px;line-height:42px;color:#b4bcc6">Maintenez SOS pour alerter ·<br>CHAT pour le groupe.</div>
+
+      <!-- problem word + answer -->
+      <div class="07-safety-mana-word" id="07-safety-mana-probA" style="top:160px;height:140px">
+        <div class="07-safety-mana-layer mui-display fx-molten" id="07-safety-mana-probA-hot" style="font-size:140px">T'es où ?!</div>
+        <div class="07-safety-mana-layer mui-display fx-stone" id="07-safety-mana-probA-stone" style="font-size:140px">T'es où ?!</div>
+      </div>
+      <div class="07-safety-mana-word mui-display fx-hot-white" id="07-safety-mana-ansA" style="top:175px;font-size:110px">Retrouve ta bande.</div>
+    </div>
+
+    <!-- ============ BUILD: 1000 QUESTIONS → M.A.N.A ============ -->
+    <div id="07-safety-mana-B">
+      <div id="07-safety-mana-swarm"></div>
+      <div id="07-safety-mana-bscrim" style="position:absolute;left:260px;top:250px;width:1400px;height:760px;pointer-events:none;
+           background:radial-gradient(closest-side, rgba(7,10,15,0.72) 0%, rgba(7,10,15,0.58) 58%, rgba(7,10,15,0) 100%)"></div>
+
+      <div id="07-safety-mana-col" style="position:absolute;left:0;top:304px;width:1920px;display:flex;flex-direction:column;align-items:center">
+        <div id="07-safety-mana-mhead" style="display:flex;align-items:center;gap:18px;height:52px">
+          <img src="assets/img/tab-mana.png" alt="" style="height:52px;width:auto;display:block">
+          <span class="mui-display" style="font-size:46px">M.A.N.A</span>
+        </div>
+        <div class="mui-bubble" id="07-safety-mana-bubble" style="margin-top:24px">
+          <div class="txt">Dimanche, les douches sont ouvertes de 8h à 20h.</div>
+          <div class="hr"></div>
+          <div class="mui-chips">
+            <span class="mui-chip" id="07-safety-mana-chip0">Programme</span>
+            <span class="mui-chip" id="07-safety-mana-chip1">Où manger ?</span>
+            <span class="mui-chip" id="07-safety-mana-chip2">Navettes</span>
+            <span class="mui-chip" id="07-safety-mana-chip3">Artistes ce soir</span>
+          </div>
+        </div>
+        <div class="mui-warn" id="07-safety-mana-warn" style="margin-top:26px">Attention, M.A.N.A peut faire des erreurs.</div>
+      </div>
+
+      <div id="07-safety-mana-inwrap" style="position:absolute;left:534px;top:820px;width:852px;height:120px">
+        <div class="mui-input" id="07-safety-mana-input">
+          <span class="mic" data-mui-icon="mdiMicrophone"></span>
+          <div class="ph" id="07-safety-mana-ph"><div id="07-safety-mana-phline"><span id="07-safety-mana-phold">Pose ta question...</span><span id="07-safety-mana-phtext" style="white-space:pre"></span><i id="07-safety-mana-caret"></i></div></div>
+          <div class="mui-send" id="07-safety-mana-send" data-mui-icon="mdiArrowUp"></div>
+        </div>
+        <div class="07-safety-mana-ring" id="07-safety-mana-ring0"></div>
+        <div class="07-safety-mana-ring" id="07-safety-mana-ring1"></div>
+      </div>
+
+      <div class="07-safety-mana-word" id="07-safety-mana-probB" style="top:155px;height:120px">
+        <div class="07-safety-mana-layer mui-display fx-molten" id="07-safety-mana-probB-hot" style="font-size:120px">1000 questions</div>
+        <div class="07-safety-mana-layer mui-display fx-stone" id="07-safety-mana-probB-stone" style="font-size:120px">1000 questions</div>
+      </div>
+      <div class="07-safety-mana-word mui-display fx-hot-white" id="07-safety-mana-ansB" style="top:160px;font-size:110px">M.A.N.A répond.</div>
+    </div>
+  </div>
+
+  <div id="07-safety-mana-streaks"></div>
+  <div id="07-safety-mana-flash"></div>
+</div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/kit/mui.js"></script>
+<script src="assets/kit/lava.js"></script>
+<script>
+(function () {
+  var ID = '07-safety-mana', FS = 22.4, DUR = 4.8;
+  var root = document.querySelector('[data-composition-id="' + ID + '"]');
+  function $(n) { return document.getElementById(ID + '-' + n); }
+  function rng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var R = rng(707);
+
+  /* ---------- generated DOM (seeded) ---------- */
+  // "?" swarm: 40 glyphs on a vortex of ellipses around the title
+  var swarm = $('swarm'), QS = [];
+  for (var i = 0; i < 40; i++) {
+    var o = document.createElement('div'); o.className = ID + '-q';
+    var s = document.createElement('span'); s.className = 'mui-display ' + ID + '-qi'; s.textContent = '?';
+    s.style.fontSize = (30 + Math.round(R() * 30)) + 'px';
+    o.appendChild(s); swarm.appendChild(o);
+    var r = 0.38 + 0.62 * Math.sqrt(R());
+    QS.push({ o: o, s: s, a0: R() * Math.PI * 2, r: r, w: 0.7 + 1.5 * (1 - r), d: (i % 8) * 0.006 + R() * 0.012, rot: (R() - 0.5) * 50 });
+  }
+  // whip streaks
+  var streaks = $('streaks');
+  for (var k = 0; k < 9; k++) {
+    var ln = document.createElement('div'); ln.className = ID + '-streak';
+    ln.style.top = Math.round(190 + R() * 760) + 'px';
+    ln.style.left = Math.round(R() * 900) + 'px';
+    ln.style.width = Math.round(600 + R() * 900) + 'px';
+    ln.style.height = (2 + Math.round(R() * 6)) + 'px';
+    ln.style.opacity = (0.45 + R() * 0.55).toFixed(2);
+    streaks.appendChild(ln);
+  }
+  // typed question: one span per character, revealed on the timeline
+  var TXT = 'Les douches ouvrent à quelle heure ?', phText = $('phtext'), CH = [];
+  for (var c = 0; c < TXT.length; c++) {
+    var cs = document.createElement('span'); cs.textContent = TXT.charAt(c); cs.style.display = 'none';
+    phText.appendChild(cs); CH.push(cs);
+  }
+  // compass group dots on the rim at ~40deg ("ta bande")
+  [30, 40, 50].forEach(function (deg, j) {
+    var a = deg * Math.PI / 180, cx = 137 + 138.5 * Math.sin(a), cy = 137 - 138.5 * Math.cos(a);
+    var d = $('dot' + j); d.style.left = (cx - 23).toFixed(1) + 'px'; d.style.top = (cy - 23).toFixed(1) + 'px';
+  });
+  MUI.hydrate(root);
+
+  /* ---------- timeline ---------- */
+  var tl = gsap.timeline({ paused: true });
+  window.__timelines = window.__timelines || {};
+  window.__timelines[ID] = tl;
+
+  /* lava world (seed 3, global time) — drawn only from proxy-tween onUpdate + once at build */
+  var lava = MooreaLava.create($('lava'), { seed: 3 });
+  var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 70 });
+  var L = { t: FS, et: FS, boost: 0.5, heat: 0.55, zoom: 1.1, panX: 0, panY: 0, tilt: 0, horizon: 0.3,
+            coolR: 0, coolX: 0.331, coolY: 0.58, erupt: 1, eruptX: 0.5, eruptY: 0.27, flash: 0 };
+  function draw() { lava.render(L); emb.render(L.et, { boost: L.boost }); }
+  function LT(vars, pos) { vars.onUpdate = draw; return tl.to(L, vars, pos); }
+  function LF(from, vars, pos) { vars.onUpdate = draw; vars.immediateRender = false; return tl.fromTo(L, from, vars, pos); }
+
+  LT({ t: FS + DUR, duration: DUR, ease: 'none' }, 0);
+  LT({ et: FS + 1.2, duration: 2.4, ease: 'none' }, 0);              // breakdown: embers drift at half speed
+  LT({ et: FS + 1.2 + 3.0, duration: 2.4, ease: 'none' }, 2.4);      // build: faster again
+  LT({ boost: 1.0, duration: 0.4, ease: 'power2.out' }, 2.4);
+  LT({ boost: 1.7, duration: 0.6, ease: 'power2.in' }, 4.2);
+  LT({ panY: -0.6, duration: DUR, ease: 'none' }, 0);
+  // erupt at the foot of "T'ES OÙ ?!"
+  LF({ erupt: 1, eruptX: 0.5, eruptY: 0.27 }, { erupt: 0, eruptX: 0.5, eruptY: 0.27, duration: 0.5, ease: 'power2.out' }, 0);
+  // card lands soft: small splash + quench ring opening under it
+  LF({ erupt: 0.55, eruptX: 0.331, eruptY: 0.86 }, { erupt: 0, eruptX: 0.331, eruptY: 0.86, duration: 0.45, ease: 'power2.out' }, 0.8);
+  LT({ coolR: 0.5, duration: 0.45, ease: 'power2.out' }, 0.8);
+  // whip-pan: camera rushes right over the lava, the cooled ring leaves with the card
+  LT({ coolX: 0.331 - 2300 / 1920, duration: 0.28, ease: 'power3.in' }, 2.08);
+  LT({ panX: 3.5, zoom: 1.0, duration: 0.4, ease: 'power3.in' }, 2.0);
+  LT({ panX: 6.1, duration: 0.3, ease: 'power3.out' }, 2.4);
+  // build heats back up
+  LF({ erupt: 1, eruptX: 0.5, eruptY: 0.26 }, { erupt: 0, eruptX: 0.5, eruptY: 0.26, duration: 0.5, ease: 'power2.out' }, 2.4);
+  LT({ heat: 1.6, duration: 1.8, ease: 'power1.in' }, 2.4);
+  LT({ zoom: 1.15, duration: 2.4, ease: 'power1.in' }, 2.4);
+  LT({ heat: 1.8, duration: 0.6, ease: 'none' }, 4.2);
+  LT({ flash: 1, duration: 0.25, ease: 'power2.in' }, 4.55);
+
+  var A = $('A'), B = $('B'), stage = $('stage'), flash = $('flash');
+  function hit(at, amt) { tl.fromTo(flash, { opacity: amt }, { opacity: 0, duration: 0.14, ease: 'power2.out', immediateRender: false }, at); }
+  function shake(el, at, a) {
+    tl.to(el, { keyframes: [{ x: -a, y: a * 0.5, duration: 0.04, ease: 'none' }, { x: a * 0.8, y: -a * 0.4, duration: 0.04, ease: 'none' },
+      { x: -a * 0.45, y: a * 0.2, duration: 0.05, ease: 'none' }, { x: a * 0.2, y: 0, duration: 0.05, ease: 'none' }, { x: 0, y: 0, duration: 0.06, ease: 'none' }] }, at);
+  }
+  function erupt(el, at) {
+    gsap.set(el, { transformOrigin: '50% 100%' });
+    tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06, ease: 'none' }, at)
+      .fromTo(el, { y: 120, scaleY: 0.3, filter: 'blur(12px)' }, { y: 0, scaleY: 1.15, filter: 'blur(0px)', duration: 0.2, ease: 'power3.out' }, at)
+      .to(el, { scaleY: 1, duration: 0.2, ease: 'back.out(2)' }, at + 0.2);
+  }
+  function stamp(el, at, fpx) {
+    tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: 'none' }, at)
+      .fromTo(el, { scale: 1.4, letterSpacing: (fpx * 0.3) + 'px' }, { scale: 1, letterSpacing: (fpx * 0.035) + 'px', duration: 0.24, ease: 'back.out(3)' }, at);
+  }
+  function petrify(wrap, hot, stone, at) {   // problem word cools to stone and sinks under the answer
+    tl.fromTo(hot, { opacity: 1 }, { opacity: 0, duration: 0.06, ease: 'none', immediateRender: false }, at)
+      .fromTo(stone, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: 'power1.out' }, at)
+      .to(wrap, { y: 60, scale: 0.88, opacity: 0.12, duration: 0.4, ease: 'power2.in' }, at);
+  }
+  function pop(el, at, sc, dur, ease) {
+    tl.fromTo(el, { scale: 0 }, { scale: sc || 1, duration: dur || 0.18, ease: ease || 'back.out(3)' }, at);
+  }
+
+  /* Scene 1 (0.00–0.40): T'ES OÙ ?! erupts from the lava */
+  erupt($('probA'), 0);
+
+  /* Scene 2 (0.40–0.80): Safety Mode card falls, still warm (hot overlay 0.6) */
+  var card = $('cardwrap');
+  gsap.set(card, { transformOrigin: '50% 100%' });
+  tl.fromTo(card, { y: -1060, rotation: -4, filter: 'blur(5px)' }, { y: 0, rotation: 0, filter: 'blur(0px)', duration: 0.4, ease: 'power3.in' }, 0.4);
+  tl.fromTo($('hot'), { opacity: 0.6 }, { opacity: 0, duration: 0.4, ease: 'power2.out' }, 0.8);
+  tl.fromTo($('rim'), { opacity: 0.6 }, { opacity: 0, duration: 0.45, ease: 'power2.out' }, 0.8);
+
+  /* Scene 3 (0.80–1.20): soft land + quench, toggle ON, compass spins and locks at 40deg */
+  tl.to(card, { keyframes: [{ y: -14, duration: 0.1, ease: 'power2.out' }, { y: 0, duration: 0.12, ease: 'power2.in' }] }, 0.8);
+  tl.fromTo($('knob'), { x: 0 }, { x: 44, duration: 0.16, ease: 'power3.out' }, 0.8);
+  tl.fromTo($('toggle'), { backgroundColor: '#2a3442' }, { backgroundColor: '#e15311', duration: 0.12, ease: 'none' }, 0.8);
+  var needle = $('needle');
+  tl.fromTo(needle, { rotation: 0 }, { rotation: 432, duration: 0.3, ease: 'power3.out' }, 0.8)
+    .to(needle, { rotation: 400, duration: 0.1, ease: 'power2.inOut' }, 1.1);
+  tl.fromTo($('ping'), { scale: 1, opacity: 0.95 }, { scale: 1.5, opacity: 0, duration: 0.4, ease: 'power2.out', immediateRender: false }, 1.2);
+  pop($('dot0'), 1.2, 0.5); pop($('dot1'), 1.25, 0.5); pop($('dot2'), 1.3, 0.5);
+
+  /* Scene 4 (1.20–1.60): RETROUVE TA BANDE. stamps; the problem word turns to stone */
+  petrify($('probA'), $('probA-hot'), $('probA-stone'), 1.2);
+  stamp($('ansA'), 1.2, 110);
+  hit(1.2, 0.32);
+  shake(A, 1.2, 9);
+
+  /* Scene 5 (1.40–2.00): glossy SOS (glint) + CHAT + the app's line */
+  pop($('sos'), 1.4, 0.95, 0.22, 'back.out(2.2)');
+  tl.fromTo($('glint'), { x: -230 }, { x: 320, duration: 0.36, ease: 'power2.inOut' }, 1.46);
+  pop($('chat'), 1.6, 0.95, 0.2, 'back.out(2.4)');
+  tl.fromTo($('glint2'), { x: -230 }, { x: 240, duration: 0.3, ease: 'power2.inOut' }, 1.66);
+  tl.fromTo($('hint'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.2, ease: 'power2.out' }, 1.7);
+  gsap.set(A, { transformOrigin: '50% 55%' });
+  tl.fromTo(A, { scale: 1 }, { scale: 1.03, duration: 1.6, ease: 'none' }, 0.4);   // macro push underneath
+
+  /* Scene 6 (2.00–2.40): WHIP-PAN out — directional blur + light streaks, lava rushes */
+  tl.to(A, { x: 40, duration: 0.08, ease: 'power2.out' }, 2.0)
+    .to(A, { x: -2300, duration: 0.28, ease: 'power3.in' }, 2.08)
+    .set(A, { filter: 'url(#' + ID + '-whipblur)' }, 2.1)
+    .fromTo($('whipdev'), { attr: { stdDeviation: '0 0' } }, { attr: { stdDeviation: '80 0' }, duration: 0.26, ease: 'power2.in', immediateRender: false }, 2.1);
+  tl.fromTo(streaks, { x: 1900 }, { x: -2100, duration: 0.42, ease: 'power1.in' }, 2.08)
+    .fromTo(streaks, { opacity: 0 }, { opacity: 1, duration: 0.1, ease: 'none', immediateRender: false }, 2.1)
+    .to(streaks, { opacity: 0, duration: 0.1, ease: 'none' }, 2.42);
+  tl.to($('scrim'), { opacity: 0.5, duration: 0.3, ease: 'power1.inOut' }, 2.2);
+
+  /* Scene 7 (2.40–2.80): 1000 QUESTIONS erupts; 40 "?" pop on 32nds and orbit */
+  erupt($('probB'), 2.4);
+  hit(2.4, 0.22);
+  var CX = 960, CY = 500, RX = 860, RY = 318, SX = 1376, SY = 880;
+  function orb(q, t) { var a = q.a0 + q.w * (t - 2.4); return { x: CX + Math.cos(a) * RX * q.r, y: CY + Math.sin(a) * RY * q.r }; }
+  QS.forEach(function (q, i) {
+    var p0 = orb(q, 2.4);
+    gsap.set(q.o, { x: p0.x, y: p0.y });
+    gsap.set(q.s, { rotation: q.rot });
+    tl.fromTo(q.s, { scale: 0 }, { scale: 1, duration: 0.15, ease: 'back.out(3)' }, 2.4 + (i % 8) * 0.05);
+    var tEnd = 3.4 + q.d, N = 10, kf = [];
+    for (var k = 1; k <= N; k++) { var p = orb(q, 2.4 + (tEnd - 2.4) * k / N); kf.push({ x: p.x, y: p.y, duration: (tEnd - 2.4) / N, ease: 'none' }); }
+    tl.to(q.o, { keyframes: kf }, 2.4);
+    /* Scene 9: sucked into the send button 3.40–3.60 */
+    tl.to(q.o, { x: SX, duration: 0.14, ease: 'power2.in' }, tEnd)
+      .to(q.o, { y: SY, duration: 0.14, ease: 'power3.in' }, tEnd)
+      .to(q.o, { scale: 0.2, duration: 0.14, ease: 'power2.in' }, tEnd)
+      .set(q.o, { autoAlpha: 0 }, tEnd + 0.14);
+  });
+  gsap.set(B, { transformOrigin: '50% 50%' });
+  tl.fromTo(B, { scale: 1 }, { scale: 1.02, duration: 1.8, ease: 'none' }, 2.4);
+
+  /* Scene 8 (2.60–3.40): input slides up, the question types in (1 char / 0.017 s), send pressed */
+  var inwrap = $('inwrap');
+  gsap.set(inwrap, { scale: 1.12, transformOrigin: '50% 50%' });
+  tl.fromTo(inwrap, { y: 300, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.26, ease: 'back.out(1.3)' }, 2.6);
+  tl.set($('phold'), { display: 'none' }, 2.8)
+    .set($('ph'), { attr: { 'class': 'ph typed' } }, 2.8)
+    .set($('caret'), { opacity: 1 }, 2.8)
+    .set($('caret'), { opacity: 0 }, 3.4)
+    /* sent: the field empties back to its placeholder (the question went into the send button) */
+    .set($('phtext'), { display: 'none' }, 3.44)
+    .set($('phold'), { display: 'inline' }, 3.44)
+    .set($('ph'), { attr: { 'class': 'ph' } }, 3.44);
+  CH.forEach(function (cs, j) { tl.set(cs, { display: 'inline' }, 2.8 + j * 0.017); });
+  gsap.set([$('ring0'), $('ring1')], { x: 756, y: 19 });
+  tl.fromTo($('send'), { scale: 0.85 }, { scale: 1, duration: 0.22, ease: 'back.out(3)', immediateRender: false }, 3.4);
+  tl.fromTo($('ring0'), { scale: 1, opacity: 0.95 }, { scale: 1.9, opacity: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, 3.4);
+
+  /* Scene 9 (3.40–4.20): M.A.N.A header, answer bubble, chips on 16ths, warning */
+  tl.fromTo($('mhead'), { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18, ease: 'back.out(2)' }, 3.4);
+  tl.fromTo($('ring1'), { scale: 1, opacity: 1 }, { scale: 2.4, opacity: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, 3.6);
+  var bubble = $('bubble');
+  gsap.set(bubble, { transformOrigin: '0% 100%' });
+  tl.fromTo(bubble, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, ease: 'none' }, 3.6)
+    .fromTo(bubble, { scale: 0.6 }, { scale: 1.04, duration: 0.12, ease: 'power2.out' }, 3.6)
+    .to(bubble, { scale: 1, duration: 0.12, ease: 'power2.inOut' }, 3.72);
+  [0, 1, 2, 3].forEach(function (n) { pop($('chip' + n), 3.8 + n * 0.1, 1, 0.18, 'back.out(3)'); });
+  tl.fromTo($('bscrim'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: 'power1.out' }, 3.5);
+  tl.fromTo($('warn'), { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18, ease: 'power2.out' }, 3.9);
+
+  /* Scene 10 (3.60–4.20): M.A.N.A RÉPOND. stamps; the stone word sinks */
+  petrify($('probB'), $('probB-hot'), $('probB-stone'), 3.6);
+  stamp($('ansB'), 3.6, 110);
+  hit(3.6, 0.3);
+  shake(B, 3.6, 8);
+
+  /* Scene 11 (4.20–4.80): riser — everything vibrates on 32nds, white-out into the drop */
+  var vib = [4, -4, 3, -4, 4, -3, 4, -4, 3, -4, 4, -4];
+  vib.forEach(function (v, j) { tl.set(stage, { x: v, y: (j % 2 ? 1.5 : -1.5) }, 4.2 + j * 0.05); });
+  gsap.set(stage, { transformOrigin: '50% 50%' });
+  tl.fromTo(stage, { scale: 1 }, { scale: 1.04, duration: 0.6, ease: 'power2.in', immediateRender: false }, 4.2);
+  tl.fromTo(flash, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.in', immediateRender: false }, 4.55);
+
+  draw();
+})();
+</script>
+</template>

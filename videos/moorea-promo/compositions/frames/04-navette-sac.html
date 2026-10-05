@@ -1,0 +1,459 @@
+<template>
+<style>
+@font-face{font-family:"Montserrat";font-weight:300;font-display:block;src:url("assets/fonts/Montserrat-300.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:400;font-display:block;src:url("assets/fonts/Montserrat-400.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:500;font-display:block;src:url("assets/fonts/Montserrat-500.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:block;src:url("assets/fonts/Montserrat-600.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:block;src:url("assets/fonts/Montserrat-700.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:800;font-display:block;src:url("assets/fonts/Montserrat-800.woff2") format("woff2");}
+@font-face{font-family:"Turret Road";font-weight:800;font-display:block;src:url("assets/fonts/TurretRoad-800.woff2") format("woff2");}
+
+#root { position: absolute; inset: 0; overflow: hidden; }
+[class~="04-navette-sac-full"] { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+[class~="04-navette-sac-word"] { position: absolute; left: 0; width: 1920px; text-align: center; white-space: nowrap; transform-origin: 50% 100%; }
+[class~="04-navette-sac-word"] > div { white-space: nowrap; }
+[class~="04-navette-sac-word"] span { display: inline-block; transform-origin: 50% 100%; }
+[class~="04-navette-sac-ans"] { position: absolute; left: 0; width: 1920px; text-align: center; white-space: nowrap; }
+[class~="04-navette-sac-ans"] > div { display: inline-block; white-space: nowrap; transform-origin: 50% 55%; }
+[class~="04-navette-sac-pos"] { position: absolute; width: 831px; height: 0; }
+[class~="04-navette-sac-center"] { position: absolute; left: 0; top: 0; width: 831px; transform: translateY(-50%); }
+[class~="04-navette-sac-sheenclip"] { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; }
+[class~="04-navette-sac-sheen"] { position: absolute; left: 0; top: -20%; width: 22%; height: 140%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.30) 50%, rgba(255,255,255,0) 100%); }
+[class~="04-navette-sac-dot"] { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+[class~="04-navette-sac-dotbody"] { position: absolute; left: -23px; top: -46px; width: 46px; height: 46px; transform-origin: 50% 100%; }
+[class~="04-navette-sac-dotpulse"] { position: absolute; left: -23px; top: -46px; width: 46px; height: 46px; border-radius: 50%;
+  border: 4px solid #ff6a1f; box-shadow: 0 0 18px rgba(255,106,31,0.8); transform-origin: 50% 50%; }
+[class~="04-navette-sac-ring"] { position: absolute; border-radius: 50%; border: 5px solid rgba(255,222,160,0.95);
+  box-shadow: 0 0 36px 6px rgba(255,120,30,0.75), inset 0 0 30px 4px rgba(255,150,40,0.6); }
+[class~="04-navette-sac-pool"] { position: absolute; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,170,60,0.85) 0%, rgba(255,106,31,0.55) 45%, rgba(225,83,17,0) 100%); }
+[class~="04-navette-sac-drop"] { position: absolute; border-radius: 50%;
+  background: radial-gradient(circle at 40% 38%, #fff6d8 0%, #ffd34a 35%, #ff8a1f 70%, #c53a08 100%);
+  box-shadow: 0 0 14px 3px rgba(255,138,31,0.8); }
+[class~="04-navette-sac-steam"] { position: absolute; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.75) 0%, rgba(236,240,246,0.35) 50%, rgba(220,226,235,0) 100%); }
+[class~="04-navette-sac-brand"] { position: absolute; width: 92px; height: 92px; margin: -46px 0 0 -46px; border-radius: 50%;
+  background: radial-gradient(closest-side, #ffffff 0%, rgba(255,240,200,0.95) 30%, rgba(255,150,50,0.8) 62%, rgba(225,83,17,0) 100%);
+  mix-blend-mode: screen; }
+[class~="04-navette-sac-puff"] { position: absolute; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(160,166,176,0.95) 0%, rgba(120,126,136,0.6) 55%, rgba(110,116,126,0) 100%); }
+[class~="04-navette-sac-streak"] { position: absolute; left: 0; border-radius: 3px;
+  background: linear-gradient(90deg, rgba(255,214,150,0) 0%, rgba(255,236,200,0.85) 55%, rgba(255,160,60,0) 100%); }
+[class~="04-navette-sac-flare"] { position: absolute; border-radius: 4px; transform-origin: 50% 50%;
+  background: linear-gradient(90deg, rgba(255,140,40,0) 0%, rgba(255,214,150,0.9) 30%, #ffffff 50%, rgba(255,214,150,0.9) 70%, rgba(255,140,40,0) 100%);
+  box-shadow: 0 0 24px 6px rgba(255,120,30,0.55); }
+[class~="04-navette-sac-trail"] { position: absolute; left: 6%; width: 88%; bottom: 96%; height: 560px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,120,30,0) 0%, rgba(255,120,30,0.18) 45%, rgba(255,170,60,0.55) 85%, rgba(255,230,170,0.75) 100%);
+  border-radius: 40% 40% 0 0; filter: blur(14px); }
+[class~="04-navette-sac-head"] { display: flex; align-items: center; gap: 30px; margin-bottom: 34px; }
+[class~="04-navette-sac-title"] { font-weight: 700; font-size: 40px; color: #fff; }
+[class~="04-navette-sac-ico"] { display: flex; }
+[class~="04-navette-sac-arr"] { font-size: 26px; color: #8e98a6; font-weight: 500; }
+</style>
+<link rel="stylesheet" href="assets/kit/moorea-ui.css">
+
+<div id="root" data-composition-id="04-navette-sac" data-width="1920" data-height="1080" data-duration="4.8">
+  <!-- full-bleed background layers -->
+  <canvas class="clip" id="04-navette-sac-lava" width="960" height="540" data-start="0" data-duration="4.8" data-track-index="0"
+          style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+  <canvas class="clip" id="04-navette-sac-embers" width="1920" height="1080" data-start="0" data-duration="4.8" data-track-index="1"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+
+  <!-- whip-pan speed streaks -->
+  <div id="04-navette-sac-streaks" class="04-navette-sac-full" style="pointer-events:none"></div>
+
+  <!-- camera (slow push) > shake -->
+  <div id="04-navette-sac-cam" class="mui 04-navette-sac-full" style="transform-origin:960px 540px">
+    <div id="04-navette-sac-shake" class="04-navette-sac-full">
+
+      <!-- ============ POWER-UP 1 : NAVETTE ============ -->
+      <div id="04-navette-sac-ga" class="04-navette-sac-full">
+        <div id="04-navette-sac-fxa" class="04-navette-sac-full"></div>
+
+        <div class="04-navette-sac-pos" style="left:544.5px;top:640px">
+          <div class="04-navette-sac-center">
+            <div id="04-navette-sac-falla" style="position:relative;transform-origin:50% 50%">
+              <div id="04-navette-sac-traila" class="04-navette-sac-trail"></div>
+              <div id="04-navette-sac-squasha" style="transform-origin:50% 100%">
+                <div class="mui-card r-lg" style="position:relative">
+                  <div class="04-navette-sac-head">
+                    <div class="mui-tile navy"><span class="04-navette-sac-ico" data-mui-icon="mdiBusSide"></span></div>
+                    <div class="04-navette-sac-title">Navettes officielles</div>
+                  </div>
+                  <div class="mui-route">
+                    <div class="head"><span class="from">Gare de Tours</span><span class="04-navette-sac-arr">&#8594;</span><span class="to">Moorea Festival</span><span class="price" id="04-navette-sac-price">12&nbsp;&euro;</span></div>
+                    <div class="line"><span class="d">Ven. 5 juin</span><span class="h"><span id="04-navette-sac-h14">14h</span><i></i><span id="04-navette-sac-h16">16h</span><i></i><span id="04-navette-sac-h18">18h</span></span></div>
+                    <div class="line"><span class="d">Sam. 6 juin</span><span class="h"><span>15h</span><i></i><span>17h</span></span></div>
+                    <div class="line"><span class="d">Dim. 7 juin</span><span class="h"><span>15h</span><i></i><span>17h</span></span></div>
+                  </div>
+                  <div class="fx-hot-overlay" id="04-navette-sac-hota"></div>
+                  <div class="fx-hot-rim" id="04-navette-sac-rima"></div>
+                  <div class="04-navette-sac-sheenclip"><div class="04-navette-sac-sheen" id="04-navette-sac-sheena"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="04-navette-sac-worda" class="04-navette-sac-word" style="top:175px;height:150px">
+          <div id="04-navette-sac-moltena" class="mui-display fx-molten" style="font-size:150px">NAVETTE ?</div>
+          <div id="04-navette-sac-stonea" class="mui-display fx-stone" style="position:absolute;left:0;top:0;width:100%;font-size:150px">NAVETTE ?</div>
+        </div>
+
+        <div class="04-navette-sac-ans" style="top:190px;height:110px">
+          <div id="04-navette-sac-ansa" class="mui-display fx-hot-white" style="font-size:110px">NAVETTE CALÉE.</div>
+        </div>
+
+        <div id="04-navette-sac-dota" class="04-navette-sac-dot">
+          <div id="04-navette-sac-pulsea" class="04-navette-sac-dotpulse"></div>
+          <div id="04-navette-sac-dotba" class="04-navette-sac-dotbody"><div class="mui-you"></div></div>
+        </div>
+      </div>
+
+      <!-- ============ POWER-UP 2 : SAC ============ -->
+      <div id="04-navette-sac-gb" class="04-navette-sac-full">
+        <div id="04-navette-sac-fxb" class="04-navette-sac-full"></div>
+
+        <div class="04-navette-sac-pos" style="left:544.5px;top:640px">
+          <div class="04-navette-sac-center">
+            <div id="04-navette-sac-fallb" style="position:relative;transform-origin:50% 50%">
+              <div id="04-navette-sac-trailb" class="04-navette-sac-trail"></div>
+              <div id="04-navette-sac-squashb" style="transform-origin:50% 100%">
+                <div class="mui-ban" style="position:relative">
+                  <div class="hd">
+                    <div class="mui-dot-title"><span class="mui-display">Festival</span></div>
+                    <span class="z">Appuyer pour zoomer</span>
+                  </div>
+                  <div style="position:relative">
+                    <img src="assets/img/interdits-festival.jpg" alt="">
+                    <div id="04-navette-sac-brands" style="position:absolute;inset:0;pointer-events:none"></div>
+                  </div>
+                  <div class="fx-hot-overlay" id="04-navette-sac-hotb"></div>
+                  <div class="fx-hot-rim" id="04-navette-sac-rimb"></div>
+                  <div class="04-navette-sac-sheenclip"><div class="04-navette-sac-sheen" id="04-navette-sac-sheenb"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="04-navette-sac-wordb" class="04-navette-sac-word" style="top:175px;height:150px">
+          <div id="04-navette-sac-moltenb" class="mui-display fx-molten" style="font-size:150px">SAC RECALÉ ?</div>
+          <div id="04-navette-sac-stoneb" class="mui-display fx-stone" style="position:absolute;left:0;top:0;width:100%;font-size:150px">SAC RECALÉ ?</div>
+        </div>
+
+        <div class="04-navette-sac-ans" style="top:190px;height:110px">
+          <div id="04-navette-sac-ansb" class="mui-display fx-hot-white" style="font-size:110px">TU SAIS AVANT.</div>
+        </div>
+
+        <div id="04-navette-sac-dotb" class="04-navette-sac-dot">
+          <div id="04-navette-sac-pulseb" class="04-navette-sac-dotpulse"></div>
+          <div id="04-navette-sac-dotbb" class="04-navette-sac-dotbody"><div class="mui-you"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 1-frame slam flash -->
+  <div id="04-navette-sac-flash" class="04-navette-sac-full" style="background:#fff3dc;opacity:0;pointer-events:none"></div>
+</div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/kit/mui.js"></script>
+<script src="assets/kit/lava.js"></script>
+<script>
+(function () {
+  var FID = '04-navette-sac', FRAME_START = 8, DUR = 4.8;
+  function $(id) { return document.getElementById(FID + '-' + id); }
+  var cam = $('cam');
+  var root = (cam && cam.closest('[data-composition-id="' + FID + '"]')) || document;
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  /* ---------- deterministic helpers ---------- */
+  function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var rnd = mulberry(4048);
+  function R(a, b) { return a + (b - a) * rnd(); }
+  function el(parent, cls, css) { var d = document.createElement('div'); d.className = cls; if (css) d.style.cssText = css; parent.appendChild(d); return d; }
+  function split(node) {
+    var txt = node.textContent, out = []; node.textContent = '';
+    for (var i = 0; i < txt.length; i++) {
+      var s = document.createElement('span'); s.textContent = txt[i] === ' ' ? ' ' : txt[i];
+      node.appendChild(s); out.push(s);
+    }
+    return out;
+  }
+
+  /* ---------- lava world (seek-safe, one redraw per seek) ---------- */
+  var lava = MooreaLava.create($('lava'), { seed: 3 });
+  var emb = MooreaEmbers.create($('embers'), { seed: 11, count: 70 });
+  var S = { t: FRAME_START, heat: 1, whip: 0, coolR: 0, coolX: 0.5, coolY: 0.6, erupt: 0, eruptX: 0.5, eruptY: 0.3, flash: 0, boost: 1 };
+  var P = { tilt: 0.55, horizon: 0.16, zoom: 1, panY: 0 };
+  function draw() {
+    P.t = S.t; P.heat = S.heat; P.panX = 0.14 * (S.t - FRAME_START) + S.whip;
+    P.coolR = S.coolR; P.coolX = S.coolX; P.coolY = S.coolY;
+    P.erupt = S.erupt; P.eruptX = S.eruptX; P.eruptY = S.eruptY; P.flash = S.flash;
+    lava.render(P); emb.render(S.t, { boost: S.boost });
+  }
+  // L = function-setter proxy over S (setters always run on seek, even with suppressEvents).
+  var L = {};
+  Object.keys(S).forEach(function (k) {
+    L[k] = function (v) { if (arguments.length) { S[k] = v; return; } return S[k]; };
+  });
+  // Every lava tween lives in the child timeline `lt`, bracketed by two redraw tweens so exactly
+  // one draw runs per seek, AFTER all params are updated: forward renders walk children first->last
+  // (so `drawB` fires after lt), backward renders walk last->first (so `drawA` fires after lt).
+  var lt = gsap.timeline({ defaults: { lazy: false } });
+  var DR = { a: 0, b: 0 };
+  var DP = {
+    a: function (v) { if (arguments.length) { if (v < DR.a) draw(); DR.a = v; return; } return DR.a; },
+    b: function (v) { if (arguments.length) { if (v > DR.b) draw(); DR.b = v; return; } return DR.b; }
+  };
+  tl.to(DP, { a: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
+  tl.add(lt, 0);
+  tl.to(DP, { b: DUR, duration: DUR, ease: 'none', lazy: false }, 0);
+  lt.to(L, { t: FRAME_START + DUR, duration: DUR, ease: 'none' }, 0);
+
+  /* ---------- markup completion ---------- */
+  MUI.hydrate(root);
+  var shake = $('shake'), flash = $('flash');
+
+  function group(k, o) {
+    var G = {
+      g: $('g' + k), fx: $('fx' + k), fall: $('fall' + k), sq: $('squash' + k), hot: $('hot' + k), rim: $('rim' + k),
+      sheen: $('sheen' + k), word: $('word' + k), molten: $('molten' + k), stone: $('stone' + k), ans: $('ans' + k),
+      dot: $('dot' + k), dotB: $('dotb' + k), pulse: $('pulse' + k), trail: $('trail' + k)
+    };
+    G.pos = G.fall.parentNode.parentNode;
+    G.mChars = split(G.molten); split(G.stone);
+    for (var key in o) G[key] = o[key];
+    return G;
+  }
+  // card geometry (visual, after wrapper scale): A 831x459 @1.15, B 831x584 @1.05, both centred (960, 640)
+  var A = group('a', { P0: 0,   scale: 1.15, top: 376, bottom: 904, left: 482, right: 1438, coolY: 0.6,  dotX: 700, dotSink: 22, whipTo: 2.5 });
+  var B = group('b', { P0: 2.4, scale: 1.05, top: 334, bottom: 947, left: 524, right: 1396, coolY: 0.62, dotX: 985, dotSink: 26, whipTo: 5.0 });
+
+  /* ---------- build-time initial states ---------- */
+  [A, B].forEach(function (G) {
+    gsap.set(G.pos, { autoAlpha: 0 });
+    gsap.set(G.fall, { scale: G.scale });
+    gsap.set(G.sq, { scaleX: 0.96, scaleY: 1.07 });
+    gsap.set(G.stone, { opacity: 0 });
+    gsap.set(G.g, { filter: 'blur(0px)' });
+    gsap.set(G.sheen, { xPercent: -140, skewX: -18 });
+    gsap.set(G.dotB, { scale: 1.6 });
+    gsap.set(G.pulse, { opacity: 0, scale: 1.6 });
+  });
+  gsap.set(B.g, { autoAlpha: 0 });
+  gsap.set(cam, { scale: 1 });
+
+  /* ---------- reusable beats ---------- */
+  function doShake(t, a) {
+    tl.to(shake, { keyframes: [
+      { x: a, y: -0.6 * a, duration: 0.04 }, { x: -0.9 * a, y: 0.6 * a, duration: 0.04 },
+      { x: 0.7 * a, y: -0.4 * a, duration: 0.05 }, { x: -0.5 * a, y: 0.3 * a, duration: 0.05 },
+      { x: 0.25 * a, y: -0.15 * a, duration: 0.06 }, { x: 0, y: 0, duration: 0.06 } ], ease: 'none' }, t);
+  }
+  function doFlash(t, a) {
+    tl.set(flash, { opacity: a }, t);
+    tl.to(flash, { opacity: 0, duration: 0.1, ease: 'power2.out' }, t);
+  }
+
+  function eruptWord(G, t) {
+    tl.fromTo(G.word, { filter: 'blur(12px)' }, { filter: 'blur(0px)', duration: 0.28, ease: 'power2.out' }, t);
+    tl.fromTo(G.mChars, { y: 120, scaleY: 0.3, opacity: 0.25 },
+      { y: 0, scaleY: 1.15, opacity: 1, duration: 0.18, ease: 'power3.out', stagger: { amount: 0.1, from: 'center' } }, t);
+    tl.to(G.mChars, { scaleY: 1, duration: 0.14, ease: 'power2.out', stagger: { amount: 0.1, from: 'center' } }, t + 0.18);
+    lt.set(L, { erupt: 1, eruptX: 0.5, eruptY: 0.3, heat: 1.25, boost: 2.4 }, t);
+    lt.to(L, { erupt: 0, heat: 1, duration: 0.5, ease: 'power2.out' }, t);
+    lt.to(L, { boost: 1, duration: 0.6, ease: 'power2.out' }, t);
+    spray(G.fx, t, 14, 520, 1400, 318, 60, 150);
+  }
+
+  function spray(host, t, n, x0, x1, y0, upMin, upMax) {
+    for (var i = 0; i < n; i++) {
+      var x = R(x0, x1), sz = R(8, 20), side = x < 960 ? -1 : 1;
+      var d = el(host, '04-navette-sac-drop', 'left:' + (x - sz / 2) + 'px;top:' + (y0 - sz / 2) + 'px;width:' + sz + 'px;height:' + sz + 'px');
+      var dx = side * R(30, 220), up = R(upMin, upMax), tu = R(0.14, 0.22), td = R(0.24, 0.36), ts = t + R(0, 0.08);
+      gsap.set(d, { opacity: 0 });
+      tl.set(d, { opacity: 1 }, ts);
+      tl.to(d, { x: dx, duration: tu + td, ease: 'none' }, ts);
+      tl.to(d, { y: -up, duration: tu, ease: 'power2.out' }, ts);
+      tl.to(d, { y: -up + R(200, 320), duration: td, ease: 'power2.in' }, ts + tu);
+      tl.to(d, { opacity: 0, scale: 0.4, duration: 0.12, ease: 'power1.in' }, ts + tu + td - 0.12);
+    }
+  }
+
+  function flare(G, t) {
+    var f = el(G.fx, '04-navette-sac-flare', 'left:210px;top:226px;width:1500px;height:12px');
+    gsap.set(f, { scaleX: 0, opacity: 0 });
+    tl.set(f, { opacity: 1 }, t);
+    tl.to(f, { scaleX: 1, duration: 0.18, ease: 'power3.out' }, t);
+    tl.to(f, { opacity: 0, scaleY: 0.3, duration: 0.3, ease: 'power2.in' }, t + 0.06);
+  }
+
+  function splash(G, t) {
+    // landing shock ring on the lava at the card's foot
+    var ring = el(G.fx, '04-navette-sac-ring', 'left:' + (960 - 760) + 'px;top:' + (G.bottom - 70) + 'px;width:1520px;height:150px');
+    gsap.set(ring, { scale: 0.3, opacity: 0 });
+    tl.set(ring, { opacity: 1 }, t);
+    tl.to(ring, { scale: 1.08, duration: 0.5, ease: 'power3.out' }, t);
+    tl.to(ring, { opacity: 0, duration: 0.45, ease: 'power2.in' }, t + 0.05);
+    // molten pool glow under the card (stays, cools down)
+    var pool = el(G.fx, '04-navette-sac-pool', 'left:' + (960 - 720) + 'px;top:' + (G.bottom - 110) + 'px;width:1440px;height:220px');
+    gsap.set(pool, { opacity: 0 });
+    tl.to(pool, { opacity: 1, duration: 0.05 }, t);
+    tl.to(pool, { opacity: 0.4, duration: 0.8, ease: 'power2.out' }, t + 0.1);
+    // molten droplets flung from both bottom corners
+    for (var i = 0; i < 18; i++) {
+      var side = i % 2 ? 1 : -1;
+      var x0 = side < 0 ? R(G.left - 30, G.left + 110) : R(G.right - 110, G.right + 30);
+      var y0 = G.bottom - R(10, 60), sz = R(10, 26);
+      var d = el(G.fx, '04-navette-sac-drop', 'left:' + (x0 - sz / 2) + 'px;top:' + (y0 - sz / 2) + 'px;width:' + sz + 'px;height:' + sz + 'px');
+      var dx = side * R(90, 420), up = R(140, 400), tu = R(0.16, 0.26), td = R(0.26, 0.4), ts = t + R(0, 0.06);
+      gsap.set(d, { opacity: 0 });
+      tl.set(d, { opacity: 1 }, ts);
+      tl.to(d, { x: dx, duration: tu + td, ease: 'none' }, ts);
+      tl.to(d, { y: -up, duration: tu, ease: 'power2.out' }, ts);
+      tl.to(d, { y: -up + R(220, 380), duration: td, ease: 'power2.in' }, ts + tu);
+      tl.to(d, { opacity: 0, scale: 0.4, duration: 0.14, ease: 'power1.in' }, ts + tu + td - 0.14);
+    }
+  }
+
+  function steam(G, t) {
+    for (var i = 0; i < 12; i++) {
+      var x, y, sz = R(130, 210), rise;
+      if (i < 7) { x = R(G.left + 60, G.right - 60); y = G.top + 14; rise = R(60, 95); sz = R(110, 160); }
+      else { x = i % 2 ? G.left - R(0, 30) : G.right + R(0, 30); y = R(G.top + 60, G.bottom - 120); rise = R(90, 150); }
+      var p = el(G.fx, '04-navette-sac-steam', 'left:' + (x - sz / 2) + 'px;top:' + (y - sz / 2) + 'px;width:' + sz + 'px;height:' + sz + 'px');
+      gsap.set(p, { opacity: 0, scale: 0.5 });
+      var ts = t + R(0, 0.22);
+      tl.to(p, { keyframes: [
+        { opacity: 0.6, scale: 1, y: -rise * 0.35, duration: 0.14, ease: 'power1.out' },
+        { opacity: 0, scale: 1.5, y: -rise, duration: 0.5, ease: 'power1.out' } ] }, ts);
+    }
+  }
+
+  function streaks(t) {
+    var host = $('streaks');
+    for (var i = 0; i < 9; i++) {
+      var h = R(2, 6), w = R(380, 820), y = R(170, 960);
+      var s = el(host, '04-navette-sac-streak', 'top:' + y + 'px;width:' + w + 'px;height:' + h + 'px');
+      gsap.set(s, { x: 1960, opacity: 0 });
+      var ts = t + 0.06 + i * 0.025, dur = Math.min(R(0.2, 0.28), t + 0.4 - ts);
+      tl.set(s, { opacity: R(0.45, 0.9) }, ts);
+      tl.to(s, { x: -w - 80, duration: dur, ease: 'power1.in' }, ts);
+    }
+  }
+
+  function hop(G, t) {
+    var land = t + 0.2, landY = G.top + G.dotSink;
+    tl.fromTo(G.dot, { x: -60 }, { x: G.dotX, duration: 0.2, ease: 'none' }, t);
+    tl.fromTo(G.dot, { y: 560 }, { y: 240, duration: 0.1, ease: 'power2.out' }, t);
+    tl.to(G.dot, { y: landY, duration: 0.1, ease: 'power2.in' }, t + 0.1);
+    tl.to(G.dotB, { scaleX: 1.42, scaleY: 1.82, duration: 0.1, ease: 'power1.out' }, t);
+    tl.to(G.dotB, { scaleX: 1.6, scaleY: 1.6, duration: 0.1, ease: 'power1.in' }, t + 0.1);
+    tl.set(G.dotB, { scaleX: 2.0, scaleY: 1.28 }, land);
+    tl.to(G.dotB, { scaleX: 1.6, scaleY: 1.6, duration: 0.26, ease: 'back.out(3)' }, land);
+    tl.set(G.pulse, { opacity: 0.95, scale: 1.6 }, land);
+    tl.to(G.pulse, { scale: 4.6, opacity: 0, duration: 0.42, ease: 'power2.out' }, land);
+  }
+
+  /* ---------- one power-up: erupt · fall · land+quench · stamp · hop · whip ---------- */
+  function powerUp(G) {
+    var P0 = G.P0;
+    // Scene 1/7 — the problem word erupts from the lava
+    eruptWord(G, P0);
+
+    // Scene 2/8 — the app card falls red-hot
+    var tF = P0 + 0.4;
+    tl.set(G.pos, { autoAlpha: 1 }, tF);
+    tl.fromTo(G.fall, { y: -720, rotation: -8 }, { y: 0, rotation: 0, duration: 0.4, ease: 'power1.in' }, tF);
+    tl.to(G.trail, { opacity: 0, duration: 0.08, ease: 'power1.out' }, P0 + 0.8);
+
+    // Scene 3/9 — LAND + QUENCH
+    var tL = P0 + 0.8;
+    tl.set(G.sq, { scaleX: 1.04, scaleY: 0.94 }, tL);
+    tl.to(G.sq, { scaleX: 1, scaleY: 1, duration: 0.3, ease: 'back.out(2.2)' }, tL);
+    doShake(tL, 10);
+    doFlash(tL, 0.5);
+    lt.set(L, { erupt: 1, eruptX: 0.5, eruptY: 0.93, heat: 1.3, boost: 2.2, coolX: 0.5, coolY: G.coolY, coolR: 0 }, tL);
+    lt.to(L, { erupt: 0, heat: 1, duration: 0.4, ease: 'power2.out' }, tL);
+    lt.to(L, { boost: 1, duration: 0.6, ease: 'power2.out' }, tL);
+    lt.to(L, { coolR: 0.45, duration: 0.4, ease: 'power2.out' }, tL);
+    splash(G, tL);
+    tl.to([G.hot, G.rim], { opacity: 0, duration: 0.4, ease: 'power2.out' }, tL);
+    steam(G, tL);
+    tl.to(G.sheen, { xPercent: 520, duration: 0.36, ease: 'power2.inOut' }, tL + 0.14);
+    tl.to(G.molten, { opacity: 0, duration: 0.2, ease: 'power1.out' }, tL);
+    tl.to(G.stone, { opacity: 1, duration: 0.2, ease: 'power1.out' }, tL);
+    tl.to(G.word, { y: 30, opacity: 0.35, duration: 0.4, ease: 'power2.out' }, tL);
+
+    // Scene 4/10 — the answer stamps where the word was (stone word knocked into the lava)
+    var tA = P0 + 1.2;
+    tl.to(G.word, { y: 120, scaleY: 0.5, opacity: 0, duration: 0.16, ease: 'power2.in' }, tA);
+    tl.fromTo(G.ans, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, tA);
+    tl.fromTo(G.ans, { scale: 1.4 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' }, tA);
+    tl.fromTo(G.ans, { letterSpacing: '0.3em' }, { letterSpacing: '0.035em', duration: 0.26, ease: 'power3.out' }, tA);
+    flare(G, tA);
+    doShake(tA, 6);
+    lt.set(L, { flash: 0.12 }, tA);
+    lt.to(L, { flash: 0, duration: 0.2, ease: 'power2.out' }, tA);
+
+    // Scene 5/11 — the "toi" dot hops onto the new platform
+    hop(G, P0 + 1.6);
+
+    // Scene 6/12 — WHIP-PAN out
+    var tW = P0 + 2.0;
+    tl.to(G.g, { x: -1800, filter: 'blur(16px)', duration: 0.4, ease: 'power2.in' }, tW);
+    lt.to(L, { whip: G.whipTo, coolX: 0.5 - 1800 / 1920, duration: 0.4, ease: 'power2.in' }, tW);
+    streaks(tW);
+  }
+
+  /* ---------- camera: slow push under each power-up ---------- */
+  tl.to(cam, { scale: 1.035, duration: 2.4, ease: 'none' }, 0);
+  tl.set(cam, { scale: 1 }, 2.4);
+  tl.to(cam, { scale: 1.035, duration: 2.4, ease: 'none' }, 2.4);
+
+  /* ---------- POWER-UP 1 : NAVETTE ---------- */
+  powerUp(A);
+  // 1.30 — the price pulses; Friday departures light up on the 16ths
+  var price = $('price');
+  gsap.set(price, { transformOrigin: '100% 50%', textShadow: '0 0 0px rgba(255,106,31,0)' });
+  tl.to(price, { scale: 1.25, textShadow: '0 0 26px rgba(255,106,31,1)', duration: 0.04, ease: 'power2.out' }, 1.3);
+  tl.to(price, { scale: 1, textShadow: '0 0 0px rgba(255,106,31,0)', duration: 0.36, ease: 'power2.out' }, 1.34);
+  ['h14', 'h16', 'h18'].forEach(function (id, i) {
+    var s = $(id), t = 1.3 + i * 0.1;
+    gsap.set(s, { color: '#ffffff', textShadow: '0 0 0px rgba(255,106,31,0)' });
+    tl.to(s, { color: '#ff6a1f', scale: 1.22, textShadow: '0 0 20px rgba(255,106,31,0.95)', duration: 0.05, ease: 'power2.out' }, t);
+    tl.to(s, { color: '#ffffff', scale: 1, textShadow: '0 0 0px rgba(255,106,31,0)', duration: 0.26, ease: 'power2.inOut' }, t + 0.12);
+  });
+  tl.set(A.g, { visibility: 'hidden' }, 2.4);
+
+  /* ---------- POWER-UP 2 : SAC ---------- */
+  tl.set(B.g, { autoAlpha: 1 }, 2.4);
+  powerUp(B);
+  // 3.30–3.90 — BRANDING: the 8 sign columns flash one per 32nd note
+  var brands = $('brands'), XS = [102, 183, 263, 344, 424, 504, 585, 666], YS = [92, 202, 313];
+  XS.forEach(function (x, c) {
+    var tc = 3.3 + c * 0.075;
+    YS.forEach(function (y) {
+      var lx = (x / 766 * 100) + '%', ly = (y / 431 * 100) + '%';
+      var puff = el(brands, '04-navette-sac-puff', 'left:' + lx + ';top:' + ly);
+      var glow = el(brands, '04-navette-sac-brand', 'left:' + lx + ';top:' + ly);
+      gsap.set(glow, { opacity: 0 });
+      gsap.set(puff, { opacity: 0, scale: 0.5 });
+      tl.to(glow, { keyframes: [{ opacity: 1, duration: 0.04, ease: 'power2.out' }, { opacity: 0, duration: 0.08, ease: 'power1.in' }] }, tc);
+      tl.set(puff, { opacity: 0.5 }, tc);
+      tl.to(puff, { scale: 1.6, y: -22, opacity: 0, duration: 0.42, ease: 'power2.out' }, tc);
+    });
+  });
+
+  draw();
+  window.__timelines[FID] = tl;
+})();
+</script>
+</template>

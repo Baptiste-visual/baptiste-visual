@@ -27,7 +27,7 @@
   }
   await document.fonts.ready;
   var tl = window.__timelines[q.get('id') || f]; if (!tl) { document.body.insertAdjacentHTML('beforeend', '<div style="position:fixed;top:0;left:0;color:red;font:40px sans-serif;z-index:99">NO TIMELINE ' + f + '</div>'); return; }
-  tl.seek(Math.max(0, t - 0.04)); tl.seek(t);
+  tl.totalTime(Math.max(0, t - 0.04), false); tl.totalTime(t, false); // same as the HyperFrames render seek (events on)
   document.body.insertAdjacentHTML('beforeend', '<div style="position:fixed;right:8px;bottom:6px;color:#0f0;font:22px monospace;z-index:99">' + f + ' t=' + t.toFixed(2) + '</div>');
 })();
 </script></body></html>

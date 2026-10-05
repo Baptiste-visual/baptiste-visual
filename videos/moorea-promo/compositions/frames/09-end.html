@@ -1,0 +1,365 @@
+<template>
+<style>
+@font-face{font-family:"Montserrat";font-weight:300;font-display:block;src:url("assets/fonts/Montserrat-300.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:400;font-display:block;src:url("assets/fonts/Montserrat-400.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:500;font-display:block;src:url("assets/fonts/Montserrat-500.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:block;src:url("assets/fonts/Montserrat-600.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:block;src:url("assets/fonts/Montserrat-700.woff2") format("woff2");}
+@font-face{font-family:"Montserrat";font-weight:800;font-display:block;src:url("assets/fonts/Montserrat-800.woff2") format("woff2");}
+@font-face{font-family:"Turret Road";font-weight:800;font-display:block;src:url("assets/fonts/TurretRoad-800.woff2") format("woff2");}
+
+#root { position: absolute; inset: 0; overflow: hidden; }
+
+/* frame-scoped helpers (attribute selectors: the prefix starts with a digit) */
+[class~="09-end-cam"] { position: absolute; inset: 0; transform-origin: 960px 540px; }
+
+/* --- sky: sun glow + rays, clipped at the lava horizon (y 626) --- */
+[class~="09-end-sky"] { position: absolute; inset: 0; clip-path: inset(0px 0px 454px 0px); pointer-events: none; }
+[class~="09-end-rays"] { position: absolute; left: -340px; top: -640px; width: 2600px; height: 2600px; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(255, 150, 60, 0) 0deg, rgba(255, 160, 70, 0.26) 3.5deg, rgba(255, 150, 60, 0) 7deg, rgba(255, 150, 60, 0) 13deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, rgba(0, 0, 0, 0.75) 14%, rgba(0, 0, 0, 0) 50%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 0%, rgba(0, 0, 0, 0.75) 14%, rgba(0, 0, 0, 0) 50%); }
+[class~="09-end-sun"] { position: absolute; left: 260px; top: -40px; width: 1400px; height: 1400px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 226, 160, 1) 0%, rgba(255, 150, 50, 0.85) 13%, rgba(225, 83, 17, 0.5) 32%,
+    rgba(180, 50, 10, 0.2) 58%, rgba(120, 30, 5, 0) 100%); }
+[class~="09-end-refl"] { position: absolute; left: 260px; top: 476px; width: 1400px; height: 300px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255, 190, 110, 0.55) 0%, rgba(225, 83, 17, 0.28) 40%, rgba(225, 83, 17, 0) 100%); }
+
+/* --- legibility scrim behind the end-card stack --- */
+[class~="09-end-scrim"] { position: absolute; left: 160px; top: 90px; width: 1600px; height: 680px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(9, 13, 21, 0.86) 0%, rgba(9, 13, 21, 0.7) 45%, rgba(9, 13, 21, 0) 100%); }
+
+/* --- chrome MOOREA logo (rises behind the horizon, then falls into the tab bar) --- */
+[class~="09-end-logoclip"] { position: absolute; inset: 0; pointer-events: none; }
+[class~="09-end-logo"] { position: absolute; left: 675px; top: 195px; width: 570px; height: 330px; display: block; transform-origin: 50% 50%; }
+
+/* --- tab bar (kit component, wrapper scaled 1.5) --- */
+[class~="09-end-tabw"] { position: absolute; left: 498.5px; top: 805px; width: 923px; height: 200px; transform: scale(1.5); transform-origin: 50% 0; }
+[class~="09-end-tabin"] { position: absolute; inset: 0; filter: drop-shadow(0 -14px 40px rgba(0, 0, 0, 0.6)); }
+[class~="09-end-slot"] { display: block; width: 46px; height: 46px; }
+[class~="09-end-cflash"] { position: absolute; inset: -2px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 1) 0%, rgba(255, 244, 220, 0.95) 45%, rgba(255, 180, 90, 0.5) 80%, rgba(255, 140, 40, 0) 100%); }
+[class~="09-end-sunimg"] { position: relative; }
+[class~="09-end-ring"] { position: absolute; left: 832.5px; top: 685px; width: 255px; height: 255px; border-radius: 50%; pointer-events: none;
+  border: 7px solid #ff6a1f; box-shadow: 0 0 28px rgba(255, 106, 31, 0.95), inset 0 0 22px rgba(255, 106, 31, 0.7); }
+
+/* --- end-card stack --- */
+[class~="09-end-title"] { position: absolute; left: 0; right: 0; top: 150px; height: 100px; text-align: center; font-size: 100px; white-space: nowrap; }
+[class~="09-end-titlein"] { display: inline-block; transform-origin: 50% 55%; }
+[class~="09-end-date"] { position: absolute; left: 0; right: 0; top: 262px; text-align: center; white-space: nowrap;
+  font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 40px; line-height: 44px; letter-spacing: 0.08em; color: #b4bcc6;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7); }
+[class~="09-end-hair"] { position: absolute; left: 610px; top: 322px; width: 700px; height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(225, 83, 17, 0) 0%, #e15311 30%, #ff8a3a 50%, #e15311 70%, rgba(225, 83, 17, 0) 100%);
+  box-shadow: 0 0 12px rgba(225, 83, 17, 0.6); }
+[class~="09-end-pills"] { position: absolute; left: 0; right: 0; top: 352.5px; height: 79px; display: flex; justify-content: center; gap: 31.6px;
+  transform: scale(1.14); transform-origin: 50% 50%; }
+[class~="09-end-pill"] { position: relative; height: 79px; border-radius: 40px; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45); }
+[class~="09-end-ico"] { display: block; width: 44px; height: 44px; margin-right: 18px; color: #fff; }
+[class~="09-end-ico"] svg { display: block; width: 44px; height: 44px; }
+[class~="09-end-pflash"] { position: absolute; inset: 0; border-radius: 40px; background: #fff3dc; pointer-events: none; }
+[class~="09-end-pret"] { position: absolute; left: 0; right: 0; top: 468px; height: 48px; text-align: center; font-size: 48px; color: #e15311;
+  white-space: nowrap; transform-origin: 50% 50%; text-shadow: 0 0 26px rgba(225, 83, 17, 0.45); }
+
+/* orange download button (kit .mui-btn-orange, source width 760, wrapper scale 1.15) */
+[class~="09-end-btnw"] { position: absolute; left: 580px; top: 544px; width: 760px; height: 112px; transform: scale(1.15); transform-origin: 50% 50%; }
+[class~="09-end-btnin"] { position: absolute; inset: 0; transform-origin: 50% 50%; }
+[class~="09-end-btnin"] > .mui-btn-orange { width: 760px; }
+[class~="09-end-btnflash"] { position: absolute; inset: 0; border-radius: 30px; pointer-events: none;
+  background: radial-gradient(120% 160% at 50% 50%, rgba(255, 250, 235, 0.95) 0%, rgba(255, 200, 120, 0.75) 45%, rgba(255, 120, 40, 0.3) 100%); }
+[class~="09-end-shinebox"] { position: absolute; inset: 0; border-radius: 30px; overflow: hidden; pointer-events: none; }
+[class~="09-end-shine"] { position: absolute; top: 0; left: 0; width: 300px; height: 112px;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0) 20%, rgba(255, 245, 225, 0.55) 48%, rgba(255, 255, 255, 0.85) 52%, rgba(255, 255, 255, 0) 80%); }
+[class~="09-end-btnring"] { position: absolute; inset: 0; border-radius: 30px; pointer-events: none;
+  border: 5px solid #ff9a4a; box-shadow: 0 0 34px rgba(255, 106, 31, 0.9), inset 0 0 18px rgba(255, 106, 31, 0.6); }
+
+/* final-hit fx */
+[class~="09-end-shock"] { position: absolute; left: 860px; top: 500px; width: 200px; height: 200px; border-radius: 50%; pointer-events: none;
+  border: 5px solid #ff7a2a; box-shadow: 0 0 40px rgba(255, 106, 31, 0.9), inset 0 0 30px rgba(255, 106, 31, 0.6); }
+[class~="09-end-touch"] { position: absolute; left: 1215px; top: 578px; width: 80px; height: 80px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.5) 70%, rgba(255, 255, 255, 0.15) 100%);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.16); }
+[class~="09-end-tring"] { position: absolute; left: 1215px; top: 578px; width: 80px; height: 80px; border-radius: 50%; pointer-events: none;
+  border: 4px solid rgba(255, 255, 255, 0.9); }
+[class~="09-end-sparks"] { position: absolute; width: 0; height: 0; }
+[class~="09-end-spk"] { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+[class~="09-end-spkbar"] { position: absolute; left: 0; top: -3px; height: 6px; border-radius: 3px; transform-origin: 100% 50%;
+  background: linear-gradient(90deg, rgba(225, 83, 17, 0) 0%, #ff6a1f 40%, #ffd34a 75%, #fff6d8 100%);
+  box-shadow: 0 0 12px rgba(255, 140, 30, 0.9); }
+[class~="09-end-flash"] { position: absolute; inset: 0; background: #fff3dc; pointer-events: none; }
+</style>
+<link rel="stylesheet" href="assets/kit/moorea-ui.css">
+
+<div id="root" data-composition-id="09-end" data-width="1920" data-height="1080" data-duration="4.8">
+  <canvas class="clip" id="09-end-lava" width="960" height="540" data-start="0" data-duration="4.8" data-track-index="0"
+          style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+
+  <div class="09-end-sky" id="09-end-sky">
+    <div class="09-end-rays" id="09-end-rays"></div>
+    <div class="09-end-sun" id="09-end-sun"></div>
+  </div>
+  <div class="09-end-refl" id="09-end-refl"></div>
+
+  <canvas class="clip" id="09-end-embers" width="1920" height="1080" data-start="0" data-duration="4.8" data-track-index="1"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+
+  <div class="09-end-cam mui" id="09-end-cam">
+    <div class="09-end-scrim" id="09-end-scrim"></div>
+
+    <!-- the app's tab bar -->
+    <div class="09-end-tabw" id="09-end-tabw">
+      <div class="09-end-tabin" id="09-end-tabin">
+        <div class="mui-tabbar">
+          <div class="it 09-end-it"><img src="assets/img/tab-lineup.png" alt=""><span>Line up</span></div>
+          <div class="it 09-end-it"><img src="assets/img/tab-plan.png" alt=""><span>Plan</span></div>
+          <div class="it 09-end-it"><i class="09-end-slot"></i><span id="09-end-acc">Accueil</span></div>
+          <div class="it 09-end-it"><img src="assets/img/tab-mana.png" alt=""><span>M.A.N.A</span></div>
+          <div class="it 09-end-it"><img src="assets/img/tab-infos.png" alt=""><span>Infos</span></div>
+          <div class="center">
+            <div class="09-end-cflash" id="09-end-cflash"></div>
+            <img class="09-end-sunimg" id="09-end-sunimg" src="assets/img/sun-orange.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="09-end-ring" id="09-end-ring"></div>
+    <div class="09-end-sparks" id="09-end-sunsparks" style="left:960px;top:812.5px"></div>
+
+    <!-- end-card stack -->
+    <div class="09-end-title mui-display fx-hot-white" id="09-end-title"><span class="09-end-titlein" id="09-end-titlein">L’APPLI OFFICIELLE</span></div>
+    <div class="09-end-date" id="09-end-date">5 · 6 · 7 JUIN 2026 · CHÂTEAU DE GRILLEMONT</div>
+    <div class="09-end-hair" id="09-end-hair"></div>
+
+    <div class="09-end-pills">
+      <div class="09-end-pill" id="09-end-pillA">
+        <div class="mui-seg on"><span class="09-end-ico" data-mui-icon="mdiApple"></span>App Store</div>
+        <div class="09-end-pflash" id="09-end-pflashA"></div>
+      </div>
+      <div class="09-end-pill" id="09-end-pillB">
+        <div class="mui-seg on"><span class="09-end-ico" data-mui-icon="mdiGooglePlay"></span>Google Play</div>
+        <div class="09-end-pflash" id="09-end-pflashB"></div>
+      </div>
+    </div>
+
+    <div class="09-end-pret mui-display" id="09-end-pret">PRÊT À JOUER ?</div>
+
+    <div class="09-end-btnw" id="09-end-btnw">
+      <div class="09-end-btnring" id="09-end-btnring"></div>
+      <div class="09-end-btnin" id="09-end-btnin">
+        <div class="mui-btn-orange"><span class="mui-display">TÉLÉCHARGE L’APPLI</span></div>
+        <div class="09-end-shinebox"><div class="09-end-shine" id="09-end-shine"></div></div>
+        <div class="09-end-btnflash" id="09-end-btnflash"></div>
+      </div>
+    </div>
+
+    <!-- the chrome sun logo: above the tab bar so it drops INTO the centre button -->
+    <div class="09-end-logoclip" id="09-end-logoclip">
+      <img class="09-end-logo" id="09-end-logo" src="assets/img/logo-chrome.png" alt="">
+    </div>
+
+    <div class="09-end-shock" id="09-end-shock"></div>
+    <div class="09-end-sparks" id="09-end-btnsparks" style="left:960px;top:600px"></div>
+    <div class="09-end-tring" id="09-end-tring"></div>
+    <div class="09-end-touch" id="09-end-touch"></div>
+  </div>
+
+  <div class="09-end-flash" id="09-end-flash"></div>
+</div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/kit/mui.js"></script>
+<script src="assets/kit/lava.js"></script>
+<script>
+(function () {
+  var ID = '09-end', FRAME_START = 30.4, DUR = 4.8;
+  function $(n) { return document.getElementById(ID + '-' + n); }
+  var cam = $('cam');
+  function $$(n) { return Array.prototype.slice.call(cam.querySelectorAll('[class~="' + ID + '-' + n + '"]')); }
+
+  /* seeded PRNG (mulberry32) for spark scatter */
+  function prng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  /* spark streaks radiating from an ellipse (ax, ay) around a host point; angles in [a0, a1] degrees */
+  function buildSparks(host, n, seed, o) {
+    var r = prng(seed), out = [];
+    for (var i = 0; i < n; i++) {
+      var ang = o.a0 + (i + 0.5) * (o.a1 - o.a0) / n + (r() - 0.5) * (o.a1 - o.a0) / n * 0.8;
+      var rad = ang * Math.PI / 180, c = Math.cos(rad), s = Math.sin(rad);
+      var r0 = 1 / Math.sqrt((c * c) / (o.ax * o.ax) + (s * s) / (o.ay * o.ay));
+      var len = o.lmin + r() * (o.lmax - o.lmin);
+      var arm = document.createElement('div'); arm.className = ID + '-spk';
+      arm.style.transform = 'rotate(' + ang.toFixed(1) + 'deg)';
+      var bar = document.createElement('div'); bar.className = ID + '-spkbar';
+      bar.style.width = len.toFixed(0) + 'px';
+      arm.appendChild(bar); host.appendChild(arm);
+      out.push({ el: bar, x0: r0 - len, x1: r0 + o.dmin + r() * (o.dmax - o.dmin) - len, dl: r() * 0.06 });
+    }
+    return out;
+  }
+  var sunSparks = buildSparks($('sunsparks'), 12, 909, { a0: -180, a1: 180, ax: 132, ay: 132, lmin: 34, lmax: 74, dmin: 70, dmax: 150 });
+  var btnSparks = buildSparks($('btnsparks'), 20, 4242, { a0: -186, a1: 6, ax: 455, ay: 70, lmin: 60, lmax: 150, dmin: 170, dmax: 420 });
+
+  if (window.MUI) MUI.hydrate(cam);
+
+  var tl = gsap.timeline({ paused: true });
+
+  /* ft = first tween on a prop (renders its from-state at build) · ch = chained tween (from = previous end) */
+  function ft(el, from, to, at) { return tl.fromTo(el, from, to, at); }
+  function ch(el, from, to, at) { to.immediateRender = false; return tl.fromTo(el, from, to, at); }
+  /* 0 -> 1 -> 0 envelope: rest value before AND after, seek-safe in both directions */
+  function pulse(rise, pw) { return function (p) { if (p <= 0 || p >= 1) return 0; if (p < rise) return p / rise;
+    return Math.pow(1 - (p - rise) / (1 - rise), pw || 2); }; }
+  function shakeE(n) { return function (p) { return Math.sin(p * Math.PI * 2 * n) * Math.pow(1 - p, 1.4); }; }
+  function wob(n) { return function (p) { return Math.sin(p * Math.PI * n); }; }
+  function shake(at, amp, dur) {
+    ft(cam, { x: 0 }, { x: amp, duration: dur, ease: shakeE(4.5), immediateRender: false }, at);
+    ft(cam, { y: 0 }, { y: -amp * 0.7, duration: dur, ease: shakeE(3.5), immediateRender: false }, at);
+  }
+  function fireSparks(list, at, dur) {
+    list.forEach(function (b) {
+      ft(b.el, { x: b.x0, scaleX: 1 }, { x: b.x1, scaleX: 0.25, duration: dur, ease: 'power3.out' }, at + b.dl);
+      ft(b.el, { opacity: 0 }, { opacity: 1, duration: dur, ease: pulse(0.07, 1.6) }, at + b.dl);
+    });
+  }
+
+  /* ---------------- lava world: horizon view at dusk (seed 3, global time) ---------------- */
+  var lava = { render: function () {} }, emb = { render: function () {} };
+  try { if (window.MooreaLava) lava = MooreaLava.create($('lava'), { seed: 3 }); } catch (e) {}
+  try { if (window.MooreaEmbers) emb = MooreaEmbers.create($('embers'), { seed: 11, count: 70 }); } catch (e) {}
+  var L = { t: FRAME_START, heat: 0.9, zoom: 1, panX: 0, panY: 0, tilt: 0.9, horizon: 0.58,
+            coolR: 0, coolX: 0.5, coolY: 0.5, erupt: 0, eruptX: 0.5, eruptY: 0.6, flash: 0,
+            hb: -0.25, boost: 1, et: 0 };
+  function draw() { L.heat = 0.9 + L.hb; lava.render(L); emb.render(L.t + L.et, { boost: L.boost }); }
+  function LT(from, to, at) { to.onUpdate = draw; to.immediateRender = false; return tl.fromTo(L, from, to, at); }
+  function flashL(at, amt, dur) { LT({ flash: 0 }, { flash: amt, duration: dur, ease: pulse(0.1, 2) }, at); }
+  function boost(at, amt, dur) { LT({ boost: 1 }, { boost: amt, duration: dur, ease: pulse(0.06, 1.6) }, at); }
+  function heatHit(at, amt, dur) { LT({ hb: 0 }, { hb: amt, duration: dur, ease: pulse(0.1, 1.6) }, at); }
+
+  LT({ t: FRAME_START }, { t: FRAME_START + DUR, duration: DUR, ease: 'none' }, 0);   /* continuous flow across cuts */
+  LT({ panY: 0 }, { panY: 0.9, duration: DUR, ease: 'none' }, 0);                     /* slow glide toward the horizon */
+
+  /* ============ Scene 1 (0.00–1.00): the chrome MOOREA sun rises over the lava ============ */
+  var logo = $('logo'), sun = $('sun'), rays = $('rays'), refl = $('refl');
+  flashL(0, 0.22, 0.36);
+  LT({ hb: -0.25 }, { hb: 0, duration: 1.0, ease: 'power2.out' }, 0);
+  LT({ erupt: 0 }, { erupt: 0.45, duration: 1.0, ease: 'power2.out' }, 0);       /* the sun's reflection on the lava */
+  ft(sun, { opacity: 0.3, scale: 0.62 }, { opacity: 1, scale: 1, duration: 1.0, ease: 'power2.out' }, 0);
+  ft(refl, { opacity: 0.15, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 1.0, ease: 'power2.out' }, 0);
+  ft(rays, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0);
+  ft(rays, { rotation: -6 }, { rotation: 14, duration: DUR, ease: 'power1.out' }, 0);
+  /* rise from behind the horizon (clipped at y 626), heat shimmer on 8ths, glow brightening */
+  ft(logo, { scale: 1.5 }, { scale: 1.25, duration: 0.2, ease: 'power2.out', immediateRender: true }, 1.0);
+  ft(logo, { y: 420 }, { y: 0, duration: 0.9, ease: 'power2.out' }, 0);
+  ch(logo, { y: 0 }, { y: -14, duration: 0.1, ease: 'sine.out' }, 0.9);
+  ft(logo, { skewX: 0 }, { skewX: 0.6, duration: 1.0, ease: wob(5) }, 0);
+  ft(logo, { filter: 'brightness(0.5) drop-shadow(0px 0px 0px rgba(255,140,40,0))' },
+           { filter: 'brightness(1.12) drop-shadow(0px 0px 44px rgba(255,140,40,0.85))', duration: 1.0, ease: 'power2.out' }, 0);
+
+  /* ============ Scene 2 (1.00–1.60): tab bar slides up, the logo falls into its centre button ============ */
+  var tabin = $('tabin'), items = $$('it');
+  ft(tabin, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, ease: 'none' }, 1.0);
+  ft(tabin, { y: 213.33 }, { y: 0, duration: 0.3, ease: 'power4.out' }, 1.0);       /* +320 px on screen (wrapper scale 1.5) */
+  items.forEach(function (it, i) {
+    ft(it, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.2, ease: 'back.out(2)' }, 1.08 + i * 0.04);
+  });
+  ft($('sunimg'), { opacity: 0 }, { opacity: 1, duration: 0.02, ease: 'none' }, 1.6);
+  /* anticipation up, then the fall: shrink 1.5 -> 0.18 and spin onto the circle centre (960, 812.5) */
+  ch(logo, { y: -14 }, { y: -64, duration: 0.2, ease: 'power2.out' }, 1.0);
+  ch(logo, { y: -64 }, { y: 452.5, duration: 0.4, ease: 'power3.in' }, 1.2);
+  ch(logo, { scale: 1.25 }, { scale: 0.18, duration: 0.4, ease: 'power2.in' }, 1.2);
+  ft(logo, { rotation: 0 }, { rotation: 360, duration: 0.4, ease: 'power2.in' }, 1.2);
+  ft($('logoclip'), { clipPath: 'inset(0px 0px 454px 0px)' }, { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.01, ease: 'none' }, 1.2);
+  ft(logo, { opacity: 1 }, { opacity: 0, duration: 0.02, ease: 'none' }, 1.59);
+  ft($('scrim'), { opacity: 0 }, { opacity: 0.5, duration: 0.4, ease: 'power2.out' }, 1.9);
+  ch($('scrim'), { opacity: 0.5 }, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 2.9);
+
+  /* 1.60 magnetic snap: sun-orange swap + white flash + orange ring + sparkle, "Accueil" lights orange */
+  ft($('sunimg'), { scale: 1.6 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' }, 1.6);
+  ft($('cflash'), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1.35, duration: 0.32, ease: pulse(0.08, 2) }, 1.58);
+  ft($('ring'), { scale: 0.85 }, { scale: 2.7, duration: 0.5, ease: 'power2.out' }, 1.6);
+  ft($('ring'), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: pulse(0.04, 1.5) }, 1.6);
+  ft($('acc'), { color: '#85868a' }, { color: '#e15311', duration: 0.06, ease: 'none' }, 1.6);
+  ft($('acc'), { scale: 1 }, { scale: 1.25, duration: 0.3, ease: pulse(0.15, 2) }, 1.6);
+  ch(tabin, { y: 0 }, { y: 7, duration: 0.26, ease: pulse(0.2, 2) }, 1.6);
+  fireSparks(sunSparks, 1.6, 0.42);
+  ch(sun, { opacity: 1, scale: 1 }, { opacity: 0.5, scale: 0.94, duration: 0.5, ease: 'power2.out' }, 1.6);
+  ch(refl, { opacity: 1 }, { opacity: 0.55, duration: 0.5, ease: 'power2.out' }, 1.6);
+  LT({ erupt: 0.45 }, { erupt: 1.1, duration: 0.4, ease: pulse(0.1, 1.6) }, 1.6);
+  ch(L, { erupt: 0.45 }, { erupt: 0.2, duration: 0.4, ease: 'power2.out', onUpdate: draw }, 2.0);
+  heatHit(1.6, 0.3, 0.4);
+  boost(1.6, 2.6, 0.5);
+  flashL(1.6, 0.16, 0.2);
+
+  /* ============ Scene 3 (1.60–2.40): L'APPLI OFFICIELLE slams, date ticks in ============ */
+  var titleIn = $('titlein');
+  ft(titleIn, { scale: 2.4, filter: 'blur(14px)' }, { scale: 0.94, filter: 'blur(0px)', duration: 0.16, ease: 'power4.in' }, 1.44);
+  ft(titleIn, { opacity: 0 }, { opacity: 1, duration: 0.1, ease: 'power1.out' }, 1.46);
+  ch(titleIn, { scale: 0.94 }, { scale: 1, duration: 0.25, ease: 'back.out(2)' }, 1.6);
+  ft($('flash'), { opacity: 0 }, { opacity: 0.55, duration: 0.14, ease: pulse(0.1, 2) }, 1.6);
+  shake(1.6, 10, 0.3);
+
+  ft($('date'), { clipPath: 'inset(0% 50% 0% 50%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.24, ease: 'power3.out' }, 2.0);
+  ft($('date'), { letterSpacing: '0.2em', y: 10 }, { letterSpacing: '0.08em', y: 0, duration: 0.3, ease: 'power3.out' }, 2.0);
+  ft($('hair'), { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: 'power3.out' }, 2.0);
+
+  /* ============ Scene 4 (2.40–3.20): store pills pop on 2.40 / 2.60, PRÊT À JOUER ? at 3.00 ============ */
+  function popPill(el, fl, at) {
+    ft(el, { scale: 0.2, y: 40 }, { scale: 1.12, y: 0, duration: 0.12, ease: 'power2.out' }, at);
+    ch(el, { scale: 1.12 }, { scale: 1, duration: 0.18, ease: 'back.out(2.5)' }, at + 0.12);
+    ft(el, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, at);
+    ft(fl, { opacity: 0 }, { opacity: 0.85, duration: 0.22, ease: pulse(0.1, 2) }, at);
+    boost(at, 1.7, 0.18);
+  }
+  popPill($('pillA'), $('pflashA'), 2.4);
+  popPill($('pillB'), $('pflashB'), 2.6);
+
+  var pret = $('pret');
+  ft(pret, { scale: 1.4 }, { scale: 1, duration: 0.26, ease: 'back.out(3)' }, 3.0);
+  ft(pret, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: 'none' }, 3.0);
+  ft(pret, { letterSpacing: '0.3em' }, { letterSpacing: '0.035em', duration: 0.22, ease: 'power3.out' }, 3.0);
+
+  /* ============ Scene 5 (3.20–4.00): the orange button pops and breathes ============ */
+  var btnIn = $('btnin');
+  ft(btnIn, { scale: 0.3, y: 60 }, { scale: 1.08, y: 0, duration: 0.14, ease: 'power3.out' }, 3.2);
+  ch(btnIn, { scale: 1.08 }, { scale: 1, duration: 0.2, ease: 'back.out(2.5)' }, 3.34);
+  ft(btnIn, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'none' }, 3.2);
+  ft($('btnflash'), { opacity: 0 }, { opacity: 0.9, duration: 0.26, ease: pulse(0.08, 2) }, 3.2);
+  boost(3.2, 1.9, 0.3);
+  ch(btnIn, { scale: 1 }, { scale: 1.03, duration: 0.34, ease: pulse(0.35, 1.5) }, 3.6);   /* breathe on the 3.60 beat */
+  ft($('shine'), { x: -340 }, { x: 800, duration: 0.42, ease: 'power2.inOut' }, 3.6);
+  /* the finger comes down */
+  ft($('touch'), { scale: 1.8, opacity: 0 }, { scale: 1, opacity: 0.6, duration: 0.18, ease: 'power2.out' }, 3.78);
+
+  /* ============ Scene 6 (4.00–4.80): FINAL HIT — press, shockwave, flash, ember burst, hold ============ */
+  ch(btnIn, { scale: 1 }, { scale: 0.92, duration: 0.06, ease: 'power2.in' }, 3.94);
+  ch(btnIn, { scale: 0.92 }, { scale: 1.06, duration: 0.14, ease: 'power2.out' }, 4.0);
+  ch(btnIn, { scale: 1.06 }, { scale: 1, duration: 0.26, ease: 'back.out(2)' }, 4.14);
+  ch($('touch'), { scale: 1 }, { scale: 0.78, duration: 0.06, ease: 'power2.in' }, 3.94);
+  ch($('touch'), { opacity: 0.6, scale: 0.78 }, { opacity: 0, scale: 0.9, duration: 0.3, ease: 'power2.out' }, 4.1);
+  ft($('tring'), { scale: 0.8 }, { scale: 3.2, duration: 0.45, ease: 'power2.out' }, 4.0);
+  ft($('tring'), { opacity: 0 }, { opacity: 1, duration: 0.45, ease: pulse(0.05, 1.5) }, 4.0);
+  ch($('btnflash'), { opacity: 0 }, { opacity: 1, duration: 0.34, ease: pulse(0.06, 2) }, 4.0);
+  ft($('btnring'), { scale: 1 }, { scale: 1.42, duration: 0.42, ease: 'power2.out' }, 4.0);
+  ft($('btnring'), { opacity: 0 }, { opacity: 1, duration: 0.42, ease: pulse(0.04, 1.6) }, 4.0);
+  ft($('shock'), { scale: 0.4 }, { scale: 10, duration: 0.5, ease: 'power2.out' }, 4.0);
+  ft($('shock'), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: pulse(0.03, 1.7) }, 4.0);
+  ch($('flash'), { opacity: 0 }, { opacity: 0.5, duration: 0.26, ease: pulse(0.05, 2.6) }, 4.0);
+  ch($('sunimg'), { scale: 1 }, { scale: 1.22, duration: 0.4, ease: pulse(0.15, 2) }, 4.0);
+  fireSparks(btnSparks, 4.0, 0.44);
+  shake(4.0, 14, 0.36);
+  flashL(4.0, 0.22, 0.3);
+  heatHit(4.0, 0.6, 0.7);
+  LT({ erupt: 0.2 }, { erupt: 1.3, duration: 0.6, ease: pulse(0.08, 1.6) }, 4.0);
+  LT({ boost: 1 }, { boost: 4, duration: 0.8, ease: pulse(0.02, 1.4) }, 4.0);         /* embers burst 4 -> 1 */
+  LT({ et: 0 }, { et: 0.55, duration: 0.7, ease: 'power3.out' }, 4.0);                 /* ...and leap upward */
+
+  /* macro camera: slow push under the end card, settled by the 4.40 hold */
+  ft(cam, { scale: 1 }, { scale: 1.022, duration: 2.8, ease: 'sine.inOut' }, 1.6);
+
+  draw();
+  window.__timelines = window.__timelines || {};
+  window.__timelines[ID] = tl;
+})();
+</script>
+</template>
