@@ -1,0 +1,1346 @@
+[
+ {
+  "t": 20.0,
+  "frame": "05-plan-planning",
+  "event": "\"PERDU ?\" erupts from the lava (y120->0, scaleY 0.3->1.15->1, blur off) + lava eruption + ember boost 2.2",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "geyser (whoosh + fire + acid stab 60); groove kick"
+ },
+ {
+  "t": 20.0,
+  "frame": "hud",
+  "event": "HUD festival clock rolls 16:45 -> 17:20 (odometer, 0.18 s power3.out)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 20.5,
+  "frame": "05-plan-planning",
+  "event": "festival map rises out of the lava (y520->0, rotationX 55->0, 0.45 s power3.out), lava erupt + boost; map cools molten->normal 20.70-21.05",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "fall_whistle (P+0.5 loop, descending on a rise) + low rumble noise 20.5 + clang slice 20.55 (rock grind)"
+ },
+ {
+  "t": 21.0,
+  "frame": "05-plan-planning",
+  "event": "map settles (scaleY squash 20.95, back.out rebound 21.0); \"PERDU ?\" turns to stone and sinks; shake 7 px",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "thud + splash + pssht_ting (P+1.0 loop)"
+ },
+ {
+  "t": 21.0,
+  "frame": "05-plan-planning",
+  "event": "map pin 1/6 (navy 9) drops from -140 px and lands: squash 1.24/0.78, bounce, white ripple ring",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "square blip 74"
+ },
+ {
+  "t": 21.25,
+  "frame": "05-plan-planning",
+  "event": "map pin 2/6 (orange 6) drops from -140 px and lands: squash 1.24/0.78, bounce, white ripple ring",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "square blip 81"
+ },
+ {
+  "t": 21.5,
+  "frame": "05-plan-planning",
+  "event": "answer \"TU TE REPERES.\" STAMPS (scale 1.4->1 back.out(3)), shake 6, ember boost",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp + coin"
+ },
+ {
+  "t": 21.5,
+  "frame": "05-plan-planning",
+  "event": "map pin 3/6 (orange 11) drops from -140 px and lands: squash 1.24/0.78, bounce, white ripple ring",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "square blip 81"
+ },
+ {
+  "t": 21.55,
+  "frame": "hud",
+  "event": "HUD \"+1 PLAN\" bonus pill pops under the answer stamp (scale 0->1 back.out, 0.16 s)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none (tail of the stamp+coin at 21.5)"
+ },
+ {
+  "t": 21.75,
+  "frame": "05-plan-planning",
+  "event": "map pin 4/6 (red 4 Main Stage) drops from -140 px and lands: squash 1.24/0.78, bounce, white ripple ring",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "square blip 69"
+ },
+ {
+  "t": 21.82,
+  "frame": "hud",
+  "event": "HUD \"+1 PLAN\" pill flies to the counter top-right (0.3 s power3.in, arrives 22.12)",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 22.0,
+  "frame": "05-plan-planning",
+  "event": "map pin 5/6 (navy 9) drops from -140 px and lands: squash 1.24/0.78, bounce, white ripple ring",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "square blip 74"
+ },
+ {
+  "t": 22.0,
+  "frame": "05-plan-planning",
+  "event": "weather chip \"18deg\" pops at the map top-left (scale 0->1.6->1.4); slow camera push on the map starts (22.0-24.5)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 86 (+ pin-5 blip 74)"
+ },
+ {
+  "t": 22.12,
+  "frame": "hud",
+  "event": "HUD counter GALERES EVITEES 2 -> 3/8: digit swap, scale 1.8->1 back.out, orange flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 22.25,
+  "frame": "05-plan-planning",
+  "event": "map pin 6/6 (cyan 4) drops from -140 px and lands: squash 1.24/0.78, bounce, white ripple ring",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "square blip 86"
+ },
+ {
+  "t": 22.5,
+  "frame": "05-plan-planning",
+  "event": "TAP on the red Main Stage pin: white tap disc + ripple ring, pin squashes to 0.88",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick + up-chirp 500->1300 Hz"
+ },
+ {
+  "t": 22.56,
+  "frame": "05-plan-planning",
+  "event": "Main Stage pin grows to 1.35 (back.out) and the \"MAIN STAGE / Scene principale\" label tag pops above it",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none (the 22.5 chirp is 60 ms early)"
+ },
+ {
+  "t": 23.0,
+  "frame": "05-plan-planning",
+  "event": "orange \"toi\" dot pops on the map (0->1.5->1.25) and the dashed orange route draws to Main Stage (23.0-23.4)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "rising sweep 900->2400 Hz (0.35 s)"
+ },
+ {
+  "t": 23.36,
+  "frame": "05-plan-planning",
+  "event": "route reaches the pin: Main Stage pin arrival bump 1.35->1.5->1.35",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 23.5,
+  "frame": "05-plan-planning",
+  "event": "sonar ring 1 from the \"toi\" dot + dot pulse 1.25->1.42",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "sonar ping 1400 Hz + boing (P+3.5 loop; no jump on screen)"
+ },
+ {
+  "t": 23.75,
+  "frame": "05-plan-planning",
+  "event": "sonar ring 2",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 24.0,
+  "frame": "05-plan-planning",
+  "event": "sonar ring 3",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "tick (P+4.0 loop land tick; no landing on screen)"
+ },
+ {
+  "t": 24.5,
+  "frame": "05-plan-planning",
+  "event": "WHIP-PAN out of the map (x->-1800, blur 16, 0.4 s power2.in) + lava pan",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "whoosh 400->7000 (0.45 s)"
+ },
+ {
+  "t": 25.0,
+  "frame": "05-plan-planning",
+  "event": "\"CA CLASHE !\" erupts (left zone) + stage slides in from x+260 with blur",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "geyser (stab 63)"
+ },
+ {
+  "t": 25.0,
+  "frame": "hud",
+  "event": "HUD festival clock rolls 17:20 -> 18:00 (odometer, 0.18 s power3.out)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 25.0,
+  "frame": "05-plan-planning",
+  "event": "HALO and MAINSTAGE pills (x2.4) rush in from both sides (0.25 s power2.in) toward the collision",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "none (inside the geyser)"
+ },
+ {
+  "t": 25.25,
+  "frame": "05-plan-planning",
+  "event": "HALO x MAINSTAGE COLLIDE: squash, 12 sparks, hot disc, shockwave ring, white flash 0.55 (from 25.24), shake 14, lava erupt",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "metallic clang + sparkle"
+ },
+ {
+  "t": 25.27,
+  "frame": "05-plan-planning",
+  "event": "pills ricochet up then tumble down out of frame (25.27-25.79, rotating)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 25.5,
+  "frame": "05-plan-planning",
+  "event": "\"Mon planning\" sheet rises from y+900 (0.36 s power4.out)",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "whoosh 200->3000 + fall_whistle (P+0.5 loop, descending on a rise)"
+ },
+ {
+  "t": 25.58,
+  "frame": "05-plan-planning",
+  "event": "3 artist rows slide in (25.58 / 25.64 / 25.70), VALIDER button pops 25.70",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 26.0,
+  "frame": "05-plan-planning",
+  "event": "\"CA CLASHE !\" turns to stone and sinks",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "thud + splash + pssht_ting (P+1.0 loop; no landing on screen)"
+ },
+ {
+  "t": 26.5,
+  "frame": "05-plan-planning",
+  "event": "answer \"TU RATES RIEN.\" STAMPS, shake 6, ember boost",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp + coin"
+ },
+ {
+  "t": 26.55,
+  "frame": "hud",
+  "event": "HUD \"+1 PLANNING\" bonus pill pops under the answer stamp (scale 0->1 back.out, 0.16 s)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none (tail of the stamp+coin at 26.5)"
+ },
+ {
+  "t": 26.75,
+  "frame": "05-plan-planning",
+  "event": "soft row highlight appears on Klaan",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 26.82,
+  "frame": "hud",
+  "event": "HUD \"+1 PLANNING\" pill flies to the counter top-right (0.3 s power3.in, arrives 27.12)",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 27.0,
+  "frame": "05-plan-planning",
+  "event": "TICK 1/3: Klaan checkbox fills orange + check + ring; count rolls 0/12 -> 1/12; app line \"1 artiste ajoute a ton planning\" slides up",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick + blip 76"
+ },
+ {
+  "t": 27.12,
+  "frame": "hud",
+  "event": "HUD counter GALERES EVITEES 3 -> 4/8: digit swap, scale 1.8->1 back.out, orange flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 27.25,
+  "frame": "05-plan-planning",
+  "event": "row highlight slides to Sound of Legend",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 27.5,
+  "frame": "05-plan-planning",
+  "event": "TICK 2/3: Sound of Legend checkbox fills orange + check + ring; count rolls 1/12 -> 2/12; app line number rolls to 2",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick + blip 80"
+ },
+ {
+  "t": 27.75,
+  "frame": "05-plan-planning",
+  "event": "row highlight slides to Mattn",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 28.0,
+  "frame": "05-plan-planning",
+  "event": "TICK 3/3: Mattn checkbox fills orange + check + ring; count rolls 2/12 -> 3/12; app line number rolls to 3",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick + blip 84"
+ },
+ {
+  "t": 28.5,
+  "frame": "05-plan-planning",
+  "event": "VALIDER PRESSED (0.94 -> 1.04 -> 1), orange flare ring, button flash, lava flash, shake 4",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "impact x0.6 + sparkle + boing (P+3.5)"
+ },
+ {
+  "t": 28.5,
+  "frame": "05-plan-planning",
+  "event": "\"toi\" dot jumps in from off-screen left (0.5 s arc)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "boing (P+3.5)"
+ },
+ {
+  "t": 29.0,
+  "frame": "05-plan-planning",
+  "event": "dot lands on the sheet top edge: squash, dust ring, sheet dips 8 px",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick (P+4.0)"
+ },
+ {
+  "t": 29.5,
+  "frame": "05-plan-planning",
+  "event": "WHIP-PAN out of the planning (x->-1800, blur, 0.4 s power2.in)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "whoosh 400->7000 (0.45 s)"
+ },
+ {
+  "t": 30.0,
+  "frame": "06-food-cash",
+  "event": "\"J'AI FAIM\" erupts + lava eruption + lava flash 0.35 + shake 8 (30.02)",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "geyser (stab 62)"
+ },
+ {
+  "t": 30.0,
+  "frame": "hud",
+  "event": "HUD festival clock rolls 18:00 -> 20:30 (odometer, 0.18 s power3.out)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 30.44,
+  "frame": "06-food-cash",
+  "event": "category tile plate expands (scaleX 0->1, expo.out)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 30.5,
+  "frame": "06-food-cash",
+  "event": "category tile 1/4 \"Restaurants\" pops (0->1.12->1)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep 500->1300 Hz + fall_whistle (P+0.5 loop; nothing falls here)"
+ },
+ {
+  "t": 30.75,
+  "frame": "06-food-cash",
+  "event": "category tile 2/4 \"Bars\" pops (0->1.12->1)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep 500->1300 Hz"
+ },
+ {
+  "t": 31.0,
+  "frame": "06-food-cash",
+  "event": "category tile 3/4 \"Pizza\" pops (0->1.12->1)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep 500->1300 Hz"
+ },
+ {
+  "t": 31.0,
+  "frame": "06-food-cash",
+  "event": "food-truck card 1/4 (Sto Dimos) SLAMS onto the fanned stack (falls from y+800 over 0.2 s power4.in), squash, flash, shake 9, lava splash",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "falling swish (from 30.95) + thud x0.5 + thud + splash + pssht_ting (P+1.0 loop)"
+ },
+ {
+  "t": 31.25,
+  "frame": "06-food-cash",
+  "event": "category tile 4/4 \"Glaces\" pops (0->1.12->1)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep 500->1300 Hz"
+ },
+ {
+  "t": 31.25,
+  "frame": "06-food-cash",
+  "event": "food-truck card 2/4 (Bali Napoli) SLAMS onto the fanned stack (falls from y+800 over 0.2 s power4.in), squash, flash, shake 9, lava splash",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "falling swish (from 31.20) + thud x0.5"
+ },
+ {
+  "t": 31.25,
+  "frame": "06-food-cash",
+  "event": "app line \"Tous les restaurants proposent du vegetarien\" fades up",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 31.5,
+  "frame": "06-food-cash",
+  "event": "answer \"A DEUX PAS.\" STAMPS + burst ring; \"J'AI FAIM\" turns to stone",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp + coin"
+ },
+ {
+  "t": 31.5,
+  "frame": "06-food-cash",
+  "event": "food-truck card 3/4 (Pasta e Basta) SLAMS onto the fanned stack (falls from y+800 over 0.2 s power4.in), squash, flash, shake 9, lava splash",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "falling swish (from 31.45) + thud x0.5"
+ },
+ {
+  "t": 31.55,
+  "frame": "hud",
+  "event": "HUD \"+1 FOOD\" bonus pill pops under the answer stamp (scale 0->1 back.out, 0.16 s)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none (tail of the stamp+coin at 31.5)"
+ },
+ {
+  "t": 31.75,
+  "frame": "06-food-cash",
+  "event": "food-truck card 4/4 (La Cabane a Burger) SLAMS onto the fanned stack (falls from y+800 over 0.2 s power4.in), squash, flash, shake 12, lava splash",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "falling swish (from 31.70) + thud x0.5"
+ },
+ {
+  "t": 31.82,
+  "frame": "hud",
+  "event": "HUD \"+1 FOOD\" pill flies to the counter top-right (0.3 s power3.in, arrives 32.12)",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 32.0,
+  "frame": "06-food-cash",
+  "event": "stack spreads into the horizontal carousel (0.34 s power3.out); focus 1 Sto Dimos x1.12, others dim",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "swish up 500->5000"
+ },
+ {
+  "t": 32.02,
+  "frame": "06-food-cash",
+  "event": "signpost button on card 1 pulses orange (1->1.35->1) + ring (peak at 32.12)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "blip 81 at 32.10 (80 ms late)"
+ },
+ {
+  "t": 32.12,
+  "frame": "hud",
+  "event": "HUD counter GALERES EVITEES 4 -> 5/8: digit swap, scale 1.8->1 back.out, orange flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 32.5,
+  "frame": "06-food-cash",
+  "event": "carousel focus 2/4: Bali Napoli x1.12, previous card shrinks, track scrolls",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "swish up 500->5000"
+ },
+ {
+  "t": 32.52,
+  "frame": "06-food-cash",
+  "event": "signpost button on card 2 pulses orange (1->1.35->1) + ring (peak at 32.62)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "blip 81 at 32.60 (80 ms late)"
+ },
+ {
+  "t": 33.0,
+  "frame": "06-food-cash",
+  "event": "carousel focus 3/4: Pasta e Basta x1.12, previous card shrinks, track scrolls",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "swish up 500->5000"
+ },
+ {
+  "t": 33.02,
+  "frame": "06-food-cash",
+  "event": "signpost button on card 3 pulses orange (1->1.35->1) + ring (peak at 33.12)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "blip 81 at 33.10 (80 ms late)"
+ },
+ {
+  "t": 33.5,
+  "frame": "06-food-cash",
+  "event": "carousel focus 4/4: La Cabane a Burger x1.12, previous card shrinks, track scrolls",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "swish up 500->5000 + boing (P+3.5)"
+ },
+ {
+  "t": 33.5,
+  "frame": "06-food-cash",
+  "event": "\"toi\" dot leaps from off-screen left onto the focused card (0.5 s arc)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "boing (P+3.5)"
+ },
+ {
+  "t": 33.52,
+  "frame": "06-food-cash",
+  "event": "signpost button on card 4 pulses orange (1->1.35->1) + ring (peak at 33.62)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "blip 81 at 33.60 (80 ms late)"
+ },
+ {
+  "t": 34.0,
+  "frame": "06-food-cash",
+  "event": "dot lands on card 4: squash, card dips 18 px; its signpost pulses again and stays orange",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick (P+4.0)"
+ },
+ {
+  "t": 34.5,
+  "frame": "06-food-cash",
+  "event": "WHIP-PAN out of the carousel (x->-2300, blur 16, 0.5 s power2.in)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "whoosh 400->7000 (0.45 s)"
+ },
+ {
+  "t": 35.0,
+  "frame": "06-food-cash",
+  "event": "\"BRACELET A SEC\" erupts + lava eruption + lava flash 0.35 + shake 8 (35.02)",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "geyser (stab 63)"
+ },
+ {
+  "t": 35.0,
+  "frame": "hud",
+  "event": "HUD festival clock rolls 20:30 -> 21:15 (odometer, 0.18 s power3.out)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 35.5,
+  "frame": "06-food-cash",
+  "event": "\"RECHARGER MON CASHLESS\" button falls red-hot from y-760 with tilt (0.5 s power2.in); embers inside flicker on 8ths",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "fall_whistle"
+ },
+ {
+  "t": 36.0,
+  "frame": "06-food-cash",
+  "event": "button LANDS + QUENCH: squash 1.07/0.84, shake 13, steam burst (12 puffs 36.00-36.20), lava erupt + quench ring, word turns to stone",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "thud + splash + pssht_ting (hiss at 36.0)"
+ },
+ {
+  "t": 36.12,
+  "frame": "06-food-cash",
+  "event": "shine sweep across the cooled button (\"TING\")",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pssht_ting bell (sample delays it 0.12 s -> 36.12, in sync)"
+ },
+ {
+  "t": 36.5,
+  "frame": "06-food-cash",
+  "event": "answer \"RECHARGE.\" STAMPS + button charge flash + 4 embers pop x2.4",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp + coin (+ extra cash coin 36.55)"
+ },
+ {
+  "t": 36.55,
+  "frame": "hud",
+  "event": "HUD \"+1 CASHLESS\" bonus pill pops under the answer stamp (scale 0->1 back.out, 0.16 s)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "coin at 36.55 (cash coin, coincident)"
+ },
+ {
+  "t": 36.82,
+  "frame": "hud",
+  "event": "HUD \"+1 CASHLESS\" pill flies to the counter top-right (0.3 s power3.in, arrives 37.12)",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 37.0,
+  "frame": "06-food-cash",
+  "event": "step 1/3 \"1 Choisis ton montant\" pops (0->1.15->1), number circle flashes orange (+0.10/+0.12) then settles",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 79"
+ },
+ {
+  "t": 37.12,
+  "frame": "hud",
+  "event": "HUD counter GALERES EVITEES 5 -> 6/8: digit swap, scale 1.8->1 back.out, orange flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 37.5,
+  "frame": "06-food-cash",
+  "event": "step 2/3 \"2 Paie en securite\" pops (0->1.15->1), number circle flashes orange (+0.10/+0.12) then settles",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 84"
+ },
+ {
+  "t": 38.0,
+  "frame": "06-food-cash",
+  "event": "step 3/3 \"3 Profite du festival\" pops (0->1.15->1), number circle flashes orange (+0.10/+0.12) then settles",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 89"
+ },
+ {
+  "t": 38.5,
+  "frame": "06-food-cash",
+  "event": "security strip slides in under the steps (steps lift 30 px)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "shield chime 1760/2637 Hz"
+ },
+ {
+  "t": 38.5,
+  "frame": "06-food-cash",
+  "event": "\"toi\" dot jumps from off-screen left onto the button (0.5 s arc)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "boing (P+3.5)"
+ },
+ {
+  "t": 38.56,
+  "frame": "06-food-cash",
+  "event": "strip items pop: 3D Secure 38.56, Paiement chiffre 38.62, CB/Visa/Mastercard 38.68",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 39.0,
+  "frame": "06-food-cash",
+  "event": "dot lands on the button: squash, button dips 9 px, charge flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick (P+4.0)"
+ },
+ {
+  "t": 39.04,
+  "frame": "06-food-cash",
+  "event": "shine sweep across the button (0.3 s)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 39.5,
+  "frame": "06-food-cash",
+  "event": "WHIP-PAN out (x->-1800, blur 16, 0.5 s power2.in)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "whoosh 400->7000 (0.45 s)"
+ },
+ {
+  "t": 40.0,
+  "frame": "07-safety-mana",
+  "event": "\"T'ES OU ?!\" erupts (breakdown: lava heat 0.55, slow embers, no flash/shake)",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser x0.6 (stab 64) + heartbeat + low supersaw pad; kick out"
+ },
+ {
+  "t": 40.0,
+  "frame": "hud",
+  "event": "HUD festival clock rolls 21:15 -> 01:30 (odometer, 0.18 s power3.out)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 40.5,
+  "frame": "07-safety-mana",
+  "event": "Safety Mode card falls from y-980, still warm, blur off (0.5 s power2.in)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 41.0,
+  "frame": "07-safety-mana",
+  "event": "card soft-lands (bounce -14 px), lava splash + quench ring opens under it",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "thud x0.6 + heartbeat"
+ },
+ {
+  "t": 41.0,
+  "frame": "07-safety-mana",
+  "event": "\"Partage de position\" toggle flips ON (knob slides 0.16 s, track turns orange)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick 41.00 + blip 72 at 41.02"
+ },
+ {
+  "t": 41.0,
+  "frame": "07-safety-mana",
+  "event": "compass needle spins 0->470deg (41.00-41.36 power3.out; passes each 45deg at 41.012/.025/.038/.054/.070/.089/.111/.138/.174/.234), swings back to 391deg 41.36-41.46",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "8 ticks evenly every 62.5 ms 41.000-41.4375"
+ },
+ {
+  "t": 41.5,
+  "frame": "07-safety-mana",
+  "event": "answer \"RETROUVE TA BANDE.\" STAMPS, white hit 0.32, shake 9, \"T'ES OU ?!\" petrifies and sinks",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp + coin"
+ },
+ {
+  "t": 41.5,
+  "frame": "07-safety-mana",
+  "event": "compass LOCKS at 40deg (needle settles 41.46-41.50) + ping ring",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "sonar ping 1400 Hz"
+ },
+ {
+  "t": 41.55,
+  "frame": "hud",
+  "event": "HUD \"+1 SAFETY\" bonus pill pops under the answer stamp (scale 0->1 back.out, 0.16 s)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none (tail of the stamp+coin at 41.5)"
+ },
+ {
+  "t": 41.82,
+  "frame": "hud",
+  "event": "HUD \"+1 SAFETY\" pill flies to the counter top-right (0.3 s power3.in, arrives 42.12)",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 42.0,
+  "frame": "07-safety-mana",
+  "event": "TAP on \"Creer un groupe\": touch ring lands 41.92-42.00, ripple 42.0, button 0.95->1",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick + blip 70"
+ },
+ {
+  "t": 42.12,
+  "frame": "hud",
+  "event": "HUD counter GALERES EVITEES 6 -> 7/8: digit swap, scale 1.8->1 back.out, orange flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 42.5,
+  "frame": "07-safety-mana",
+  "event": "avatar dot 1/3 pops on the compass rim (28deg)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep 600->1200"
+ },
+ {
+  "t": 42.75,
+  "frame": "07-safety-mana",
+  "event": "avatar dot 2/3 pops on the compass rim (40deg)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep at 42.625 (125 ms early)"
+ },
+ {
+  "t": 43.0,
+  "frame": "07-safety-mana",
+  "event": "avatar dot 3/3 pops on the compass rim (52deg) + soft compass ping ring",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep at 42.75 (250 ms early)"
+ },
+ {
+  "t": 43.0,
+  "frame": "07-safety-mana",
+  "event": "glossy red SOS button pops (back.out 0.22 s)",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "sparkle (0.5 s)"
+ },
+ {
+  "t": 43.06,
+  "frame": "07-safety-mana",
+  "event": "glint sweeps across SOS (0.36 s)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "sparkle (from 43.0)"
+ },
+ {
+  "t": 43.5,
+  "frame": "07-safety-mana",
+  "event": "gold CHAT button pops + glint 43.56",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "bloop sweep 300->700"
+ },
+ {
+  "t": 44.0,
+  "frame": "07-safety-mana",
+  "event": "hint \"Maintenez SOS pour alerter / CHAT pour le groupe.\" fades up",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 44.5,
+  "frame": "07-safety-mana",
+  "event": "WHIP-PAN: anticipation nudge +40 px (44.50-44.58), rush x->-2300 (44.58-44.86 power3.in), light streaks 44.58-45.0, horizontal blur from 44.60",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "whoosh 400->7000 (0.45 s)"
+ },
+ {
+  "t": 45.0,
+  "frame": "07-safety-mana",
+  "event": "\"1000 QUESTIONS\" erupts + white hit 0.22, lava erupt, heat back up (build starts)",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "geyser (stab 65) + snare roll starts + 4.9 s riser + supersaw build"
+ },
+ {
+  "t": 45.0,
+  "frame": "hud",
+  "event": "HUD festival clock rolls 01:30 -> 02:47 (odometer, 0.18 s power3.out)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 45.0,
+  "frame": "07-safety-mana",
+  "event": "\"?\" swarm: 40 glyphs pop on 32nds (45.000-45.4375, 5 per step) and orbit the title",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none (snare roll)"
+ },
+ {
+  "t": 45.5,
+  "frame": "07-safety-mana",
+  "event": "M.A.N.A input bar slides up from y+300 (0.26 s back.out)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 45.75,
+  "frame": "07-safety-mana",
+  "event": "TYPING: placeholder clears, caret on, \"Les douches ouvrent a quelle heure ?\" types in, 36 chars every 20 ms (45.750-46.450)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "12 ticks every 62.5 ms 45.75-46.4375"
+ },
+ {
+  "t": 46.5,
+  "frame": "07-safety-mana",
+  "event": "answer \"M.A.N.A REPOND.\" STAMPS, white hit 0.3, shake 8, \"1000 QUESTIONS\" petrifies",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp + coin"
+ },
+ {
+  "t": 46.5,
+  "frame": "07-safety-mana",
+  "event": "SEND pressed: send button 0.85->1 + ring (2nd ring 46.65); the \"?\" swarm is sucked into send (46.50-46.69); field empties 46.54",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "whoosh 600->8000 (0.3 s)"
+ },
+ {
+  "t": 46.55,
+  "frame": "hud",
+  "event": "HUD \"+1 M.A.N.A\" bonus pill pops under the answer stamp (scale 0->1 back.out, 0.16 s)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none (tail of the stamp+coin at 46.5)"
+ },
+ {
+  "t": 46.75,
+  "frame": "07-safety-mana",
+  "event": "M.A.N.A header slides in + chat scrim",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 46.82,
+  "frame": "hud",
+  "event": "HUD \"+1 M.A.N.A\" pill flies to the counter top-right (0.3 s power3.in, arrives 47.12)",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 47.0,
+  "frame": "07-safety-mana",
+  "event": "answer bubble pops \"Dimanche, les douches sont ouvertes de 8h a 20h.\" (0.6->1.04->1)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep 600->1400"
+ },
+ {
+  "t": 47.12,
+  "frame": "hud",
+  "event": "HUD counter GALERES EVITEES 7 -> 8/8: digit swap, scale 1.8->1 back.out, orange flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 47.25,
+  "frame": "07-safety-mana",
+  "event": "rule (.hr) draws under the bubble",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 47.5,
+  "frame": "07-safety-mana",
+  "event": "quick-reply chip 1/4 \"Programme\" pops (back.out)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 84"
+ },
+ {
+  "t": 47.75,
+  "frame": "07-safety-mana",
+  "event": "quick-reply chip 2/4 \"Ou manger ?\" pops (back.out)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 86"
+ },
+ {
+  "t": 48.0,
+  "frame": "07-safety-mana",
+  "event": "quick-reply chip 3/4 \"Navettes\" pops (back.out)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 88"
+ },
+ {
+  "t": 48.0,
+  "frame": "07-safety-mana",
+  "event": "red warning line \"Attention, M.A.N.A peut faire des erreurs.\" fades up",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none (chip blip 88)"
+ },
+ {
+  "t": 48.25,
+  "frame": "07-safety-mana",
+  "event": "quick-reply chip 4/4 \"Artistes ce soir\" pops (back.out)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 90"
+ },
+ {
+  "t": 48.5,
+  "frame": "07-safety-mana",
+  "event": "TAP on the \"Navettes\" chip: touch ring 48.42-48.50, ripple, chip turns navy (.on), squash 0.93->1",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick"
+ },
+ {
+  "t": 49.0,
+  "frame": "07-safety-mana",
+  "event": "RISER: whole stage vibrates (20 steps every 50 ms, 2->6.5 px), scale 1->1.04 power2.in, lava heat -> 1.8, ember boost -> 1.7",
+  "kind": "music",
+  "weight": 2,
+  "old_sound": "none new (4.9 s noise riser from 45.0 already past its peak ~48.3; snare roll at 16ths/32nds)"
+ },
+ {
+  "t": 49.5,
+  "frame": "07-safety-mana",
+  "event": "WHITE-OUT: flash 0->1 (0.5 s power2.in) reaching full white at the cut 50.0",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "none (riser and snare roll stop at 49.9)"
+ },
+ {
+  "t": 50.0,
+  "frame": "08-niveau-termine",
+  "event": "DROP: cut to blazing lava, white flash 1->0 (0.19 s), RGB ghost split, ember boost 4",
+  "kind": "music",
+  "weight": 3,
+  "old_sound": "crash + boom + hard kick (F tail) + supersaw lead chord + claps groove"
+ },
+ {
+  "t": 50.075,
+  "frame": "08-niveau-termine",
+  "event": "ember explosion: 150 sparks burst from the title centre",
+  "kind": "texture",
+  "weight": 2,
+  "old_sound": "none (inside the 50.0 crash)"
+ },
+ {
+  "t": 50.125,
+  "frame": "08-niveau-termine",
+  "event": "\"NIVEAU / TERMINE\" SLAM impact (scale 2.4->0.94 over 50.000-50.125 power4.in, then back.out) + big shake +-18 px + lava erupt",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "none at 50.125 (drop hits all at 50.000)"
+ },
+ {
+  "t": 50.5,
+  "frame": "08-niveau-termine",
+  "event": "\"8/8\" rises in and the SLOT REEL spins: digits flip at 50.507/.522/.539/.559/.582/.612, 8 reached 50.656, overshoot peak 50.757, motion blur clears by 50.86",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "8 ticks evenly every 44 ms 50.500-50.808 + kick/lead chord 50.5"
+ },
+ {
+  "t": 50.875,
+  "frame": "08-niveau-termine",
+  "event": "8/8 LANDS: punch 1.24->1, burst ring, white hit 0.22, 56 sparks, lava erupt; \"GALERES EVITEES\" appears",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "win jingle blips 72/76/79/84 at 50.875 + i*0.075"
+ },
+ {
+  "t": 51.5,
+  "frame": "08-niveau-termine",
+  "event": "PULL-BACK: title + score shrink into the top band (0.56 s power4.out), world 1.5->1 (0.75 s), lava zooms out, heat drops",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "big whoosh down 6000->200 (0.7 s) + lead chord + kick"
+ },
+ {
+  "t": 51.5,
+  "frame": "08-niveau-termine",
+  "event": "8 app platforms pop red-hot and cool along the S-curve with steam (51.500/.550/.600/.650/.700/.750/.800/.850); dotted trail draws 51.50-51.90",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 51.525,
+  "frame": "08-niveau-termine",
+  "event": "\"toi\" dot pops on platform 1 (platform 1 lights orange 51.55)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 51.625,
+  "frame": "08-niveau-termine",
+  "event": "dot takes off from platform 1 (hop 1/8)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "jump blip 67"
+ },
+ {
+  "t": 51.75,
+  "frame": "08-niveau-termine",
+  "event": "goal photo (festival entrance) pops in (back.out 0.25 s) + lava erupt at the goal; divider line grows",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 51.775,
+  "frame": "08-niveau-termine",
+  "event": "dot lands on platform 2/8 (hop 1): squash, platform lights orange + dips 9 px, icon punch; next hop takes off",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "jump blip 69"
+ },
+ {
+  "t": 51.925,
+  "frame": "08-niveau-termine",
+  "event": "dot lands on platform 3/8 (hop 2): squash, platform lights orange + dips 9 px, icon punch; next hop takes off",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "jump blip 71"
+ },
+ {
+  "t": 52.0,
+  "frame": "08-niveau-termine",
+  "event": "goal photo beat punch 1.05",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none (lead chord 52.0)"
+ },
+ {
+  "t": 52.075,
+  "frame": "08-niveau-termine",
+  "event": "dot lands on platform 4/8 (hop 3): squash, platform lights orange + dips 9 px, icon punch; next hop takes off",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "jump blip 73"
+ },
+ {
+  "t": 52.225,
+  "frame": "08-niveau-termine",
+  "event": "dot lands on platform 5/8 (hop 4): squash, platform lights orange + dips 9 px, icon punch; next hop takes off",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "jump blip 75"
+ },
+ {
+  "t": 52.375,
+  "frame": "08-niveau-termine",
+  "event": "dot lands on platform 6/8 (hop 5): squash, platform lights orange + dips 9 px, icon punch; next hop takes off",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "jump blip 77"
+ },
+ {
+  "t": 52.5,
+  "frame": "08-niveau-termine",
+  "event": "goal photo beat punch 1.05",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "stamp (meant for tagline 1)"
+ },
+ {
+  "t": 52.525,
+  "frame": "08-niveau-termine",
+  "event": "dot lands on platform 7/8 (hop 6): squash, platform lights orange + dips 9 px, icon punch; next hop takes off",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "jump blip 79"
+ },
+ {
+  "t": 52.675,
+  "frame": "08-niveau-termine",
+  "event": "dot lands on platform 8/8 (hop 7): squash, platform lights orange + dips 9 px, icon punch; next hop takes off",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "jump blip 81"
+ },
+ {
+  "t": 52.813,
+  "frame": "08-niveau-termine",
+  "event": "dot LANDS IN THE GOAL photo (hop 8, 130 px arc from 52.675; exact 52.8125): 3 burst rings (52.813/.875/.938), photo flash 0.85, punch 1.12, 80 sparks, lava quench ring",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "none (goal fanfare stab was placed at 52.31)"
+ },
+ {
+  "t": 53.0,
+  "frame": "08-niveau-termine",
+  "event": "tagline 1 \"TOUT LE FESTIVAL.\" SLAMS (flies in from x2.3 52.900-53.000 power4.in): white hit 0.45, shake, 2 spark bursts",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp (meant for tagline 2) + lead chord + kick"
+ },
+ {
+  "t": 53.5,
+  "frame": "08-niveau-termine",
+  "event": "tagline 2 \"UNE SEULE APPLI.\" SLAMS (flies in 53.400-53.500): white hit 0.45, shake, 2 spark bursts, goal ring + punch",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "none in SFX (lead chord + kick only)"
+ },
+ {
+  "t": 53.75,
+  "frame": "08-niveau-termine",
+  "event": "dot pulse at the goal (1.35->1)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 54.0,
+  "frame": "09-end",
+  "event": "cut to dusk horizon: chrome MOOREA logo RISES from behind the horizon (54.00-55.13 power2.out), sun glow + rays grow, lava flash 0.22, heat-shimmer wobble",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "supersaw swell chord (F) + sparkle 1.4 s + groove kick"
+ },
+ {
+  "t": 55.25,
+  "frame": "09-end",
+  "event": "tab bar slides up from +320 px (0.375 s power4.out); logo anticipates up (55.25-55.50)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "whoosh up 300->5000 (0.55 s)"
+ },
+ {
+  "t": 55.35,
+  "frame": "09-end",
+  "event": "5 tab items pop up (55.35/.40/.45/.50/.55)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 55.5,
+  "frame": "09-end",
+  "event": "logo FALLS and spins 360deg into the centre circle, shrinking 1.25->0.18 (55.50-56.00 power3.in)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "tail of the 55.25 whoosh"
+ },
+ {
+  "t": 56.0,
+  "frame": "09-end",
+  "event": "MAGNETIC SNAP + TITLE SLAM: logo swaps to the orange sun (1.6->1), centre flash (from 55.975), orange ring, 12 sparks, \"Accueil\" lights orange, tab bar dips; \"L'APPLI OFFICIELLE\" impact (flew in from x2.4 55.80-56.00), white flash 0.55, shake 10",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "impact x0.5 + sparkle 0.8 s + new supersaw chord (Db) + kick"
+ },
+ {
+  "t": 56.5,
+  "frame": "09-end",
+  "event": "date \"5 . 6 . 7 JUIN 2026 . CHATEAU DE GRILLEMONT\" wipes open from centre + hairline",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick"
+ },
+ {
+  "t": 57.0,
+  "frame": "09-end",
+  "event": "\"App Store\" pill pops (0.2->1.12->1) + flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 84"
+ },
+ {
+  "t": 57.25,
+  "frame": "09-end",
+  "event": "\"Google Play\" pill pops + flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "blip 88"
+ },
+ {
+  "t": 57.75,
+  "frame": "09-end",
+  "event": "\"PRET A JOUER ?\" stamps (1.4->1 back.out)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick"
+ },
+ {
+  "t": 58.0,
+  "frame": "09-end",
+  "event": "orange \"TELECHARGE L'APPLI\" button pops (0.3->1.08->1) + flash + ember boost",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "pop sweep 400->1000 + new supersaw chord (Eb) + kick"
+ },
+ {
+  "t": 58.5,
+  "frame": "09-end",
+  "event": "button breathes 1->1.03 + shine sweep across it (0.525 s)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none (kick)"
+ },
+ {
+  "t": 58.725,
+  "frame": "09-end",
+  "event": "finger touch circle comes down over the button (0.225 s); press-down 1->0.92 starts 58.925",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 59.0,
+  "frame": "09-end",
+  "event": "FINAL HIT: button released 0.92->1.06->1, touch ring, shockwave ring x10, button flash + ring, white flash 0.5, 20 sparks, shake 14, lava erupt, embers burst upward",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "hard kick (long F tail) + boom + crash + supersaw chord + tick + coin 59.02"
+ },
+ {
+  "t": 59.5,
+  "frame": "09-end",
+  "event": "hold: subtle ember drift only until 60.0",
+  "kind": "music",
+  "weight": 1,
+  "old_sound": "tails + 0.25 s fade-out 59.75-60.0"
+ }
+]

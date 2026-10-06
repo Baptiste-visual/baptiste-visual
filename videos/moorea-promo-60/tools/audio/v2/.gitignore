@@ -1,0 +1,5 @@
+# generated audio + measurements (re-create with compose.py / analyze.py)
+*.wav
+*.mp3
+analysis*/
+verify/

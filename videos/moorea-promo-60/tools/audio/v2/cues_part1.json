@@ -1,0 +1,898 @@
+[
+ {
+  "t": 0.0,
+  "frame": "01-game-over",
+  "event": "Film opens in motion: orange 'toi' dot sinking into boiling lava (scale 2.4->1.5, y +24, 0.000-0.500), first white ring pulse + ripple ring 1 expands",
+  "kind": "texture",
+  "weight": 2,
+  "old_sound": "lava rumble bed (lp noise 140 Hz, 0-4.1 s) + lose blip 1 (MIDI 76)"
+ },
+ {
+  "t": 0.163,
+  "frame": "01-game-over",
+  "event": "ripple ring 2 expands from the dot (r 40->220)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "lose blip 2 (MIDI 72) at 0.160"
+ },
+ {
+  "t": 0.217,
+  "frame": "01-game-over",
+  "event": "two lava bubbles pop around the dot (0.217 / 0.223)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none (bed only)"
+ },
+ {
+  "t": 0.25,
+  "frame": "01-game-over",
+  "event": "second white ring pulse on the dot (8th note)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 0.325,
+  "frame": "01-game-over",
+  "event": "ripple ring 3 expands",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "lose blip 3 (MIDI 69) at 0.320"
+ },
+ {
+  "t": 0.353,
+  "frame": "01-game-over",
+  "event": "three lava bubbles pop (0.353 / 0.357 / 0.373)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none (bed only)"
+ },
+ {
+  "t": 0.45,
+  "frame": "01-game-over",
+  "event": "lava bubble pops",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none (bed only)"
+ },
+ {
+  "t": 0.5,
+  "frame": "01-game-over",
+  "event": "PLOP: the dot is swallowed (scale->0 by 0.650, back.in), crater flash, crown ring, 16 molten droplets flung out (launch 0.500-0.559), shake 6 px, lava erupt + ember boost x2.5, small flash; bubbles at 0.489/0.499 pop into it",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "splash() + deep plop sine sweep 320->55 Hz at 0.500, sizzle hiss at 0.550, lose blip 4 (MIDI 64, 0.35 s) at 0.480"
+ },
+ {
+  "t": 0.579,
+  "frame": "01-game-over",
+  "event": "last lava bubble pops beside the closing crater",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "sizzle hiss (from 0.550)"
+ },
+ {
+  "t": 0.775,
+  "frame": "01-game-over",
+  "event": "dark scrim fades in; 'GAME' rushes in from scale 2.6 + blur 16 px (power4.in, 0.775-1.000) - pre-slam suck",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 1.0,
+  "frame": "01-game-over",
+  "event": "SLAM 'GAME' lands (scale 0.94 -> back.out settle), white flash 0.9, shake 12 px, shock ring, 10 sparks, lava heat 1.6 + zoom punch, slow camera push starts",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "boom + impact + crash at 1.0; descending game-over arpeggio starts (8 blips 1.000-1.875, 0.125 apart)"
+ },
+ {
+  "t": 1.275,
+  "frame": "01-game-over",
+  "event": "'OVER' rushes in from scale 2.6 + blur (power4.in, 1.275-1.500) - pre-slam suck",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "arpeggio blip (1.250)"
+ },
+ {
+  "t": 1.5,
+  "frame": "01-game-over",
+  "event": "SLAM 'OVER' lands (same recipe: flash 0.9, shake 12 px, shock ring, sparks, heat + zoom punch)",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "boom + impact + crash at 1.5 (arpeggio continues)"
+ },
+ {
+  "t": 2.0,
+  "frame": "01-game-over",
+  "event": "Sound of Legend line-up card flips in on the right (rotateY 90->0, back.out(1.6), 2.000-2.313)",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "low blip MIDI 48 (0.6 s) + glitch 'denied' buzz 0.4 s at 2.0"
+ },
+ {
+  "t": 2.15,
+  "frame": "01-game-over",
+  "event": "light sheen sweeps across the card (2.150-2.550)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "glitch buzz tail"
+ },
+ {
+  "t": 2.25,
+  "frame": "01-game-over",
+  "event": "subline 'Tu as raté Sound of Legend.' slides up word by word (6 words at 2.250 / 2.294 / 2.338 / 2.381 / 2.425 / 2.469)",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 2.5,
+  "frame": "01-game-over",
+  "event": "card goes DEAD: image flickers grayscale (dark 2.500, bright 2.543, settles 0.45 at 2.584), red 4 px border flashes on, card drops 6 deg (back.out to 2.875), x-jitter 14/-10/5/0 px (2.500/2.543/2.584/2.625), lava heat dips",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "glitch buzz 0.2 s at 2.5"
+ },
+ {
+  "t": 2.625,
+  "frame": "01-game-over",
+  "event": "red 'dead' border flickers back on (off at 2.563)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "glitch buzz tail"
+ },
+ {
+  "t": 2.75,
+  "frame": "01-game-over",
+  "event": "red border flickers on a last time and stays (0.9; off at 2.688)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 3.0,
+  "frame": "01-game-over",
+  "event": "REWIND: tape-roll jolt (y -40 -> 0), flash 0.22, rewind glyph pops in top-left, scanlines on, VHS tracking bands scroll up (3.000 / 3.050 / 3.225), RGB split + type/card jitter start, lava runs backwards, embers fall",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "tape rewind (hook 1.0-3.0 reversed, rising) + squeal 600->3200 Hz, 3.000-3.750; music gain ramps down 3.0-4.0"
+ },
+ {
+  "t": 3.125,
+  "frame": "01-game-over",
+  "event": "type/card x-jitter + RGB-split step on 16ths (3.125, 3.250, 3.375, 3.500, 3.625; card offset +0.0625)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "inside the rewind"
+ },
+ {
+  "t": 3.25,
+  "frame": "01-game-over",
+  "event": "rewind glyph blinks back on (off at 3.150)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "inside the rewind"
+ },
+ {
+  "t": 3.5,
+  "frame": "01-game-over",
+  "event": "rewind glyph blinks back on (off at 3.400)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "inside the rewind"
+ },
+ {
+  "t": 3.75,
+  "frame": "01-game-over",
+  "event": "CRT POWER-OFF: white surge (glyph back on), picture collapses vertically to a line (scaleY 1->0.008, 3.750-3.850)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "CRT zap (sweep 9000->120 Hz, 0.22 s) at 3.75"
+ },
+ {
+  "t": 3.831,
+  "frame": "01-game-over",
+  "event": "white beam line appears",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "CRT zap (running)"
+ },
+ {
+  "t": 3.85,
+  "frame": "01-game-over",
+  "event": "the line shrinks horizontally to nothing (scaleX 1->0, 3.850-3.938)",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "CRT zap (running)"
+ },
+ {
+  "t": 3.888,
+  "frame": "01-game-over",
+  "event": "white dot pops (scale 0->1.25 by 3.950, settles 0.85 at 4.000) - frame ends on black + white dot",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "none (zap tail)"
+ },
+ {
+  "t": 4.0,
+  "frame": "02-rejouer",
+  "event": "CRT ON: screen opens from the white line (scaleY 0.008->1, 4.000-4.150), white decays; 'REJOUER ?' stamps (scale 1.4->1 back.out(3), RGB split decays), shake 10 px, ember boost",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "crt_on thump + muffled kick at 4.0, menu blip MIDI 84 at 4.020"
+ },
+ {
+  "t": 4.25,
+  "frame": "02-rejouer",
+  "event": "the '?' kicks (rotate -16 deg, y -14; settles back.out from 4.313)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 4.5,
+  "frame": "02-rejouer",
+  "event": "subline 'Cette fois, avec l'appli.' words rise (4.500 / 4.575 / 4.650 / 4.725) + orange JOUER button pops in (scale 0->1 back.out(1.8), overshoot ~4.62) + menu chevrons slide in from both sides + light pool",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "UI tick + blip MIDI 79 + muffled kick at 4.5"
+ },
+ {
+  "t": 4.725,
+  "frame": "02-rejouer",
+  "event": "light sheen sweeps across the button (4.725-5.100)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 4.75,
+  "frame": "02-rejouer",
+  "event": "chevrons nudge toward the button (8th)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 5.0,
+  "frame": "02-rejouer",
+  "event": "PRESS: button squashes 1->0.92 (5.000-5.075), white flash on the button + label glow, glow doubles, shock ring 1 + 18 sparks, chevrons slam in, shake 8 px, ember boost",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "impact + coin + crash(1.0 s) + full kick at 5.0"
+ },
+ {
+  "t": 5.05,
+  "frame": "02-rejouer",
+  "event": "second shock ring off the button outline",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "coin (running)"
+ },
+ {
+  "t": 5.075,
+  "frame": "02-rejouer",
+  "event": "button rebounds 0.92->1.06 (to 5.175), then back.out settle to 1",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 5.25,
+  "frame": "02-rejouer",
+  "event": "chevrons nudge again + fast 'charged' sheen across the button (5.250-5.475)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 5.5,
+  "frame": "02-rejouer",
+  "event": "DIVE into the button: camera scale 1.04->7 + blur 0->18 px (power2.in, 5.500-6.000), 30 speed lines streak out (starts 5.500-5.625), embers scale up",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "reverse cymbal 0.5 s (swells into 6.0) + kick at 5.5"
+ },
+ {
+  "t": 5.75,
+  "frame": "02-rejouer",
+  "event": "orange flash floods the frame (0->0.92, 5.750-5.900)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "reverse cymbal (running)"
+ },
+ {
+  "t": 5.875,
+  "frame": "02-rejouer",
+  "event": "white flash on top (0->1, 5.875-5.958) -> cut",
+  "kind": "transition",
+  "weight": 1,
+  "old_sound": "reverse cymbal peak"
+ },
+ {
+  "t": 6.0,
+  "frame": "03-niveau",
+  "event": "HARD CUT out of white onto the lava horizon (white 0.9 decays to 0.06 by 6.138, lava flash); 'NIVEAU 1' rushes in from scale 2.5 (power4.in)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "impact + crash + groove kick at 6.0; level-start arpeggio (7 blips 6.00-6.36)"
+ },
+ {
+  "t": 6.05,
+  "frame": "hud",
+  "event": "HUD band fades in, lives block drops in from the top (back.out(2))",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "arpeggio blip (6.060)"
+ },
+ {
+  "t": 6.15,
+  "frame": "03-niveau",
+  "event": "SLAM 'NIVEAU 1' lands (squash 1.14/0.84 -> back.out), white re-flash 0.7, shake 12 px, side bars shoot out, the sea lights up under the title",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "nothing on the hit (impact is at 6.0); arpeggio blip at 6.180"
+ },
+ {
+  "t": 6.15,
+  "frame": "hud",
+  "event": "festival clock block drops in",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "arpeggio blip (6.120/6.180)"
+ },
+ {
+  "t": 6.2,
+  "frame": "hud",
+  "event": "sun life 1 pops in (scale 0->1, spin)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "arpeggio blip (6.180/6.240)"
+ },
+ {
+  "t": 6.25,
+  "frame": "03-niveau",
+  "event": "chrome MOOREA logo drops in from above (y -200, back.out(2))",
+  "kind": "reveal",
+  "weight": 1,
+  "old_sound": "arpeggio blip (6.240)"
+ },
+ {
+  "t": 6.25,
+  "frame": "hud",
+  "event": "GALÈRES ÉVITÉES counter block drops in",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "arpeggio blip (6.240)"
+ },
+ {
+  "t": 6.3,
+  "frame": "hud",
+  "event": "sun life 2 pops in",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "arpeggio blip (6.300)"
+ },
+ {
+  "t": 6.35,
+  "frame": "hud",
+  "event": "'NIVEAU 1' level tag drops in",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "arpeggio blip (6.360)"
+ },
+ {
+  "t": 6.375,
+  "frame": "03-niveau",
+  "event": "logo lands (reaches rest, shake 6 px)",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "arpeggio blip MIDI 96 at 6.360"
+ },
+ {
+  "t": 6.4,
+  "frame": "hud",
+  "event": "sun life 3 pops in",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 6.5,
+  "frame": "03-niveau",
+  "event": "light wave runs across the NIVEAU 1 letters (6.500-6.825) + chrome glint sweeps the logo (6.500-6.925), title pulses 1.06",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "groove kick at 6.5"
+ },
+ {
+  "t": 6.75,
+  "frame": "03-niveau",
+  "event": "side bars + logo breathe on the off-beat",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none (hats)"
+ },
+ {
+  "t": 7.0,
+  "frame": "03-niveau",
+  "event": "eruption 1/8 'NAVETTE ?' (x 350, left): molten word bursts up, plume + spurts + droplets, shake + NIVEAU 1 and logo turn hot and start sinking into the lava (7.000-7.438, power2.in), centre lava erupt",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser 1 (acid stab MIDI 53, pan -0.6) + lava splash at 7.0"
+ },
+ {
+  "t": 7.225,
+  "frame": "03-niveau",
+  "event": "the logo goes under: molten pool flares + 16 droplets splash at its foot (7.225-7.300), splash ring at 7.250",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "none here (splash() sits at 7.0)"
+ },
+ {
+  "t": 7.25,
+  "frame": "03-niveau",
+  "event": "eruption 2/8 'SAC RECALÉ ?' (x 1500, right; bigger shake 9 px shared with the logo splash ring): molten word bursts up, plume + spurts + droplets, shake",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser 2 (MIDI 54, pan +0.6)"
+ },
+ {
+  "t": 7.5,
+  "frame": "03-niveau",
+  "event": "eruption 3/8 'PERDU ?' (x 960, centre, biggest 124 px; words 1-2 wobble): molten word bursts up, plume + spurts + droplets, shake",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser 3 (MIDI 55, pan 0)"
+ },
+ {
+  "t": 7.75,
+  "frame": "03-niveau",
+  "event": "eruption 4/8 'ÇA CLASHE !' (x 445, left): molten word bursts up, plume + spurts + droplets, shake",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser 4 (MIDI 56, pan -0.4)"
+ },
+ {
+  "t": 8.0,
+  "frame": "03-niveau",
+  "event": "eruption 5/8 'J'AI FAIM' (x 1460, right; words wobble): molten word bursts up, plume + spurts + droplets, shake",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser 5 (MIDI 57, pan +0.5)"
+ },
+ {
+  "t": 8.25,
+  "frame": "03-niveau",
+  "event": "eruption 6/8 'BRACELET À SEC' (x 715, centre-left): molten word bursts up, plume + spurts + droplets, shake",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser 6 (MIDI 58, pan -0.1)"
+ },
+ {
+  "t": 8.5,
+  "frame": "03-niveau",
+  "event": "eruption 7/8 'T'ES OÙ ?!' (x 1540, right; words wobble): molten word bursts up, plume + spurts + droplets, shake",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser 7 (MIDI 59, pan +0.6)"
+ },
+ {
+  "t": 8.75,
+  "frame": "03-niveau",
+  "event": "eruption 8/8 '1000 QUESTIONS' (x 500, left, bottom): molten word bursts up, plume + spurts + droplets, shake",
+  "kind": "slam",
+  "weight": 2,
+  "old_sound": "geyser 8 (MIDI 60, pan -0.6)"
+ },
+ {
+  "t": 9.0,
+  "frame": "03-niveau",
+  "event": "OVERHEAT: all 8 words pulse big (scale 1.1) and whiten, centre lava erupt 0.9, heat/embers ramp, rising tremor starts (one jolt per 16th = 0.0625 s, growing, to 10.0)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "riser 1.0 s + snare roll on 16ths (9.000-9.938)"
+ },
+ {
+  "t": 9.5,
+  "frame": "03-niveau",
+  "event": "second overheat pulse on all words + WHITE-OUT ramps (flash 0->1, 9.500-9.938 power2.in; lava flash 1 at 10.0) -> hard cut",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "riser + snare roll (running)"
+ },
+ {
+  "t": 10.0,
+  "frame": "04-navette-sac",
+  "event": "HARD CUT out of the white-out; 'NAVETTE ?' ERUPTS (molten, 150 px, centre y 250): lava erupt + heat 1.25 + ember burst, 14-drop spray",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "geyser (MIDI 58) + music crash; full groove (kick) starts at 10.0"
+ },
+ {
+  "t": 10.0,
+  "frame": "hud",
+  "event": "festival clock rolls 13:42 -> 14:00 (odometer, 0.18 s)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 10.5,
+  "frame": "04-navette-sac",
+  "event": "the Navettes card FALLS red-hot (y -820->0, rot -8->0, power2.in, accelerating into the land)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "fall whistle 0.5 s (2200->380 Hz)"
+ },
+ {
+  "t": 11.0,
+  "frame": "04-navette-sac",
+  "event": "LAND + QUENCH: card squash 1.04/0.94 -> back.out, shake 10 px, flash 0.5, lava splash ring + 18 droplets, steam puffs (to +0.22), red-hot rim cools, 'NAVETTE ?' turns to stone and sinks",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "thud + splash + pssht_ting hiss"
+ },
+ {
+  "t": 11.14,
+  "frame": "04-navette-sac",
+  "event": "cooling sheen sweeps across the card (11.140-11.500) - the 'TING'",
+  "kind": "texture",
+  "weight": 2,
+  "old_sound": "pssht_ting bell (delayed 0.12 s -> 11.12)"
+ },
+ {
+  "t": 11.5,
+  "frame": "04-navette-sac",
+  "event": "ANSWER STAMP 'NAVETTE CALÉE.' (scale 1.4->1 back.out(3)), flare line across, shake 6 px, stone word knocked into the lava, '12 €' price pulses",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp + coin"
+ },
+ {
+  "t": 11.55,
+  "frame": "hud",
+  "event": "'+1 NAVETTE' bonus pill pops under the answer stamp (back.out(3))",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "coin tail"
+ },
+ {
+  "t": 11.82,
+  "frame": "hud",
+  "event": "bonus pill flies into the counter (11.820-12.120, power3.in)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 12.0,
+  "frame": "04-navette-sac",
+  "event": "SHOWCASE: Friday row lights (tint) + '14h' flashes orange; slow camera push starts (to 14.5)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "row blip 1 (MIDI 76)"
+ },
+ {
+  "t": 12.12,
+  "frame": "hud",
+  "event": "counter 0 -> 1: number pops (scale 1.8->1) + counter flash 0.9",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 12.25,
+  "frame": "04-navette-sac",
+  "event": "'16h' flashes orange",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 12.5,
+  "frame": "04-navette-sac",
+  "event": "Saturday row lights (Friday dims) + '18h' flashes",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "row blip 2 (MIDI 79)"
+ },
+ {
+  "t": 12.625,
+  "frame": "04-navette-sac",
+  "event": "'15h' flashes",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 12.75,
+  "frame": "04-navette-sac",
+  "event": "'17h' flashes",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 13.0,
+  "frame": "04-navette-sac",
+  "event": "return sub-card 'Moorea Festival -> Gare de Tours' slides open (clip reveal, back.out, 0.25 s) as the card grows and scrolls up",
+  "kind": "reveal",
+  "weight": 2,
+  "old_sound": "row blip 3 (MIDI 82)"
+ },
+ {
+  "t": 13.125,
+  "frame": "04-navette-sac",
+  "event": "first '2h45' flashes",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 13.25,
+  "frame": "04-navette-sac",
+  "event": "second '2h45' flashes",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 13.5,
+  "frame": "04-navette-sac",
+  "event": "'Réservation obligatoire via la billetterie du festival.' types in (55 chars, 13.500-13.815, ~5.5 ms/char) + card scrolls",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "notification sweep 700->1500 Hz (0.08 s)"
+ },
+ {
+  "t": 13.5,
+  "frame": "04-navette-sac",
+  "event": "orange 'toi' dot jumps in from the bottom-left (parabola, apex at 13.75)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "boing (300->1100 Hz)"
+ },
+ {
+  "t": 14.0,
+  "frame": "04-navette-sac",
+  "event": "dot lands on the card's top edge (squash 2.0/1.28 + ring pulse)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick"
+ },
+ {
+  "t": 14.5,
+  "frame": "04-navette-sac",
+  "event": "WHIP-PAN out: card group x -1800 + blur 16 px (power2.in, fastest at the 15.0 cut), 9 speed streaks (14.62-14.86)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "whoosh 0.45 s (400->7000 Hz, peaks 14.725)"
+ },
+ {
+  "t": 15.0,
+  "frame": "04-navette-sac",
+  "event": "CUT to power-up 2 (after the whip); 'SAC RECALÉ ?' ERUPTS (molten, 150 px, centre y 250): lava erupt + heat 1.25 + ember burst, 14-drop spray",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "geyser (MIDI 59) + kick"
+ },
+ {
+  "t": 15.0,
+  "frame": "hud",
+  "event": "festival clock rolls 14:00 -> 16:45",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 15.5,
+  "frame": "04-navette-sac",
+  "event": "the Objets interdits card FALLS red-hot (y -820->0, rot -8->0, power2.in, accelerating into the land)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "fall whistle 0.5 s (2200->380 Hz)"
+ },
+ {
+  "t": 16.0,
+  "frame": "04-navette-sac",
+  "event": "LAND + QUENCH: card squash 1.04/0.94 -> back.out, shake 10 px, flash 0.5, lava splash ring + 18 droplets, steam puffs (to +0.22), red-hot rim cools, 'SAC RECALÉ ?' turns to stone and sinks",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "thud + splash + pssht_ting hiss"
+ },
+ {
+  "t": 16.1,
+  "frame": "04-navette-sac",
+  "event": "BRANDING: sign column 1/8 flashes + smoke puff (left->right, 32nds)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "hp-noise tsk 1/8"
+ },
+ {
+  "t": 16.14,
+  "frame": "04-navette-sac",
+  "event": "cooling sheen sweeps across the card (16.140-16.500) - the 'TING'",
+  "kind": "texture",
+  "weight": 2,
+  "old_sound": "pssht_ting bell (delayed 0.12 s -> 16.12)"
+ },
+ {
+  "t": 16.163,
+  "frame": "04-navette-sac",
+  "event": "BRANDING: sign column 2/8 flashes + smoke puff (left->right, 32nds)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "hp-noise tsk 2/8"
+ },
+ {
+  "t": 16.225,
+  "frame": "04-navette-sac",
+  "event": "BRANDING: sign column 3/8 flashes + smoke puff (left->right, 32nds)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "hp-noise tsk 3/8"
+ },
+ {
+  "t": 16.288,
+  "frame": "04-navette-sac",
+  "event": "BRANDING: sign column 4/8 flashes + smoke puff (left->right, 32nds)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "hp-noise tsk 4/8"
+ },
+ {
+  "t": 16.35,
+  "frame": "04-navette-sac",
+  "event": "BRANDING: sign column 5/8 flashes + smoke puff (left->right, 32nds)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "hp-noise tsk 5/8"
+ },
+ {
+  "t": 16.413,
+  "frame": "04-navette-sac",
+  "event": "BRANDING: sign column 6/8 flashes + smoke puff (left->right, 32nds)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "hp-noise tsk 6/8"
+ },
+ {
+  "t": 16.475,
+  "frame": "04-navette-sac",
+  "event": "BRANDING: sign column 7/8 flashes + smoke puff (left->right, 32nds)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "hp-noise tsk 7/8"
+ },
+ {
+  "t": 16.5,
+  "frame": "04-navette-sac",
+  "event": "ANSWER STAMP 'TU SAIS AVANT.' (scale 1.4->1 back.out(3)), flare line across, shake 6 px, stone word knocked into the lava",
+  "kind": "slam",
+  "weight": 3,
+  "old_sound": "stamp + coin"
+ },
+ {
+  "t": 16.538,
+  "frame": "04-navette-sac",
+  "event": "BRANDING: sign column 8/8 flashes + smoke puff (left->right, 32nds)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "hp-noise tsk 8/8"
+ },
+ {
+  "t": 16.55,
+  "frame": "hud",
+  "event": "'+1 SAC OK' bonus pill pops under the answer stamp",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "coin tail"
+ },
+ {
+  "t": 16.82,
+  "frame": "hud",
+  "event": "bonus pill flies into the counter (16.820-17.120)",
+  "kind": "ui",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 17.0,
+  "frame": "04-navette-sac",
+  "event": "tap ripple on the forbidden-items image + 'Appuyer pour zoomer' label flashes",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick at 17.0"
+ },
+ {
+  "t": 17.063,
+  "frame": "04-navette-sac",
+  "event": "image ZOOMS IN x2.1 on the top-left signs (17.063-17.363, power3.out)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "zoom-in whoosh 0.35 s started at 17.0"
+ },
+ {
+  "t": 17.12,
+  "frame": "hud",
+  "event": "counter 1 -> 2: number pops + counter flash",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "none"
+ },
+ {
+  "t": 17.363,
+  "frame": "04-navette-sac",
+  "event": "slight drift right (17.363-17.500)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 17.5,
+  "frame": "04-navette-sac",
+  "event": "pans to the top row's right half (17.500-17.800, power3.inOut)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "slide swish 0.25 s (pan +0.4)"
+ },
+ {
+  "t": 17.8,
+  "frame": "04-navette-sac",
+  "event": "slight drift (17.800-18.000)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 18.0,
+  "frame": "04-navette-sac",
+  "event": "pans down to the middle row (18.000-18.300, power3.inOut)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "slide swish 0.25 s (pan -0.4)"
+ },
+ {
+  "t": 18.3,
+  "frame": "04-navette-sac",
+  "event": "slight drift right (18.300-18.500)",
+  "kind": "texture",
+  "weight": 1,
+  "old_sound": "none"
+ },
+ {
+  "t": 18.5,
+  "frame": "04-navette-sac",
+  "event": "zooms back out to the full grid (18.500-18.800, power3.out)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "zoom-out whoosh 0.35 s"
+ },
+ {
+  "t": 18.5,
+  "frame": "04-navette-sac",
+  "event": "orange 'toi' dot jumps in from the bottom-left (parabola, apex at 18.75)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "boing (300->1100 Hz)"
+ },
+ {
+  "t": 19.0,
+  "frame": "04-navette-sac",
+  "event": "dot lands on the card's top edge (squash 2.0/1.28 + ring pulse)",
+  "kind": "ui",
+  "weight": 2,
+  "old_sound": "tick"
+ },
+ {
+  "t": 19.5,
+  "frame": "04-navette-sac",
+  "event": "WHIP-PAN out: card group x -1800 + blur 16 px (power2.in, fastest at the 20.0 cut), 9 speed streaks (19.62-19.86)",
+  "kind": "transition",
+  "weight": 2,
+  "old_sound": "whoosh 0.45 s (400->7000 Hz, peaks 19.725)"
+ }
+]
