@@ -16,19 +16,24 @@ PALETTE (all synthesized here with numpy/scipy, deterministic seeds, no samples)
              and side-chained to the kick so it swells between kicks (classic techno rumble). Mono.
     HATS     high-passed noise + ring-modulated noise (metallic), closed 16ths / open off-beats, ride (long metal
              noise) in the later sections; stereo-spread with per-hit pan.
-    CLAP     4 noise bursts (900-4 kHz) spread in stereo + room send; layered with a short metal clank in the drop.
+    CLAP     4 noise bursts (900-4 kHz) spread in stereo + a 2-4.5 kHz crack layer (tau 15 ms, phone presence) +
+             room send (room return Haas-widened 12 ms); layered with a short metal clank in the drop.
     PERC     industrial "clank": inharmonic modal partials (<1.6 kHz) + noise, syncopated, ping-pong delay send.
-    SNARE    noise + 185 Hz body, used for the build rolls (8ths -> 16ths -> 32nds).
+    ROLLS    industrial kick/tom rolls (low-passed kick 400 Hz + two toms) for the 9.0 overheat and the 47-49.88 build;
+             the snare (noise + 185 Hz body) is only a quiet top layer (and the short 5.5 dive roll).
   Synths
     BASS     rolling 16th bass (off the kick): two detuned polyBLEP saws + fundamental sine, per-note low-pass
-             (cut-off automated per section), sub sine an octave down, tanh. Mono, side-chained.
+             (cut-off automated per section), sub sine an octave down, tanh. Mono, side-chained. A parallel
+             sat(hp(bass,150)) harmonic layer at -10 dB keeps the 16th line audible on phone speakers.
     ACID     303-style line: polyBLEP saw with slides/accents through a 4-pole tanh ladder filter
-             (per-sample, resonance k~3.2-3.6, filter envelope per note, section automation), then hard tanh
-             distortion. Low-mid register (F2-F3). Dry centre + ping-pong delay + hall sends.
-    PADS     dark wide chords (Fm7 / Dbmaj7 / Gbmaj7 / Eb / C7), 3 detuned saws per note per channel with
+             (per-sample, resonance k~3.2-3.6, filter envelope per note, one long 10->40 cut-off ramp with a small
+             swell per power-up; soft ceiling 2.0 kHz, 2.8 kHz from 30 s; post-LP 2.6 -> 3.5 kHz), hard tanh.
+             Low-mid register (F2-F3). Its Gb step is muted on Ebsus4 and Db/C. Dry centre + ping-pong delay + hall.
+    PADS     dark wide chords (Fm7 / Dbmaj7 / Gbmaj7 / Ebsus4 / Db/C), 3 detuned saws per note per channel with
              independent detune/phase L vs R (decorrelated = wide), low-passed 0.9-3 kHz, hall send, pumping.
-    HOOVER   drop lead: PWM pulse stacks (saw - shifted saw) with a pitch scoop, LP 2.6 kHz, tanh. Low-mid
-             voicing (F2/C3/F3/Ab3). Also the dark chromatic stabs of the 8 eruptions (7.0-8.75).
+    HOOVER   drop lead: PWM stacks (saw - shifted saw), 5 decorrelated voices per side (+/-25 cents), LP 2.6 kHz,
+             tanh, hall send 0.35. Low-mid voicing (F2/C3/F3/Ab3). Also the 8 eruption stabs (7.0-8.75): no scoop,
+             no pitch climb, alternating F5 / Gb5 power voicings; the rise is carried by the filter (700->2100 Hz).
     BRAAM    detuned saw stack (root-12, root, 5th, octave, minor 3rd) through the ladder filter with a fast
              opening / slow closing envelope + sub sine, heavy saturation, decorrelated L/R.
     RISERS   noise riser (time-varying band-pass sweep, tremolo), dark saw-cluster pitch riser, reverse crashes.
@@ -38,51 +43,59 @@ PALETTE (all synthesized here with numpy/scipy, deterministic seeds, no samples)
     STAMP    shorter impact: sub knock, transient, short metal clank, gated room.
     ERUPTION magma burst: noise through a rising low-pass sweep, roar band, sub push, ember crackle.
     FALL / LAND / QUENCH  accelerating red-hot whoosh with sizzle -> heavy thud + lava splash + steam hiss.
-    COOL     "thermal crack" transient + airy noise shimmer (replaces the old bell 'ting').
+    COOL     "thermal crack" transient + falling 6 -> 1.5 kHz steam hiss (decaying) + two low metal contraction ticks.
     WHOOSH   band-pass noise sweeps with power-curve envelopes that peak exactly on the cut; stereo travel.
     UI       premium tactile "tok" (0.5 ms noise click + 180-450 Hz body, 6-15 ms decay), mechanical
              odometer clack (double tok), soft swish. Quiet, never melodic.
     GAME FX  tape rewind (reversed hook, varispeed + wow), CRT power-off (power-down of the rewind + thunk +
-             crackle + falling noise), CRT power-on (degauss hum swell + thump), "denied" glitch (decimated,
-             gated, distorted low buzz F1/Gb1).
+             crackle + falling noise), CRT power-on (degauss hum swell + thump), "denied" power failure (tape-stop of
+             the OVER braam + gated tanh F1 sub stutter + relay clunk; no buzzer).
+    VACUUM   49.88-49.993 and 58.88-58.993: the whole bed drops to -18 dB; only a reverse-reverb suck is heard,
+             so the drop and the final hit land 9-10 dB above what precedes them.
 
 ARRANGEMENT
   0-4   HOOK      lava bed (wide low noise + low bubbles), drone; GAME/OVER = impact + braam (OVER slides Gb->F);
-                  2.5 dead-card glitch; 3.0-3.75 tape rewind; 3.75 CRT power-down; near silence to 4.0.
+                  2.5 power failure (tape-stop); 3.0-3.75 tape rewind; 3.75 CRT power-down; near silence to 4.0.
   4-6   REJOUER   CRT degauss slam; Fm pad low; muffled kicks 4.5/5.0/5.5; PRESS = impact + power-up saw riser;
-                  5.5-6.0 dive: reverse crash + 16th snare roll + whoosh peaking on the 6.0 cut.
+                  5.5-6.0 dive: reverse crash + short snare roll + whoosh peaking on the 6.0 cut.
   6-10  NIVEAU 1  groove starts (kick, rumble, filtered bass, hats); 6.15 slam; 7.0-8.75 eight magma
-                  eruptions + chromatic dark hoover stabs F2->C3 (panned like the words); 9.0 overheat: snare
+                  eruptions + F5/Gb5 hoover stabs opening in filter (panned like the words); 9.0 overheat: tom/kick
                   roll + tremor jolts + noise riser, kick stops 9.5, white-out swell into 10.0.
   10-40 POWER-UPS full groove: kick/rumble/16th bass/claps/hats; acid enters at 10 and evolves (patterns A/B/C,
-                  cut-off and resonance automated per 5 s power-up); perc clanks from 20, ride + toms from 30;
-                  pad chords every 4 s (Fm7 Db Gb Fm7 Db Eb Gb Fm7). Kick + bass drop out on every whip (P+4.5).
-  40-45 BREAKDOWN no kick/bass: heartbeat sub (lub-dub each second), wide pads, acid closed + delay, shaker.
-  45-50 BUILD     kick back thinning (rising HP), bass/acid filters opening, snare roll accelerating, noise +
-                  pitch riser peaking at 49.98, kick stops 49.0 (tremor), reverse crash into 50.0.
+                  one long cut-off ramp + per-power-up swell); perc clanks from 20, ride + toms from 30;
+                  pad chords every 4 s (Fm7 Db Gb Fm7 Db Ebsus4 Gb Fm7). Energy steps per 10 s (bus 0.80/0.84/0.88).
+                  Full kick/bass mute on the whips into 20/30/40; only P+4.75-5.0 on the whips into 15/25/35.
+  40-45 BREAKDOWN no kick/bass, bus 0.62 (about -17.4 LUFS): heartbeat sub, wide pads, closed acid + delay;
+                  shaker only from 42; 41.5 answer stamp (darker room) + ducked music.
+  45-50 BUILD     kick back thinning (rising HP), hall-washed claps, bass/acid filters opening, kick/tom roll
+                  47-49.88 (8ths -> 16ths -> 32nds), noise + pitch riser ending 49.88, kick stops 49.0 (tremor),
+                  Db/C chord 49-50, VACUUM 49.88-50.0 (reverse-reverb suck only).
   50-54 DROP      biggest moment: impact 1.8 + braam + crash + hard kick; 50.125 title slam; hoover riff,
-                  full acid, ride, claps+clank; 8/8 land; taglines 53.0 / 53.5 slam on hoover stabs.
-  54-60 END CARD  sunrise pad swell Fm9 -> Db -> Eb, lighter groove, snap/slam 56.0, quiet tactile UI;
-                  groove stops 58.5, reverse swell, FINAL HIT 59.0 (impact + braam + kick + crash), ring-out,
-                  fade only the last 0.3 s.
+                  full acid, ride, claps+clank; 8/8 land; quiet fixed-230 Hz hop toks; taglines 53.0 / 53.5 slam on
+                  hoover stabs (Ebsus4 on 53.0, no G natural against the acid).
+  54-60 END CARD  sunrise pad swell Fm9 -> Db -> Ebsus4, lighter groove, snap/slam 56.0, quiet tactile UI;
+                  groove stops 58.5, short reverse swell, VACUUM 58.88-59.0, FINAL HIT 59.0 (impact + braam 1.0 s +
+                  kick + crash); dry buses release (tau 0.16 s) from 59.12 while the hall rings out; rumble dies
+                  by 59.35; fade only the last 0.3 s.
 
 CUE -> SOUND (weight 3 and weight 2)
   0.000 w2 open: wide lava bed + low pulse      | 0.500 w2 plop: magma gulp (sub swallow + low splash + sizzle)
   0.775 w2 suck: reverse air suck into GAME      | 1.000 w3 GAME: impact 1.4 + braam F + crash
   1.275 w2 suck 2 (braam gated)                  | 1.500 w3 OVER: impact 1.5 + braam Gb->F
   2.000 w2 card flip: flip swish + tok           | 2.250 w2 subline: 6 soft word toks
-  2.500 w2 DEAD: denied glitch buzz (gated 2.5/2.543/2.584/2.625) + power-sag thump
+  2.500 w2 DEAD: tape-stop of the OVER braam + F1 sub stutter (gated 2.5/2.543/2.584/2.625) + relay clunk
   3.000 w2 rewind: tape jolt + reversed hook     | 3.750 w2 CRT off: power-down + thunk + crackle
   4.000 w3 CRT on: degauss + impact 1.1          | 4.500 w2 reveal: muffled kick + tok + chevron swish
   5.000 w3 PRESS: impact 1.2 + thock + power-up riser | 5.500 w2 dive: kick + whoosh + reverse crash + roll
   5.750 w2 flash: accented roll hit + air burst  | 6.000 w2 cut: kick + crash + release burst
   6.150 w3 NIVEAU 1 slam: impact 1.3             | 6.375 w2 logo lands: stamp (small)
-  7.000-8.750 w2 eruptions: eruption + hoover stab each 8th (7.225 w2 logo sink: lava splash)
+  7.000-8.750 w2 eruptions: eruption + spurt crack + F5/Gb5 stab each 8th (7.225 logo sink + 7.25 eruption 2
+                share one splash/thump at 7.233)
   9.000 w2 overheat: roll + riser + tremor start | 9.500 w2 white-out: accent hit + reverse crash
   P=10,15,20,25,30,35 (w3): eruption + impact + crash on 10/20/30
   P+0.5 w2: red-hot fall (10.5/15.5/35.5/40.5), map rise grind (20.5), sheet rise whoosh (25.5), tile tok (30.5)
   P+1.0 w3/w2: land = thud impact + lava splash + steam (11/16/36/41), map settle thud (21), truck slam (31)
-  P+1.14 w2 cool sheen: thermal crack + shimmer (11.14 / 16.14 / 36.12)
+  P+1.14 w2 cool: thermal crack + falling steam hiss + metal ticks (11.14 / 16.14 / 36.12)
   P+1.5 w3 answer stamps (11.5 16.5 21.5 26.5 31.5 36.5 41.5 46.5): stamp + duck
   P+2.12 w2 HUD counter: mechanical odometer clack (12.12 ... 47.12)
   showcase w2 (rows, pins, ticks, tiles, steps, chips, avatar dots, store pills ...): tactile toks / swishes
@@ -91,16 +104,19 @@ CUE -> SOUND (weight 3 and weight 2)
   17.063/18.5 zoom whooshes, 17.5/18.0 pan swishes, 22.56 label pop, 23.0 route draw: swish + tok
   25.250 w3 HALO x MAINSTAGE collide: metal-heavy impact 1.3 | 28.5 w3 VALIDER: thock + impact 0.9
   31.0-31.75 w2 truck card slams: thud x4       | 32.0-33.5 carousel swishes + toks
-  40.0 w2 breakdown eruption (soft)              | 41.0 w2 soft land + toggle double tok; 41.5 w2 compass lock clack
+  40.0 w2 breakdown eruption (soft) + crack     | 41.0 w2 soft land + toggle double tok
+  41.5 w3 answer stamp (room 0.2 / hall 0.25) + duck; 41.52 compass lock clack (quiet)
   45.0 w3 build eruption + impact + crash        | 45.75 w2 typing ticks | 46.5 w2 send suck
   49.0 w2 riser: low boom + tremor               | 49.5 w2 white-out: reverse crash + 32nd snare
   50.000 w3 DROP: impact 1.8 + braam + crash + kick | 50.075 w2 ember spray | 50.125 w3 title slam
   50.5 w2 slot reel: decelerating ratchet clicks at the digit flips | 50.875 w3 8/8 land: impact + hoover
-  51.5 w2 pull-back whoosh | 51.75 w2 goal pop | 51.775..52.675 w2 hop landings: toks | 52.813 w2 goal impact
+  51.5 w2 pull-back whoosh | 51.75 goal pop + 51.775 hop 1 share one hit at 51.762 | 51.925..52.675 w2 hop
+  landings: quiet 230 Hz toks (no open hat at 51.75 / 52.25) | 52.813 w2 goal impact
   53.000 / 53.500 w3 taglines: impact + kick + hoover stab
   54.0 w2 sunrise: crash + pad swell + sub | 55.25/55.5 w2 tab-bar / spin whooshes | 56.0 w3 snap + slam
   56.5 w2 date swish | 57.0/57.25 w2 store toks | 57.75 w2 small stamp | 58.0 w2 button thock
-  59.000 w3 FINAL HIT: impact 1.9 + braam + kick + crash + reverse swell before it.
+  32/33/34/37/38/39 w2 beat cues in the dense 30-40 groove: a quiet filtered-noise transient on top of the kick.
+  59.000 w3 FINAL HIT: impact 1.9 + braam + kick + crash, after the vacuum and its reverse-reverb suck.
 """
 import os
 import time
@@ -370,6 +386,8 @@ def clap_s(seed, metal_amt=0.0):
         p = r.uniform(-0.5, 0.5)
         out[:, i:] += pan2(b[:len(t) - i], p)
     out += np.vstack([lp(hp(r.standard_normal(len(t)), 500), 3000), lp(hp(r.standard_normal(len(t)), 500), 3000)]) * np.exp(-t * 9) * 0.12
+    # 2-4.5 kHz crack layer (phone-speaker presence), tau 15 ms, slightly wide
+    out += np.vstack([bp(r.standard_normal(len(t)), 2000, 4500) for _ in range(2)]) * np.exp(-t / 0.015) * np.minimum(1, t / 0.0006) * 0.9
     if metal_amt:
         m = metal(d, 300, 1500, 12, (0.03, 0.12), seed + 1)
         out += metal_amt * m * 0.6
@@ -458,13 +476,13 @@ def hoover(notes, d, seed=0, scoop=4.0, cut=2600):
     out = np.zeros((2, n))
     for m in notes:
         for ch in range(2):
-            for det in ((-0.16, 0.05, 0.21) if ch == 0 else (-0.2, -0.04, 0.15)):
+            for det in r.uniform(-0.25, 0.25, 5):
                 f = note(m + det + bend)
                 dt = np.clip(f / SR, 1e-7, 0.45)
                 ph = (r.uniform(0, 1) + np.cumsum(dt))
                 pw = 0.5 + 0.32 * np.sin(TWO_PI * (4.3 + 0.9 * ch) * t + r.uniform(0, 6.28))
                 out[ch] += saw_ph(ph, dt) - saw_ph(ph + pw, dt)
-    out /= np.sqrt(len(notes) * 3)
+    out /= np.sqrt(len(notes) * 5)
     out = hp(lp(out, cut, 2), 70)
     env = np.minimum(1, t / 0.004) * np.where(t > d, np.exp(-(t - d) / 0.035), 1.0) * (0.75 + 0.25 * np.exp(-t * 6))
     return fade_tail(np.tanh(out * env * 2.2) * 0.45, 0.02)
@@ -535,7 +553,7 @@ def hit(at, size=1.0, seed=0, metal_amt=0.6, sub=True, g=1.0, rev=0.35, crash_d=
     duck(DIPH, at, dd, 0.12 + 0.15 * size)
 
 
-def stamp(at, seed, g=1.0, size=1.0):
+def stamp(at, seed, g=1.0, size=1.0, rev=0.12, room=0.35):
     d = 0.9
     t = tt(d)
     low = sub_boom(d, 85, 38, 0.12 * size + 0.08) * 0.9 + lp(noise(d, seed), 220, 4) * np.exp(-t * 30) * 2.0
@@ -546,7 +564,7 @@ def stamp(at, seed, g=1.0, size=1.0):
         hi[ch] += metal(d, 160, 1500, 16, (0.03, 0.22), seed * 3 + ch) * 0.5 * np.exp(-t * 3)
         hi[ch] += np.tanh(2 * bp(noise(d, seed + 5 + ch), 300, 1600) * np.exp(-t * 35)) * 0.5
     put(HITS, low, at, g)
-    put(HITS, fade_tail(hi, 0.1), at, g * 0.8, room=0.35, rev=0.12)
+    put(HITS, fade_tail(hi, 0.1), at, g * 0.8, room=room, rev=rev)
     duck(DIPH, at, 0.55 * min(size, 1.2), 0.14)
 
 
@@ -666,10 +684,17 @@ def cool_sheen(seed):
     t = tt(d)
     crack_ = bp(noise(d, seed), 700, 5200) * np.exp(-t * 600) * 0.9
     crack_ += np.sin(TWO_PI * 520 * t) * np.exp(-t * 90) * 0.35
-    fc = 2200 * (3.0 ** (t / d))
-    sh = np.vstack([tv_filter(noise(d, seed + 1 + ch), fc, 'band', 0.8) for ch in range(2)])
-    sh *= np.sin(np.pi * np.clip(t / d, 0, 1)) ** 2 * 0.22
-    return fade_tail(sh + crack_, 0.05)
+    # steam hiss falling 6 kHz -> 1.5 kHz, decaying (no rising shimmer)
+    fc = 6000 * (0.25 ** (t / d))
+    sh = np.vstack([tv_filter(noise(d, seed + 1 + ch), fc, 'high', order=2) for ch in range(2)])
+    sh *= np.minimum(1, t / 0.01) * np.exp(-t / 0.12) * 0.12
+    # two low metal contraction ticks
+    tick = np.zeros(len(t))
+    for k, (t0, a) in enumerate(((0.06, 0.18), (0.19, 0.11))):
+        m_ = metal(0.1, 150, 700, 8, (0.01, 0.04), seed + 30 + k)
+        i0 = int(t0 * SR)
+        tick[i0:i0 + len(m_)] += m_[:len(t) - i0] * a
+    return fade_tail(sh + crack_ + np.vstack([tick, np.roll(tick, 24)]), 0.05)
 
 
 def fall_sfx(seed, d=0.5, rise=False):
@@ -694,11 +719,11 @@ def heartbeat():
     return fade_tail(sat(y, 1.5), 0.05)
 
 
-def riser(d, f0=250, f1=9000, seed=0, trem=True):
+def riser(d, f0=250, f1=9000, seed=0, trem=True, bw=1.4):
     t = tt(d)
     p = t / d
     fc = f0 * (f1 / f0) ** (p ** 1.4)
-    out = np.vstack([tv_filter(noise(d, seed + ch), fc, 'band', 1.4) for ch in range(2)])
+    out = np.vstack([tv_filter(noise(d, seed + ch), fc, 'band', bw) for ch in range(2)])
     amp = p ** 2.2
     if trem:
         rate = 4 + 12 * p ** 1.5
@@ -732,13 +757,13 @@ def varispeed(x, rate):
 
 # ======================================================================== harmony
 CH = {'Fm7': [53, 56, 60, 63], 'Fm9': [53, 56, 60, 67], 'Db': [49, 53, 56, 60], 'Gb': [54, 58, 61, 65],
-      'Eb': [51, 55, 58, 63], 'C': [48, 52, 55, 58]}
-ROOT = {'Fm7': 41, 'Fm9': 41, 'Db': 37, 'Gb': 42, 'Eb': 39, 'C': 36}
+      'Eb': [51, 56, 58, 63], 'DbC': [48, 53, 56, 61]}   # Eb = Ebsus4 (no G natural), DbC = Db/C (C-F-Ab-Db)
+ROOT = {'Fm7': 41, 'Fm9': 41, 'Db': 37, 'Gb': 42, 'Eb': 39, 'DbC': 36}
 SCHED = [(4, 6, 'Fm7'), (6, 8, 'Fm7'), (8, 10, 'Gb'),
          (10, 14, 'Fm7'), (14, 18, 'Db'), (18, 22, 'Gb'), (22, 26, 'Fm7'), (26, 30, 'Db'), (30, 34, 'Eb'),
          (34, 38, 'Gb'), (38, 40, 'Fm7'),
          (40, 42, 'Fm9'), (42, 44, 'Db'), (44, 45, 'Eb'),
-         (45, 46.5, 'Fm7'), (46.5, 48, 'Db'), (48, 49, 'Gb'), (49, 50, 'C'),
+         (45, 46.5, 'Fm7'), (46.5, 48, 'Db'), (48, 49, 'Gb'), (49, 50, 'DbC'),
          (50, 52, 'Fm7'), (52, 53, 'Db'), (53, 54, 'Eb'),
          (54, 56, 'Fm9'), (56, 58, 'Db'), (58, 59, 'Eb'), (59, 61, 'Fm9')]
 
@@ -755,7 +780,11 @@ WHIPS = [p + 4.5 for p in PS]
 
 
 def in_whip(t):
-    return any(w - 1e-6 <= t < w + 0.5 - 1e-6 for w in WHIPS)
+    for w in WHIPS:
+        a = w if int(round(w + 0.5)) % 10 == 0 else w + 0.25
+        if a - 1e-6 <= t < w + 0.5 - 1e-6:
+            return True
+    return False
 
 
 # ======================================================================== groove
@@ -776,11 +805,15 @@ def bass_line(t0, t1, gain=1.0):
             if step in (7, 15) and bar % 2 == 1:
                 m = root + 12
             if step == 14 and bar % 4 == 3:
-                m = root + 1
+                m = root + 1 if chord_at(s) in ('Fm7', 'Fm9') else root + 12
             vel = 1.0 if step % 4 == 2 else 0.78
             f = float(note(m))
             put(BASS, bass_note(f, bass_cut(s) * (1.25 if step % 4 == 2 else 1.0), vel=vel, seed=step), s, gain)
         s += S16
+
+
+# leave room for the goal pop / hop 1 (51.75: no open hat, ride swells in softly) and hop 4 (52.25: nothing)
+HAT_SKIP = {51.75: 'soft', 52.25: 'all'}
 
 
 def hats_line(t0, t1, mode, g=1.0):
@@ -788,13 +821,14 @@ def hats_line(t0, t1, mode, g=1.0):
     i = 0
     while s < t1 - 1e-6:
         step = int(round((s % 2.0) / S16))
-        if not in_whip(s):
+        skip = next((v for h, v in HAT_SKIP.items() if abs(s - h) < 1e-6), None)
+        if not in_whip(s) and skip != 'all':
             pan = 0.6 * np.sin(i * 0.9)
-            if mode in ('full', 'drop', 'build', 'lite', 'intro'):
+            if mode in ('full', 'drop', 'build', 'lite', 'intro') and skip is None:
                 if step % 4 == 2:
                     put(DRUMS, hat('o', 300 + i % 7), s, 0.42 * g, pan=-0.15, room=0.1)
                 elif mode != 'intro' or step % 2 == 1:
-                    v = 0.32 if step % 2 == 1 else 0.2
+                    v = 0.42 if step % 2 == 1 else 0.24
                     if mode == 'lite' and step % 2 == 0:
                         v = 0
                     if v:
@@ -802,7 +836,10 @@ def hats_line(t0, t1, mode, g=1.0):
             if mode == 'shaker':
                 put(DRUMS, hat('s', 500 + i % 9), s, (0.18 if step % 2 else 0.1) * g, pan=0.5 * np.sin(i * 1.3), dly=0.2)
             if mode in ('drop', 'ride') and step % 4 == 2:
-                put(DRUMS, hat('r', 600 + i % 5), s, 0.22 * g, pan=0.3, rev=0.1)
+                rd = hat('r', 600 + i % 5)
+                if skip == 'soft':
+                    rd = rd * np.minimum(1, np.arange(len(rd)) / (0.03 * SR))
+                put(DRUMS, rd, s, 0.22 * g, pan=0.3, rev=0.1)
         s += S16
         i += 1
 
@@ -855,10 +892,13 @@ def acid_pattern_at(t):
 
 
 def acid_cut(t):
-    keys = [(10, 200), (12, 330), (14.5, 520), (15, 300), (19.5, 700), (20, 380), (24.5, 950), (25, 420), (29.5, 1100),
-            (30, 500), (34.5, 1300), (35, 520), (39.5, 1400), (40, 260), (44.9, 380), (45, 300), (49.9, 2700),
-            (50, 1100), (54, 1500)]
-    return np.interp(t, [k[0] for k in keys], [k[1] for k in keys])
+    t = np.asarray(t, np.float64)
+    keys = [(10, 220), (39.9, 1350), (40, 260), (44.9, 380), (45, 300), (49.9, 2700), (50, 1100), (54, 1500)]
+    base = np.interp(t, [k[0] for k in keys], [k[1] for k in keys])
+    # one long 10->40 ramp; each power-up adds a small swell (opens through the showcase, eases into the whip)
+    ph = np.clip((t - 10) % 5 / 5, 0, 1)
+    wig = np.where((t >= 10) & (t < 40), 1 + 0.16 * np.sin(np.pi * ph) ** 2, 1.0)
+    return base * wig
 
 
 def acid_render(t0, t1, root=29):
@@ -877,6 +917,8 @@ def acid_render(t0, t1, root=29):
         a, b = int(round(k * S16 * SR)), min(n, int(round((k + 1) * S16 * SR)))
         pat = ACID_PAT[acid_pattern_at(st)]
         ev = pat[int(round((st % 2.0) / S16)) % 16]
+        if ev is not None and ev[0] == 1 and chord_at(st) in ('Eb', 'DbC'):
+            ev = None   # no Gb against Ebsus4 / Db/C
         if ev is None or in_whip(st):
             prev_slide = False
             continue
@@ -913,13 +955,16 @@ def acid_render(t0, t1, root=29):
     s, _, _ = saw_f(f, 0.0)
     base = acid_cut(t) * (1 + 0.18 * np.sin(TWO_PI * 0.11 * t))
     fc = base * 0.55 * 2 ** (1.8 * fenv)
-    fc = 2000 * np.tanh(fc / 2000)   # soft ceiling, never pinned (resonance keeps moving)
+    ceil = np.interp(t, [10, 29.9, 30.5, 61], [2000, 2000, 2800, 2800])
+    fc = ceil * np.tanh(fc / ceil)   # soft ceiling, never pinned (resonance keeps moving)
     kk = np.where(t < 45, 3.15, np.where(t < 50, 3.15 + 0.25 * (t - 45) / 5, 3.4))
     kk = kk * np.clip(1 - (fc - 800) / 2400, 0.7, 1.0)
     y = ladder(s * g * (0.8 + 0.4 * accent), fc, kk, 1.3)
     y = np.tanh(y * 3.2) * 0.5
-    y = hp(lp(y, 2600, 2), 70)
-    return y
+    y_d = hp(lp(y, 2600, 2), 70)
+    y_b = hp(lp(y, 3500, 2), 70)
+    xf = np.clip((t - 29.5) / 1.0, 0, 1)
+    return y_d * (1 - xf) + y_b * xf
 
 
 # ======================================================================== ARRANGEMENT
@@ -927,10 +972,11 @@ def acid_render(t0, t1, root=29):
 def lava_bed(d, seed):
     t = tt(d)
     out = []
+    low_ = lp(noise(d, seed + 50), 140, 4) * 3.0          # mono below 140 Hz
     for ch in range(2):
         nz = noise(d, seed + ch)
         lfo = 0.6 + 0.4 * lp(R(seed + 10 + ch).standard_normal(len(t)), 3, 1) * 30
-        y = lp(nz, 140, 4) * 3.0 + lp(hp(nz, 140), 420, 2) * 0.5 * np.clip(lfo, 0.1, 1.5)
+        y = low_ + lp(hp(nz, 140), 420, 2) * 0.5 * np.clip(lfo, 0.1, 1.5)
         out.append(y)
     return np.vstack(out)
 
@@ -944,8 +990,8 @@ put(SYN, dr, 0.0, 0.9, rev=0.2)
 # opening low pulse (ring pulse 1) and ring 2 pulse
 pulse0 = sub_boom(0.6, 70, 40, 0.12, 1.3) * 0.7
 put(HITS, pulse0, 0.0, 0.8)
-put(SFX, tok(160, 0.03, 1.2, 21, 0.12), 0.035, 0.9, rev=0.3)
-put(SFX, transient(22, amt=0.8), 0.035, 0.6, rev=0.2)
+put(SFX, tok(160, 0.03, 1.2, 21, 0.12), 0.003, 0.9, rev=0.3)
+put(SFX, transient(22, amt=0.8), 0.003, 0.6, rev=0.2)
 put(HITS, sub_boom(0.5, 60, 40, 0.09, 1.2), 0.25, 0.35)
 
 
@@ -990,21 +1036,31 @@ put(SFX, transient(292, amt=0.5), 2.0, 0.3, pan=0.4)
 for i, tw in enumerate([2.25, 2.294, 2.338, 2.381, 2.425, 2.469]):
     put(SFX, tok(330, 0.006, 1.2, 300 + i, 0.04), tw, 0.35 if i else 1.0, pan=-0.2 + 0.08 * i)
 put(SFX, transient(309, amt=0.5), 2.25, 0.35)
-# 2.5 DEAD: denied glitch
+# 2.5 DEAD: power failure (no buzzer): (a) tape-stop of the OVER braam, (b) gated F1 sub stutter, (c) relay clunk
+i25 = int(2.5 * SR)
+src = SYN[:, i25:i25 + int(0.6 * SR)].copy()
 d = 0.42
 t = tt(d)
-gb = saw_f(np.full(len(t), float(note(29))))[0] + saw_f(np.full(len(t), float(note(30))), 0.3)[0] + 0.6 * saw_f(np.full(len(t), float(note(41))), 0.6)[0]
-gb = np.repeat(gb[::14], 14)[:len(t)]
-gb = lp(np.tanh(gb * 3.5), 2600, 2)
+rate = np.clip(1 - t / 0.35, 0, 1) ** 1.4
+ts_ = varispeed(src, rate) * np.minimum(1, t / 0.002)
+fts = 250 + 3800 * np.clip(1 - t / 0.35, 0, 1) ** 1.5
+ts_ = np.vstack([tv_filter(ts_[ch], fts, 'low', order=2, block=256) for ch in range(2)])
+put(SFX, fade_tail(ts_, 0.06), 2.5, 0.9)
+# the live braam / drone collapse under the tape-stop (keeps the low drone faintly until the rewind)
+gsyn = np.ones(int(0.5 * SR))
+gsyn[:int(0.012 * SR)] = np.linspace(1, 0.18, int(0.012 * SR))
+gsyn[int(0.012 * SR):] = 0.18
+SYN[:, i25:i25 + len(gsyn)] *= gsyn
 gatev = np.zeros(len(t))
 for a0, a1 in ((0.0, 0.03), (0.043, 0.075), (0.084, 0.115), (0.125, 0.4)):
     gatev[int(a0 * SR):int(a1 * SR)] = 1
-gatev = lp(gatev, 400, 1)
-put(SFX, fade_tail(gb * gatev * np.exp(-t * 3.5), 0.05) * 0.38, 2.5, 1.0, pan=0.2, room=0.2)
-put(HITS, sub_boom(0.5, 75, 35, 0.12, 1.4), 2.5, 0.55)
-put(SFX, transient(310, amt=0.8), 2.5, 0.45, pan=0.3)
-put(SFX, transient(311, amt=0.5), 2.75, 0.3, pan=0.3)
-put(SFX, tok(200, 0.01, 0.6, 312), 2.625, 0.3, pan=0.3)
+gatev = lp(gatev, 300, 1)
+subst = lp(np.tanh(2.5 * np.sin(TWO_PI * float(note(29)) * t)) * gatev * np.exp(-t * 4), 120, 4)
+put(HITS, fade_tail(subst, 0.04), 2.5, 0.75)
+put(SFX, tok(150, 0.025, 1.0, 312, 0.12), 2.5, 0.8, room=0.25)
+put(SFX, transient(310, amt=0.4), 2.5, 0.5, pan=0.2)
+put(SFX, tok(160, 0.012, 0.5, 313), 2.625, 0.22, pan=0.25)
+put(SFX, transient(311, amt=0.35), 2.75, 0.2, pan=0.3)
 duck(DIPH, 2.5, 0.45, 0.2)
 
 # ---------------- 4-6 REJOUER (music built before the rewind is taken from 1.0-3.0)
@@ -1058,14 +1114,21 @@ for i in range(8):
     te = 7.0 + i * 0.25
     pn = (XS[i] - 960) / 960 * 0.85
     put(SFX, eruption(440 + i * 3, 0.7 + 0.05 * i, 0.9), te, 0.6, pan=pn, rev=0.15)
-    put(SYN, hoover([41 + i, 53 + i], 0.2, seed=460 + i, scoop=1.5, cut=1600 + 120 * i), te, 0.55 + 0.04 * i, pan=pn * 0.6, dly=0.15)
+    if i != 1:
+        put(SFX, transient(448 + i * 3, amt=0.7), te, 0.4, pan=pn)       # spurt crack on the burst frame
+    vo_ = [29, 41, 48] if i % 2 == 0 else [30, 42, 49]     # F5 / Gb5 power voicings (phrygian), never chromatic
+    put(SYN, hoover(vo_, 0.2, seed=460 + i, scoop=0.0, cut=700 + 200 * i), te, 0.6 + 0.04 * i, pan=pn * 0.6, dly=0.15)
     duck(DIPH, te, 0.3, 0.08)
-put(SFX, splash(470, 0.7), 7.225, 0.7, pan=0.1)
-put(HITS, sub_boom(0.4, 80, 40, 0.1), 7.225, 0.4)
+# logo sink (7.225) and eruption 2 (7.25) are 25 ms apart: one shared splash/thump at 7.233 marks both
+put(SFX, splash(470, 0.7), 7.233, 0.7, pan=0.1)
+put(HITS, sub_boom(0.4, 80, 40, 0.1), 7.233, 0.4)
+put(HITS, sub_boom(0.25, 95, 45, 0.05, 2.0), 7.233, 0.55)
+put(SFX, transient(471, amt=0.9), 7.233, 0.55, pan=0.1)
 # 9.0 overheat
 for i in range(16):
     tr_ = 9.0 + i * 0.0625
-    put(DRUMS, snare_s(480 + i % 5, 0.12), tr_, 0.15 + 0.35 * (i / 15) ** 1.3, room=0.15)
+    put(DRUMS, tom_s(480 + i % 5, 105 if i % 2 == 0 else 82), tr_, 0.12 + 0.3 * (i / 15) ** 1.3, room=0.2)
+    put(DRUMS, snare_s(480 + i % 5, 0.1), tr_, 0.04 + 0.08 * (i / 15), room=0.15)
     put(HITS, sub_boom(0.12, 70, 45, 0.04, 1.2), tr_, 0.08 + 0.25 * (i / 15))
 put(SFX, riser(1.0, 300, 9000, 490), 9.0, 0.8)
 put(SYN, pitch_riser(1.0, 41, 12, 300, 2500, 491), 9.0, 0.7, rev=0.2)
@@ -1109,7 +1172,7 @@ for i, P in enumerate(PS):
         hit(P + 1.0, 1.0 if P != 35 else 1.15, sd + 20, 0.5, rev=0.25)
         put(SFX, splash(sd + 21), P + 1.0, 0.7)
         put(SFX, steam(sd + 22, 0.8 if P != 35 else 1.0, 1.0), P + 1.02, 0.9)
-        put(SFX, cool_sheen(sd + 23), P + (1.14 if P != 35 else 1.12), 1.1)
+        put(SFX, cool_sheen(sd + 23), P + (1.14 if P != 35 else 1.12), 1.0)
         put(SFX, transient(sd + 24, amt=0.8), P + (1.14 if P != 35 else 1.12), 0.55, pan=0.3)
     # P+1.5 answer stamp
     stamp(P + 1.5, sd + 30, 1.0, 1.0)
@@ -1187,6 +1250,8 @@ put(SFX, sat(saw_f(np.full(int(0.3 * SR), float(note(29))))[0] * np.exp(-tt(0.3)
 for i, ts_ in enumerate([37.0, 37.5, 38.0]):
     put(SFX, tok(280, 0.01, 1.0, 3500 + i), ts_, 0.5, pan=-0.2)
 put(SFX, swish(0.3, 500, 2500, 3510, 0.0), 38.5, 0.5)
+for ta_ in (32.0, 33.0, 34.0, 37.0, 38.0, 39.0):
+    put(SFX, transient(int(ta_ * 10) + 7, amt=0.5), ta_, 0.32, pan=0.15)
 # dot hops (jump swish / land thock)
 for tj in (13.5, 18.5, 28.5, 33.5, 38.5):
     put(SFX, swish(0.3, 400, 1800, int(tj * 10), -0.4), tj, 0.45)
@@ -1200,6 +1265,7 @@ for w in WHIPS:
 
 # ---------------- 40-45 BREAKDOWN
 put(SFX, eruption(4000, 0.7, 1.4), 40.0, 0.55, rev=0.4)
+put(SFX, transient(4003, amt=0.8), 40.0, 0.55, rev=0.2)
 put(HITS, sub_boom(1.0, 70, 32, 0.4), 40.0, 0.6)
 duck(DIPH, 40.0, 0.4, 0.3)
 for hb in (40.0, 41.0, 42.0, 43.0, 44.0):
@@ -1210,7 +1276,7 @@ put(SYN, pad(CH['Eb'], 1.0, 1400, att=0.3, rel=0.5, seed=403), 44.0, 0.65, rev=0
 air = np.vstack([hp(noise(5.0, 4090 + ch), 2500, 2) for ch in range(2)]) * (0.5 + 0.5 * np.sin(TWO_PI * 0.2 * tt(5.0)) ** 2)
 air *= np.minimum(1, tt(5.0) / 0.3) * np.minimum(1, (5.0 - tt(5.0)) / 0.3)
 put(SFX, lp(air, 9000, 2), 40.0, 0.035)
-hats_line(40.0, 44.5, 'shaker', 0.9)
+hats_line(42.0, 44.5, 'shaker', 0.8)
 put(SFX, fall_sfx(4010, 0.5), 40.5, 0.5)
 put(SFX, transient(4011, amt=0.5), 40.5, 0.4, rev=0.2)
 put(SFX, splash(4020), 41.0, 0.5)
@@ -1220,7 +1286,9 @@ put(SFX, tok(380, 0.006, 0.8, 4022), 41.0, 0.35, pan=0.3)
 put(SFX, tok(300, 0.006, 0.6, 4023), 41.16, 0.3, pan=0.3)
 for i, tcm in enumerate([41.012, 41.025, 41.038, 41.054, 41.070, 41.089, 41.111, 41.138, 41.174, 41.234]):
     put(SFX, tok(600, 0.003, 0.6, 4030 + i, 0.03), tcm, 0.1, pan=0.2)
-put(SFX, clack(4040), 41.5, 0.45, pan=0.2)
+stamp(41.5, 4045, 0.85, 0.9, rev=0.25, room=0.2)      # w3 answer stamp 'RETROUVE TA BANDE.' (darker room)
+duck(DIPH, 41.5, 0.5, 0.2)
+put(SFX, clack(4040), 41.52, 0.3, pan=0.2)
 put(SFX, tok(220, 0.012, 1.0, 4041), 42.0, 0.5)
 for i, ta in enumerate([42.5, 42.75, 43.0]):
     put(SFX, tok(300 + 25 * i, 0.01, 1.4, 4050 + i), ta, 0.65, pan=0.3, rev=0.2)
@@ -1244,15 +1312,26 @@ hats_line(45.0, 49.0, 'build', 0.9)
 for a, b_, c in SCHED:
     if 45 <= a < 50:
         put(SYN, pad(CH[c], b_ - a, 1000 + 400 * (a - 45), att=0.3, rel=0.4, seed=int(a * 10)), a, 0.45 + 0.04 * (a - 45), rev=0.45)
-# snare roll
-tr_ = 45.0
-while tr_ < 49.999:
-    p = (tr_ - 45.0) / 5
-    step = 0.5 if tr_ < 47 else (0.25 if tr_ < 48 else (0.125 if tr_ < 49 else 0.0625))
-    put(DRUMS, snare_s(4600 + int(tr_ * 16) % 7, 0.15), tr_, 0.12 + 0.45 * p ** 1.5, room=0.2)
+# industrial build: hall-washed claps + kick/tom roll (low-passed kick + toms), snare only as a quiet top layer;
+# everything ends at 49.88 (vacuum before the drop)
+claps_line(45.0, 49.0, 0.7)
+for b in (45.5, 46.5, 47.5, 48.5):
+    put(DRUMS, clap_s(4590 + int(b * 2) % 5), b, 0.25, rev=0.6)
+KR = lp(kick_s(1.0, 0.25), 400, 2)
+tr_ = 47.0
+k_ = 0
+while tr_ < 49.87:
+    p = (tr_ - 47.0) / 2.88
+    step = 0.25 if tr_ < 48 else (0.125 if tr_ < 49.25 else 0.0625)
+    if not (tr_ < 49.0 and abs((tr_ / 0.5) - round(tr_ / 0.5)) < 1e-6):   # leave the main kicks alone
+        put(DRUMS, KR, tr_, (0.12 + 0.16 * p ** 1.3) * (0.6 if step < 0.1 else 1.0))
+    put(DRUMS, tom_s(4600 + k_ % 7, 110 if k_ % 2 == 0 else 86), tr_, (0.1 + 0.16 * p ** 1.3) * (0.7 if step < 0.1 else 1.0), pan=(0.25 if k_ % 2 else -0.25), room=0.15, rev=0.1)
+    if tr_ >= 48.0:
+        put(DRUMS, snare_s(4620 + k_ % 5, 0.1), tr_, 0.03 + 0.06 * p, room=0.2)
     tr_ += step
-put(SFX, riser(4.98, 200, 10000, 4700), 45.0, 0.95)
-put(SYN, pitch_riser(3.0, 41, 12, 300, 2600, 4701), 47.0, 0.8, rev=0.3)
+    k_ += 1
+put(SFX, riser(4.88, 200, 10000, 4700, bw=2.2), 45.0, 1.0)
+put(SYN, pitch_riser(2.88, 41, 12, 300, 2600, 4701), 47.0, 0.8, rev=0.3)
 put(SFX, swish(0.26, 400, 2000, 4710, 0.0), 45.5, 0.45)
 for i in range(18):
     put(SFX, tok(450 + 30 * (i % 3), 0.003, 0.7, 4720 + i, 0.03), 45.75 + i * 0.04, 0.16 if i else 0.3, pan=0.15)
@@ -1288,22 +1367,24 @@ perc_line(50.0, 54.0, 1.0)
 for a, b_, c in SCHED:
     if 50 <= a < 54:
         put(SYN, pad(CH[c], b_ - a, 2400, att=0.05, rel=0.4, seed=int(a * 10)), a, 0.75, rev=0.65)
-VO = {'Fm7': [41, 48, 53, 56], 'Db': [37, 44, 49, 53], 'Eb': [39, 46, 51, 55]}
-for st_, dd_, c in ((50.0, 0.45, 'Fm7'), (50.75, 0.12, 'Fm7'), (50.875, 0.4, 'Fm7'), (51.5, 0.18, 'Fm7'), (51.75, 0.2, 'Fm7'),
+VO = {'Fm7': [41, 48, 53, 56], 'Db': [37, 44, 49, 53], 'Eb': [39, 46, 51, 56]}   # Eb = Ebsus4
+for st_, dd_, c in ((50.0, 0.45, 'Fm7'), (50.75, 0.12, 'Fm7'), (50.875, 0.4, 'Fm7'), (51.5, 0.18, 'Fm7'),
                     (52.0, 0.45, 'Db'), (52.75, 0.2, 'Db'), (53.0, 0.4, 'Eb'), (53.5, 0.45, 'Fm7')):
-    put(SYN, hoover(VO[c], dd_, seed=int(st_ * 100)), st_, 0.9, rev=0.25, dly=0.12)
+    put(SYN, hoover(VO[c], dd_, seed=int(st_ * 100)), st_, 0.9, rev=0.35, dly=0.12)
 # slot reel
 put(SFX, swish(0.16, 900, 2400, 5010, 0.0), 50.5, 0.4)
 for i, tf in enumerate([50.507, 50.522, 50.539, 50.559, 50.582, 50.612, 50.656]):
     put(SFX, tok(420, 0.004, 0.9, 5020 + i, 0.04), tf, 0.3 + (0.15 if i == 6 else 0), pan=0.1)
 hit(50.875, 1.0, 5030, 0.7)
 put(SFX, whoosh(0.7, 6000, 250, curve=0.45, tail=0.1, pan0=-0.3, pan1=0.3, seed=5040, onset=0.8), 51.5, 0.8)
-put(SFX, tok(260, 0.01, 0.9, 5050), 51.75, 0.2, pan=0.5)
-put(SFX, crackle(0.3, 300, 5051), 51.75, 0.6, pan=0.5)
+# goal pop (51.75) and hop-1 landing (51.775) share one hit at 51.762 (12 ms from each)
+put(SFX, tok(260, 0.01, 0.9, 5050), 51.762, 0.2, pan=0.5)
+put(SFX, crackle(0.3, 300, 5051), 51.762, 0.6, pan=0.5)
+put(SFX, transient(5052, amt=0.8), 51.762, 0.4, pan=0.3)
 for i in range(7):
-    tl = 51.775 + 0.15 * i
-    put(SFX, tok(240 + 10 * i, 0.01, 1.6, 5060 + i, 0.07), tl, 1.0, pan=-0.6 + 0.18 * i)
-    put(SFX, transient(5065 + i, amt=0.8), tl, 0.65, pan=-0.6 + 0.18 * i)
+    tl = 51.775 + 0.15 * i if i else 51.762
+    put(SFX, tok(230, 0.01, 1.2, 5060 + i, 0.07), tl, 0.7, pan=-0.6 + 0.18 * i)
+    put(SFX, transient(5065 + i, amt=0.8), tl, 0.42, pan=-0.6 + 0.18 * i)
 hit(52.8125, 0.8, 5070, 0.6, g=0.8, rev=0.2)
 put(SFX, crackle(0.5, 600, 5071, 1500, 9000) * 3, 52.8125, 0.5, pan=0.5)
 hit(53.0, 1.2, 5080, 0.75)
@@ -1323,7 +1404,7 @@ hats_line(54.0, 58.5, 'full', 0.9)
 claps_line(54.0, 58.5, 0.9)
 put(SYN, pad(CH['Fm9'], 2.0, 2600, att=0.5, rel=0.5, seed=541), 54.0, 0.6, rev=0.6)
 put(SYN, pad(CH['Db'], 2.0, 2800, att=0.1, rel=0.4, seed=561), 56.0, 0.55, rev=0.6)
-put(SYN, pad(CH['Eb'], 1.0, 2800, att=0.1, rel=0.4, seed=581), 58.0, 0.55, rev=0.6)
+put(SYN, pad(CH['Eb'], 0.88, 1800, att=0.1, rel=0.1, seed=581), 58.0, 0.55, rev=0.4)
 put(SFX, whoosh(0.375, 300, 4000, curve=0.6, tail=0.08, pan0=0, pan1=0, seed=5500, onset=0.6), 55.25, 0.6)
 for i, ti in enumerate([55.35, 55.40, 55.45, 55.50, 55.55]):
     put(SFX, tok(380, 0.004, 0.5, 5510 + i, 0.03), ti, 0.12, pan=-0.6 + 0.3 * i)
@@ -1331,7 +1412,7 @@ w_ = whoosh(0.5, 500, 5000, curve=2.0, tail=0.0, pan0=0.6, pan1=0.0, seed=5520, 
 w_ *= 0.6 + 0.4 * np.sin(TWO_PI * np.cumsum(6 + 18 * tt(0.5) / 0.5) / SR) ** 2
 put(SFX, w_, 55.5, 0.8)
 hit(56.0, 1.3, 5600, 0.8, crash_d=1.2)
-put(SFX, transient(5601, amt=1.4), 55.99, 0.6)
+put(SFX, transient(5601, amt=1.4), 55.997, 0.6)
 put(SFX, swish(0.3, 600, 3000, 5650, 0.0), 56.5, 0.45)
 put(SFX, tok(300, 0.01, 0.8, 5651), 56.5, 0.4)
 put(SFX, tok(280, 0.01, 1.0, 5700), 57.0, 0.5, pan=-0.3)
@@ -1341,13 +1422,13 @@ put(SFX, tok(180, 0.02, 1.2, 5800, 0.1), 58.0, 0.7)
 put(HITS, sub_boom(0.4, 80, 40, 0.1), 58.0, 0.4)
 put(SFX, tok(350, 0.004, 0.4, 5850, 0.03), 58.725, 0.12)
 # tension 58.5 -> 59.0
-put(SFX, rev_crash(0.5, 5900), 58.5, 0.7)
-put(SFX, riser(0.5, 400, 8000, 5901), 58.5, 0.5)
+put(SFX, rev_crash(0.38, 5900), 58.5, 0.7)
+put(SFX, riser(0.38, 400, 8000, 5901), 58.5, 0.5)
 # FINAL HIT
 hit(59.0, 1.9, 5950, 0.9, crash_d=2.2)
 kick_at(59.0, 1.6, 1.1, d=0.9)
-put(SYN, braam(41, 1.6, seed=5951, peak=3200), 59.0, 0.85, rev=0.4)
-put(SYN, pad(CH['Fm9'], 0.9, 3000, att=0.01, rel=0.6, seed=5952), 59.0, 0.6, rev=0.7)
+put(SYN, braam(41, 1.0, seed=5951, peak=3200), 59.0, 0.85, rev=0.28)
+put(SYN, pad(CH['Fm9'], 0.35, 1800, att=0.01, rel=0.3, seed=5952), 59.0, 0.6, rev=0.4)
 put(SFX, crackle(0.8, 500, 5953, 1500, 9000) * 3, 59.0, 0.5)
 
 # ---------------- ACID
@@ -1403,7 +1484,8 @@ rduck = np.zeros(N)
 for tk, scv in KICK_T:
     duck(rduck, tk, 1.0 * scv, 0.16, att=0.002, hold=0.05)
 rum *= (1 - np.clip(rduck, 0, 1)) ** 1.5
-rum *= np.sqrt(np.mean(KICK[int(10 * SR):int(40 * SR)] ** 2)) / (np.sqrt(np.mean(rum[int(10 * SR):int(40 * SR)] ** 2)) + 1e-9) * 0.3
+rum *= np.interp(np.arange(N) / SR, [0, 59.05, 59.35, 61], [1, 1, 0, 0])
+rum *= np.sqrt(np.mean(KICK[int(10 * SR):int(40 * SR)] ** 2)) / (np.sqrt(np.mean(rum[int(10 * SR):int(40 * SR)] ** 2)) + 1e-9) * 0.2
 
 bass_g = 1 - np.clip(0.9 * DIPK + 0.6 * DIPH, 0, 0.95)
 syn_g = 1 - np.clip(0.55 * DIPK + 0.75 * DIPH, 0, 0.9)
@@ -1411,7 +1493,10 @@ drm_g = 1 - np.clip(0.15 * DIPK + 0.5 * DIPH, 0, 0.8)
 sfx_g = 1 - np.clip(0.35 * DIPH, 0, 0.5)
 low = KICK * (1 - 0.5 * np.clip(DIPH - 0.3, 0, 1)) + BASS * bass_g + rum
 low = hp(low, 24, 2)
-low = sat(low * 1.1, 1.2) / 1.1
+low = sat(low * 1.1, 1.2) / 1.1 * 10 ** (-3.0 / 20)
+# parallel bass harmonics (-12 dB): the 16th line survives on phone / laptop speakers (still mono)
+bass_h = sat(hp(BASS * bass_g, 150, 2), 3.0)
+bass_h = lp(bass_h, 5000, 2) * 10 ** (-10 / 20)
 
 
 def make_ir(d, t60, seed, bright=6500, dark=1400, pre=0.015):
@@ -1438,6 +1523,20 @@ room = make_ir(0.8, 0.6, 9200, bright=8000, dark=3000, pre=0.005)
 REV_in = REV * (1 - 0.3 * DIPK)
 rev_out = np.vstack([oaconvolve(REV_in[ch], hall[ch])[:N] for ch in range(2)])
 room_out = np.vstack([oaconvolve(ROOM[ch], room[ch])[:N] for ch in range(2)])
+HAAS = int(0.012 * SR)            # 12 ms Haas on the right room return (clap / stamp rooms widen)
+room_out[1, HAAS:] = room_out[1, :-HAAS].copy()
+room_out[1, :HAAS] = 0
+# reverse-reverb sucks: the only thing heard in the pre-drop / pre-final-hit vacuum
+VAC = np.zeros((2, N))
+for t_end, sd_, g_ in ((49.995, 9300, 0.3), (58.995, 9310, 0.35)):
+    src_ = np.vstack([transient(sd_ + ch, d=0.08, amt=1.2) for ch in range(2)]) + crash(0.3, sd_ + 4)[:, :int(0.08 * SR)] * 0.6
+    wet = np.vstack([oaconvolve(src_[ch], hall[ch])[:int(0.6 * SR)] for ch in range(2)])
+    wet = hp(wet, 300, 2)[:, ::-1]
+    wet = wet / (np.abs(wet).max() + 1e-9)
+    wet = fade_head(wet, 0.05)
+    wet[:, -int(0.002 * SR):] *= np.linspace(1, 0, int(0.002 * SR))
+    put(VAC, wet, t_end - wet.shape[1] / SR, g_)
+
 # ping-pong delay 3/16
 D = int(0.1875 * SR)
 dsum = DLY.mean(0)
@@ -1453,23 +1552,38 @@ dly_out *= (1 - 0.4 * DIPK)
 if os.environ.get('STEMS'):
     np.savez(os.path.join(os.environ['STEMS'], 'stems.npz'), low=low[:NOUT].astype(np.float32), drums=(DRUMS*drm_g)[:, :NOUT].astype(np.float32), syn=(SYN*syn_g)[:, :NOUT].astype(np.float32), sfx=(SFX*sfx_g)[:, :NOUT].astype(np.float32), hits=HITS[:, :NOUT].astype(np.float32), rev=rev_out[:, :NOUT].astype(np.float32))
 mix = np.vstack([low, low])
-mix += DRUMS * drm_g
+mix += DRUMS * drm_g * 10 ** (3 / 20)
+mix += np.vstack([bass_h, bass_h])
 mix += SYN * syn_g
 mix += SFX * sfx_g
 mix += HITS
 mix += rev_out * 0.8 * (1 - 0.4 * DIPK)
 mix += room_out * 0.5
 mix += dly_out * 0.6
-SG = np.interp(np.arange(N) / SR, [0, 9.99, 10.0, 39.99, 40.0, 44.99, 45.0, 49.99, 50.0, 53.99, 54.0, 58.99, 59.0, 61],
-               [1.0, 1.0, 0.84, 0.84, 0.9, 0.9, 0.84, 0.98, 1.15, 1.15, 0.95, 0.95, 1.3, 1.3])
-mix *= HG * SG
+SG = np.interp(np.arange(N) / SR,
+               [0, 9.99, 10.0, 19.99, 20.0, 29.99, 30.0, 39.99, 40.0, 44.99, 45.0, 49.99, 50.0, 53.99, 54.0, 58.99, 59.0, 61],
+               [1.0, 1.0, 0.80, 0.80, 0.84, 0.84, 0.88, 0.88, 0.62, 0.62, 0.84, 0.98, 1.15, 1.15, 0.95, 0.95, 1.3, 1.3])
+# vacuum: the whole music + SFX bed drops to -18 dB just before the two biggest hits
+VG = np.ones(N)
+for a0, a1 in ((49.88, 49.993), (58.88, 58.993)):
+    i0, i1, r_ = int(a0 * SR), int(a1 * SR), int(0.008 * SR)
+    VG[i0:i0 + r_] = np.linspace(1, 10 ** (-18 / 20), r_)
+    VG[i0 + r_:i1] = 10 ** (-18 / 20)
+    VG[i1:i1 + int(0.004 * SR)] = np.linspace(10 ** (-18 / 20), 1, int(0.004 * SR))
+mix *= HG * SG * VG
+tt_all = np.arange(N) / SR
+DRYREL = np.where(tt_all > 59.12, np.exp(-np.clip(tt_all - 59.12, 0, None) / 0.16), 1.0)
+mix -= (rev_out * 0.8 * (1 - 0.4 * DIPK)) * HG * SG * VG     # take the hall return out ...
+mix *= DRYREL                                               # ... release the dry buses ...
+mix += (rev_out * 0.8 * (1 - 0.4 * DIPK)) * HG * SG * VG     # ... and put the hall back untouched
+mix += VAC
 mix += TOP
 mix = hp(mix, 20, 2)
 
 print('master %.1fs' % (time.time() - T0))
 mix = mix[:, :NOUT].astype(np.float32)
 from pedalboard import LowShelfFilter, PeakFilter, HighShelfFilter
-mix = Pedalboard([LowShelfFilter(cutoff_frequency_hz=70, gain_db=-2.5), PeakFilter(cutoff_frequency_hz=3200, gain_db=3.0, q=0.6), HighShelfFilter(cutoff_frequency_hz=8000, gain_db=1.5)])(mix, SR)
+mix = Pedalboard([LowShelfFilter(cutoff_frequency_hz=80, gain_db=-3.0), PeakFilter(cutoff_frequency_hz=3200, gain_db=4.5, q=0.5), HighShelfFilter(cutoff_frequency_hz=8000, gain_db=1.5)])(mix, SR)
 glue = Pedalboard([Compressor(threshold_db=-14, ratio=2.0, attack_ms=12, release_ms=140)])
 mix = glue(mix, SR)
 par = Pedalboard([Compressor(threshold_db=-28, ratio=6.0, attack_ms=1.0, release_ms=70)])(mix, SR)

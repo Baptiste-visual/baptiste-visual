@@ -1186,9 +1186,9 @@ for P in (10, 15, 35):
     put(FX, crash(0.25, 0.9, tau=0.025), P + 1.0, 1.0)
     big(P + 1.0, 0.45, 0.35)
 for P in (10, 15, 20, 25, 30, 35):
-    put(FX, stamp(1.0, 160 + P), P + 1.5, 1.0, plate=0.35, hall=0.1)
+    put(FX, stamp(1.0, 160 + P), P + 1.5, 1.15, plate=0.35, hall=0.1)
     put(FX, crash(0.9, 0.25), P + 1.5, 1.0)
-    big(P + 1.5, 0.5, 0.35)
+    big(P + 1.5, 0.7, 0.4)
 
 # 10: showcase
 put('ui', tok(240, 1.1, click=0.9, sine=0.5), 12.0, 1.0, 0.3)
@@ -1380,7 +1380,7 @@ for ts in (53.0, 53.5):
     put(FX, stamp(1.2, 140), ts, 1.0, plate=0.35, hall=0.15)
     put(FX, impact(0.7, 70, 32, 0.5, 0.6, 1.0, 130), ts, 0.8, hall=0.2)
     put(FX, crash(1.2, 0.45), ts, 1.0)
-    big(ts, 0.5, 0.35)
+    big(ts, 0.75, 0.45)
 
 # ---- 54-60 END CARD
 put(FX, sub_boom(2.0, 50, 30, 0.8, 0.7), 54.0, 1.0)
@@ -1422,7 +1422,7 @@ put(FX, crash(1.0, 1.1, tau=0.3), 59.0, 1.0)
 put(FX, sub_boom(1.0, 60, 29, 1.2, 0.25), 59.0, 1.0)
 put('ui', haptic(1.8), 59.0, 1.0)
 put(FX, crackle(0.8, 400, 0.7, 0.2, 1500, 7000), 59.02, 1.0)
-big(59.0, 0.35, 0.5)
+big(59.0, 0.7, 0.6)
 
 # (rev 3: the constant 9-19 kHz 'air' hiss bed is gone; hats, crash tails, steam and sizzles carry the top octave)
 print(f'[{time.time() - T_START:5.1f}s] sources placed')
@@ -1495,6 +1495,17 @@ IR_HALL = make_ir(3.6, 3.0, 5000, 1500, 0.025, 12)
 IR_DARK = make_ir(1.2, 0.9, 400, 150, 0.0, 13, hp_f=30, er=False)
 plate_ret = convolve_wide(BUS['plate'], IR_PLATE, N)
 hall_ret = convolve_wide(BUS['hall'], IR_HALL, N)
+
+
+def _notch_breath(x):
+    # breath swell 39.9-40.4: the pad's Bb6 partial (dry + hall tail) reads as a 1.87 kHz beep -> -3 dB there only
+    pk = Pedalboard([PeakFilter(1870, -3.0, 2.0)])(x.astype(np.float32), SR).astype(np.float64)
+    m = curve([(0, 0), (39.88, 0), (39.92, 1), (40.38, 1), (40.42, 0), (61, 0)])[None, :]
+    return x * (1 - m) + pk * m
+
+
+hall_ret = _notch_breath(hall_ret)
+BUS['pad'] = _notch_breath(BUS['pad'])
 # rumble (melodic-techno kick reverb, mono, low-passed)
 rum = oaconvolve(BUS['kick'][0], IR_DARK[0])[:N]
 rum = lp(sat(lp(rum, 140, 4) * 3.0, 1.8), 120, 2)
@@ -1519,10 +1530,15 @@ pu_low = curve([(0, 1), (9.99, 1), (10.0, 0.8), (39.99, 0.8), (40.0, 1), (61, 1)
 ring = np.ones(N)
 ring[int(59.05 * SR):] = np.exp(-np.arange(N - int(59.05 * SR)) / SR / 0.3)
 # pre-drop vacuum: everything except the riser top / reverse swell ('pre' bus) at -12 dB for the last 8th
-vacuum = curve([(0, 1), (49.70, 1), (49.78, 0.2), (49.997, 0.2), (50.0, 1), (61, 1)])
+vacuum = curve([(0, 1), (49.70, 1), (49.78, 0.2), (49.997, 0.2), (50.0, 1),
+                # 20 ms bed pre-suck before each tagline slam (53.0 / 53.5)
+                (52.97, 1), (52.98, 0.4), (52.997, 0.4), (53.0, 1),
+                (53.47, 1), (53.48, 0.4), (53.497, 0.4), (53.5, 1),
+                # short pre-hit hole before the FINAL HIT
+                (58.88, 1), (58.90, 0.35), (58.997, 0.35), (59.0, 1), (61, 1)])
 vacuum_pre = curve([(0, 1), (49.70, 1), (49.78, 0.4), (49.997, 0.4), (50.0, 1), (61, 1)])   # riser top / swell at -8 dB
 
-AIR_EXCITE = 0.55
+AIR_EXCITE = 0.45
 GAIN = {'kick': 0.47, 'bass': 0.62, 'drums': 1.1, 'pad': 0.62, 'arp': 0.78, 'lead': 0.55, 'fx': 0.55, 'ui': 0.42}
 music = BUS['pad'] * GAIN['pad'] + BUS['arp'] * GAIN['arp'] + BUS['lead'] * GAIN['lead']
 # presence bell on the music bus only (pad / arp / lead), not on the master; narrow dip at 2 kHz (saw harshness)
@@ -1530,7 +1546,8 @@ music = Pedalboard([PeakFilter(3300, 2.5, 1.0), PeakFilter(2000, -2.0, 1.5)])(mu
 music = music * duck_kick_music * duck_hits * endcard * pu_trim * drop_boost
 bass = BUS['bass'] * GAIN['bass'] * duck_kick_bass * np.minimum(1, duck_hits + 0.3) * pu_low * drop_boost
 rets = (plate_ret * 0.6 + hall_ret * 0.7) * duck_kick_ret * ring
-mix = ((BUS['kick'] * GAIN['kick'] * pu_low * pu_low ** 0.5 + np.vstack([rum, rum]) * pu_low + bass + BUS['drums'] * GAIN['drums'] * np.minimum(1, duck_hits + 0.4)) * endcard
+duck_hits_low = np.minimum(1, duck_hits + 0.55)     # the 4/4 (kick / rumble) steps back on every slam
+mix = ((BUS['kick'] * GAIN['kick'] * pu_low * pu_low ** 0.5 * duck_hits_low + np.vstack([rum, rum]) * pu_low * duck_hits_low + bass + BUS['drums'] * GAIN['drums'] * np.minimum(1, duck_hits + 0.25)) * endcard
        + music + rets + BUS['fx'] * GAIN['fx'] + BUS['ui'] * GAIN['ui']) * vacuum + BUS['pre'] * GAIN['fx'] * vacuum_pre
 
 if os.environ.get('DEBUG'):
@@ -1607,7 +1624,7 @@ del _air
 
 # ============================================================ master
 mix = Pedalboard([LowShelfFilter(60, -3.0, 0.7), PeakFilter(220, -1.5, 0.8), PeakFilter(3000, 1.5, 0.7), HighShelfFilter(9000, 1.0, 0.7),
-                  Compressor(threshold_db=-16, ratio=2.0, attack_ms=12, release_ms=140)])(mix.astype(np.float32), SR).astype(np.float64)
+                  Compressor(threshold_db=-16, ratio=1.6, attack_ms=30, release_ms=140)])(mix.astype(np.float32), SR).astype(np.float64)
 # mono low end: high-pass the side channel
 M_ = (mix[0] + mix[1]) / 2
 S_ = hp((mix[0] - mix[1]) / 2, 140, 2)

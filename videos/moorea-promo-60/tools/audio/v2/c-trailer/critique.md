@@ -1,60 +1,145 @@
-# Critique: direction C "trailer hybrid" (mix.wav / mix.mp3)
+# Critique, round 2: direction C "trailer hybrid" (revision 2 of mix.wav / mix.mp3)
 
-Reviewer: senior music supervisor / mix engineer. Judged from the code and from measurements, without listening.
+Reviewer: senior music supervisor / mix engineer. I judged this from the code and from measurements, without listening. I re-rendered a scratch copy of compose.py with STEMS_OUT set, and it is bit-identical to the delivered mix.wav.
 
 ## Measurements
-- analyze.py output: -14.02 LUFS, -1.05 dBTP, length OK, DC ~0, no click candidates, 4 high tonal beeps (braam / pad / choir harmonics at 1.85-2.16 kHz; the old mix had 332).
-- Cue sync: 280 cues, median offset 4 ms. All 32 weight-3 cues are within -7.3..0 ms. The only weak weight-2 cue is 0.000, which the analyser cannot pass by design; 41.0 is at -24 ms.
-- MP3: -14.43 LUFS, -1.18 dBTP. Decoded with gapless info it has 2,880,000 samples at lag 0. A decoder that ignores the LAME header plays it 1105 samples (23 ms) late; that is under one frame.
-- Stems were rebuilt from a scratch copy of compose.py; the scratch render is bit-identical to the delivered mix.wav.
+- analyze.py: -14.03 LUFS, -1.05 dBTP, 2,880,000 samples, DC about 0, no click candidates.
+- 3 high tonal "beeps" (1.91 / 3.86 / 55.83 s). All are braam / pad harmonics, so the toy markers are gone (the old mix had 332).
+- MP3: 320 kbps, -14.2 LUFS (ffmpeg), -1.3 dBTP.
+- Sync: 280 cues, median offset 4 ms. All 32 weight-3 cues are within -8.0..+1.3 ms.
+  - Weight-2 cues: 0.000 is weak, as the analyser expects. 6.0 is at -21 ms and 41.0 at -24 ms; both are whoosh peaks arriving slightly early, still inside ±40 ms.
+- Sections:
 
-| section | LUFS | LUFS after a 180 Hz HP (phone-like) | mono fold-down | crest |
-|---|---|---|---|---|
-| hook | -14.1 | -16.0 | -2.4 dB | 14.3 |
-| level | -14.8 | -18.7 | -1.1 | 13.4 |
-| power-ups | -14.2 | -17.2 | -1.1 | 13.7 |
-| breakdown | -19.5 | -21.9 | -2.0 | 19.2 |
-| build | -13.2 | -15.8 | -1.4 | 13.2 |
-| **drop** | **-12.2** | **-16.0 (loses 3.8 dB, the most of any section)** | -1.2 | 11.0 |
-| outro | -13.0 | -15.1 | -2.4 | 12.9 |
+| section | LUFS | LUFS after 180 Hz HP (phone) | mono fold | crest | corr |
+|---|---|---|---|---|---|
+| hook | -14.7 | -16.8 | -1.8 | 14.6 | 0.53 |
+| level | -15.2 | -18.8 | -1.2 | 13.8 | 0.65 |
+| power-ups | -13.9 | -16.4 | -1.4 | 13.7 | 0.59 |
+| breakdown | -19.2 | -21.6 | -1.8 | 18.8 | 0.47 |
+| build | -14.7 | -17.4 | -1.4 | 13.8 | 0.70 |
+| drop | -10.8 | -12.9 | -2.0 | 10.5 | 0.46 |
+| end | -14.4 | -16.6 | -1.5 | 14.0 | 0.57 |
 
-- RMS above 180 Hz: build 48-49.9 = -17.9 dB, drop 50-52 = -18.5, drop 52-54 = -19.5, power-ups 34-36 = -18.7. On a phone or laptop, the drop is quieter than the build before it.
-- Final ring-out, total RMS per 50 ms: 59.0 +1.5, 59.4 +0.9, 59.7 +0.3, 59.8 0.0, then the fade. The music bus rises from -5.2 dB at 59.0 to -1.2 dB at 59.4 (duck release + choir with rel 1.2 s + mhall 0.8). Nothing decays, so the last-0.3 s fade does all the work.
-- UI bus vs music: 14-18 dB under the music on most cues. The loud exceptions are the counter clacks (g 2.8, about -4.5 dB at 12.12), 22.56 (-4.2), 48.5 (-7.4), and the drop hops at 51.76-52.68 (-5 to -7).
-- Side-chain: music pumps 3.3 dB in the power-ups and 4.7 dB in the drop; bass pumps 17.5 dB in the drop.
+  The round-1 fix worked: the drop now reads on small speakers, 4.5 dB above the build after the HP. Mono compatibility is fine.
 
-## Blocking issues
-1. **The drop at 50.0 does not land on small speakers.** Its energy is in the sub (sub<60 -2.5 dB vs total, presence -18.3 dB, the darkest section). Section gain is *lower* in the drop (1.3) than at the end of the build (1.45), at line 1394. The reese is low-passed at 500-800 Hz (lines 713 and 935). Fixes:
-   - Set sg to build 1.15-1.25 and drop 1.45.
-   - Lower the drop sub sine from 0.75 to 0.45 (line 944) and the 50.0 sub_drop from 0.7 to 0.45.
-   - Add a driven mid layer to the reese: band-pass 200 Hz-1.8 kHz, tanh 3, LP cutoff about 1.4 kHz, kept mono.
-   - Raise the drop pad LP from 2400 to 4500 Hz and its gain from 0.3 to 0.4.
-   - Add +3 dB at 2-5 kHz on the drop clap/snare, plus a 16th closed-hat or ride layer.
-   - Target: drop at least 2.5 dB above the build after the 180 Hz HP.
-2. **The final hit at 59.0 never rings out.** The level is flat from 59.0 to 59.8 and the music swells back up, so the end sounds like a fade or cut.
-   - Line 956: choir 59.0 att 0.01 / rel 1.2 / g 0.7 / mhall 0.8. Use an exponential decay instead (ar(dec≈0.35)), with g 0.5 and mhall 0.5.
-   - Line 1327: DH (59.0, 0.5, 0.6). Use depth 0.6 and release ≥1.2 s so the duck never recovers inside the film.
-   - Line 1319: shorten the braam envelope (d 1.7 → env dec ≈ 0.4 s).
-   - Target: tail at least 12 dB below the hit by 59.7, and about -24 dB by 59.95.
+- **Big-moment contrast** (peak 400 ms momentary loudness at the hit minus the median of the 2 s before it):
+
+| cue | contrast |
+|---|---|
+| GAME (1.0) | +5.2 LU |
+| OVER (1.5) | +3.2 LU |
+| CRT-ON (4.0) | **-0.6** |
+| PRESS (5.0) | +3.2 |
+| NIVEAU (6.15) | **+0.3** |
+| stamps 11.5 / 16.5 / 21.5 / 26.5 / 31.5 / 36.5 | +0.9 / +1.2 / +1.5 / **+0.4** / +1.4 / +1.4 |
+| 45.0 | +7.6 |
+| 46.5 | **+0.6** |
+| drop 50.0 | +4.2 |
+| 50.875 | **-0.5** |
+| taglines 53.0 / 53.5 | **+0.6 / +0.6** |
+| 56.0 | +3.2 |
+| FINAL HIT 59.0 | **+0.3** |
+
+  - The loudest momentary window of the film is at **49.525** (-9.1 LUFS, the end of the build). The drop at 50.0 peaks at -10.0.
+- **Music stem right at the hits** (RMS 0-50 ms after the hit vs 150-300 ms after):
+  - 50.0: -7.2 vs -0.4
+  - 53.0: -9.3 vs -0.5 (it was -2.9 just *before* the slam)
+  - 53.5: -9.7 vs -1.9 (it was -1.3 before)
+  - 56.0: -12.3 vs -3.9
+  - 59.0: -8.4, against -4.3 before the hit
+
+  So the music bus, which carries the braams, *drops* at the slam and swells in about 150 ms late.
+- **Drop micro-structure** (10 ms RMS):
+  - The riser runs at -10..-12 dB from 49.6 to 49.93, then silence from 49.94 (good).
+  - 50.00: -12; 50.02-50.06: -16; **50.09-50.11: -19**; 50.13: -10.
+  - So the drop hit lasts about 20 ms and is chopped by two holes before the 50.125 slam.
+- **Final ring-out**: 59.0 at -12.5 dB, 59.7 at -24.1 (-11.6 dB), 59.95 at -58. It decays now. But after the 180 Hz HP the hit is -18.0 against -19.0 for the snare pickup before it: only 1 dB of hit.
+- **UI**: 104 UI events, median 10.4 dB under the music + drums + bass bed. These are the loud exceptions:
+
+| time | cue / sound | vs bed |
+|---|---|---|
+| 40.517 | swish | **+3.1 dB** (breakdown) |
+| 18.50 | | -0.9 |
+| 55.51 | | -1.4 |
+| 48.50 | tok g 1.8 | -2.1 |
+| 42.12 | | -3.0 |
+| 51.76 | | -4.5 |
+
+- Low end, per stem: in the power-ups the SFX bus (sub drops / impacts / eruptions) carries as much <60 Hz as the drums (-12.3 / -12.4). The pitched bass stem is 5 dB lower (-17.4), so the low end is mostly unpitched hit energy. The music stem is as loud at 60-250 Hz as at 250 Hz-2 kHz (-11.9 / -11.4), so the low-mids are thick.
+
+## What is now right (keep it)
+- There is nothing childish left: no square or pulse waves, no coins, bells, boings, plops or sparkles, and no major jingle.
+- The UI sounds are noise "toks" with a low body. The game feel comes from braams, impacts, the tape rewind built from the real mix, and the CRT off/on.
+- The harmony is consistently F minor: Gb phrygian colour, C as the harmonic-minor dominant, and a modal end (Fsus2-Fm / Db add9 / Ebsus4-Eb / Fm).
+- Low end is mono, the stereo is wide but folds to mono well, the drop now lands on phones, and the final hit decays.
+- Sync is excellent.
+
+## BLOCKING
+
+1. **The hit layers duck themselves, so every big moment loses its slam.**
+   - Cause:
+     - Line 1501 multiplies the whole music bus *and its hall return* by `dh` (and `dk`).
+     - Line 1508 does the same to bass, and line 1517 to drums (`0.6+0.4*dh`).
+     - But every hit braam is placed on `'music'`: lines 820, 821, 832, 843, 1057, 1150, 1206 (stamp), 1363, 1433 and 1446. The hit taikos and the drop kick are on `'drums'`.
+     - The DH duck that should make room for these layers (attack 3 ms, depth 0.4-0.6) therefore cuts them by 4-10 dB at their own onset. They swell back in 150-300 ms later as a reverse-envelope "whoomp".
+     - The final braam's hall tail (mhall) is held down by the 1.5 s duck (line 1454).
+   - Fix:
+     - Add a `'hits'` bus that is not multiplied by dk, dh or sgm. Give it its own hall send to `v_hall` (not `v_mhall`) and add it to `pre`.
+     - Move every braam above to it, plus the hit taikos (1114, 1130, 1137, 1151, 1452) and the 59.0 drop_kick (1450).
+     - Apply dh only to the bed: music minus hits, bass and drums. Take the mhall return out of the dh multiply, or give it only half the depth.
+   - Targets:
+     - Momentary contrast of at least +3 LU on every weight-3 slam, and at least +2 LU on the stamps.
+     - The music stem in the 0-50 ms after each hit must be **at least** its pre-hit level.
+
+2. **The final hit at 59.0 is not massive** (contrast +0.3 LU, about 1 dB above the snare pickup once the low end is filtered out).
+   - Round 1 asked for a decaying tail. The response over-shortened the hit itself and left it self-ducked.
+   - Fix, besides #1:
+     - Line 1446: braam gain 0.7 → 1.0, edec 0.4 → 0.6, with the tail carried by a `v_hall` send of 0.6 that is not ducked.
+     - Line 1447: impact size 0.75 → 1.2, d 1.0 → 2.0, subdec 0.28 → 0.4.
+     - Line 1083: pickup roll gain `0.12+0.35*i/15` → `0.08+0.18*i/15`.
+     - Line 1444: reverse_swell 0.7 → 0.45.
+     - Keep the 58.93 suck.
+   - Targets: 59.0 momentary at least +4 LU over the 2 s before it, and in the same range as the 50.0 drop. The tail should still be about -12 dB by 59.7, achieved through the hall decay, not by ducking.
+
+3. **The drop at 50.0 is chopped and peaks lower than the build.**
+   - Line 1399: the PD dips `(50.052, 50.073, 0.5)` and `(50.088, 50.123, 0.15)` cut the drop kick, the impact, the crash and the braam to -16 / -19 dB 50 ms after the downbeat. On the biggest moment of the film that reads as a dropout or glitch.
+   - The build climax (lines 1008-1009 risers, 1381-1386 taiko 1.0 + impact + reverse swell, the 32nd rolls at 983-990, sg 1.25 at line 1526) is the loudest moment of the film: 49.525 at -9.1 LUFS momentary, against the drop's -10.0.
+   - Fix:
+     - Delete both PD entries at line 1399. Layer 50.075 / 50.125 on top: the post-bus slam already has its own crack.
+     - Riser at 49.0: 0.32 → 0.22. Riser at 45.0: 0.4 → 0.3. Taiko at 49.5: 1.0 → 0.7. reverse_swell at 49.5: 0.8 → 0.55. sg at 49.9: 1.25 → 1.1.
+   - Target: 50.0-50.4 momentary at least 2 LU above the max of 49.0-49.94, with no hole in the first 150 ms after 50.0.
+
+4. **The tagline slams 53.0 / 53.5 (weight 3) and 8/8 at 50.875 do not stand out** (+0.6 / +0.6 / -0.5 LU).
+   - Most of this is #1: the braam stabs are on the music bus, under DH 0.5.
+   - The rest is the 4/4 bed at full drop gain.
+   - Fix: after #1, give the 53.0 / 53.5 impacts (line 1418) a 20 ms pre-suck on the bed only. Drop the 16th ride and air bed by 4 dB for 120 ms after each tagline.
 
 ## Improvements
-- **Cheap or game-cliché residue:**
-  - The "denied" glitch (lines 637-649, used at 2.5) is detuned A1/Bb1/E2 saws, quantised and gated. That reads as a quiz-show "wrong answer" buzzer, and it is out of key. Rebuild it from a stutter or bit-crush of the real OVER braam tail (like the rewind), tuned to F/Gb.
-  - The rising saw "charge" at 36.5 (line 1206, 55→115 Hz) is a pitch-up "vwoop". Remove it or replace it with a filtered-noise charge.
-  - The overheat at 9.0 (lines 790-796) loops the C-E-G-C major triad as a 16th arpeggio. Use a tremolo on C+G with a Db (C7b9) cluster instead.
-- **SFX clutter in the drop:**
-  - 51.7625-52.675 (lines 1280-1286) stacks 7 thump+tok (g 2.0) + steam on a 150 ms grid against the 4/4 kick. Keep 51.7625 and 52.8125 and let the hats carry the hops; drop the steams.
-  - Counter clack g 2.8 (line 1086): lower to 1.6.
-- **Arrangement vs picture:** the power-up phases change at 18 / 26 / 34 (line 805), in the middle of power-ups, not on the picture transitions. Use 3 × 10 s phases (10 / 20 / 30), so layers enter on the 20.0 and 30.0 whip-pan cuts, and add a per-power-up variation (alternate ostinato pattern, tom fill into every P+4.5 whip).
-- **Low-end overall:**
-  - Groove sub<60 is -3.4 dB and mids -10.7 dB.
-  - High-pass the taiko and eruptions at 40 Hz and shorten the kick hold (25 → 10 ms) in the power-ups.
-  - The sub register jumps: F 43.6 / Gb 46 / C 65 / Db 69 / Eb 78 Hz (lines 330, 853). Keep every root at 36-52 Hz.
-- **GAME (1.0) is 3 dB weaker than OVER above 180 Hz.** Fine as escalation, but bring GAME up about 1.5 dB with a brighter crack layer.
-- **Section gain steps:** sg/sgm jump within one sample at 10.0, 40.0 (-9 dB on the music bus and the hall return), 45.0 and 54.0 (lines 1394-1396). They are masked now, but should get 20-30 ms ramps.
-- **Width:** hook and outro fold down 2.4 dB in mono (corr 0.35-0.39). Use side ×1.0 instead of 1.15 in those sections, or narrow the choir's mhall send.
-- **Choir realism** (lines 680-689): use more voices per note (8+), narrower formant Q for 3 formants plus a chorus/ensemble, and less saw edge. If it still reads as a "synth vox", replace it with a dark analog pad in the drop.
-- **MP3 delivery:** tell the client the file is gapless-tagged. If their NLE ignores the tag, the audio is 23 ms late (under one frame); nudge -1 frame only if they see it.
+- **The weight-3 cues at 4.0 (CRT-ON / REJOUER, -0.6 LU) and 6.15 (NIVEAU, +0.3) are weaker than what precedes them.**
+  - Before 4.0, the rewind (line 1556, gain 0.85) and the CRT zap (line 1572, 0.8) are as loud as the slam. Lower the rewind to 0.6 and the zap to 0.55.
+  - At 6.15 the slam lands 150 ms after the 6.0 kick + crash + swish (lines 1147-1148). Make the 6.0 cut lighter (crash 0.35 → 0.2, no kick at 6.0) so the slam is the hit.
+- **The answer stamps sit only +0.4 to +1.5 LU above the groove.** After #1, lower the groove bed by 2 dB for 250 ms (DH depth 0.55 → 0.7 on the bed only) and add a 20 ms bed pre-suck before each stamp.
+- **The pre-hit "micro-sucks" are 26 ms dropouts of the whole groove (-10 dB)** at 10.972, 15.972 and 35.972 (lines 1224, 1245, 1327). They read as gating. Shorten them to 12 ms at ×0.5, or apply them to the bed only (not the sfx).
+- **Register / mud:**
+  - The low ostinato is transposed down an octave (line 936: `-12`), which puts 16th plucks at F1-Ab2 (43-104 Hz). That is in the same space as the kick (50 Hz end), the sub sine (43.6 Hz) and the taikos.
+  - Remove the `-12`, so the staccato sits at F2-Ab3 as a low-mid lead.
+  - Cut the drums bus 2-3 dB at 200-300 Hz (taiko on 1 and 3 plus tom 120 on 2 and 4 from 20 s on, lines 908 and 913).
+  - Mids are -9 to -12 dB vs total in the groove and build.
+- **Choir static formants** (line 757; on continuously 20-40 s at line 951 and through the drop at 1047): fixed 750 / 1180 / 2650 Hz bands show as steady horizontal lines in the spectrogram, which is the "preset aah" signature.
+  - Slowly morph F1/F2 by ±8 % over each bar (ah → oh), or use tvf band-passes.
+  - Lower the choir in 20-30 s to 0.2, and give it the string-pad role only from 30 s on.
+- **UI level and clutter:**
+  - Lower the swish at 40.5 (line 1344, g 1.2 → 0.5; it is +3 dB over the breakdown bed).
+  - Lower 18.5 (line 1255, 0.9 → 0.5), 55.5 (line 1430, 1.3 → 0.6), the 48.5 tok (line 1378, 1.8 → 0.9), 51.7625 (lines 1406-1407, thump/tok 2.0 → 1.2) and the first tok of the 45.75 typing burst (line 1370, 1.4 → 0.7).
+  - Drop the tok layered under thumps/toms where a drum already hits the beat: 21.0-22.25 (line 1268), 27.0-28.0 (line 1295), 41.012-41.234 (line 1350).
+  - Target: no UI event louder than -6 dB vs the bed.
+- **Pitch-up glides:**
+  - The 0.5 s riser at 5.5 (line 844, `riser(0.5, 35, 41, 53)`) glides an octave in half a second, which is the closest thing left to a "power-up vwoop". Use m1 = 46 (a 5th) or a noise-only riser there.
+  - The CRT-on hum (line 1126) is a 50→120 Hz saw glide. Drop the saw component.
+- **The power-ups are half-time trailer** (kick on 1 and 3 only, lines 904-906) for 30 s.
+  - For an electronic festival (Klaan / Sound of Legend / Mattn), add a quiet four-on-the-floor kick or offbeat bass in the power-ups at 30-40 s, so the drop is foreshadowed and the festival DNA is audible before 50 s.
+  - The braam / taiko language reads more AAA-game than festival.
+- **Side-channel HP** (line 1589) is 2nd order at 140 Hz. Side <120 Hz is still -13.5 to -15 dB vs mid in the breakdown and drop. Use 4th order.
 
 ## Scores
 Maturity 7, brand fit 6, technical 6, sync 9.

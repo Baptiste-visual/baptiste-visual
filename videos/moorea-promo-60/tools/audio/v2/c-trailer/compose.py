@@ -11,7 +11,35 @@ CONCEPT
   rising ostinato, riser) into a dead-silent 60 ms suck, then the drop at 50.0 turns into a heavy
   four-on-the-floor techno / electro drop with braam stabs and a rolling reese bass. The end card resolves
   modally (Fsus2-Fm / Db(add9) / Ebsus4-Eb / Fm), never a major jingle, and ends on a massive final hit at 59.0
-  that rings out in a hall (the music stays ducked and every layer decays exponentially: -12 dB by 59.7).
+  that rings out in a hall (the hit layers are never ducked; the tail decays through braam/impact envelopes and
+  the FX hall: about -11 dB by 59.7).
+
+REVISION 3 (music-supervisor critique round 2: "the big moments do not slam")
+  - Hit buses: every braam is on 'hits' (LP 1.5 kHz 4th order, hall send to the undamped v_hall) and the hit taikos,
+    the stamp snare and the 59.0 drop kick are on 'hitd' (own parallel comp + tanh). Neither is multiplied by the kick
+    side-chain, the big-hit duck or the section gain. The duck (dh) now only acts on the bed (music / bass / drums),
+    and the music-hall return gets half its depth. Duck events take an optional hold (stop-time under the taglines).
+  - Bed-only pre-sucks (BPD): 20 ms x0.5 before every stamp, 53.0 / 53.5, 40 ms x0.4 before 50.875, and 12 ms x0.5
+    before the 11 / 16 / 36 quench lands (replacing the 26 ms whole-mix dropouts). The fall whooshes end 15 ms before
+    the land so the quench stays a clean onset. The drop's two whole-mix dips at 50.05 / 50.09 are gone.
+  - Master: stereo-linked, 2x-oversampled soft-knee clipper ahead of the look-ahead limiter (the limiter used to pull
+    2-3 dB off the drop, the taglines and the final hit); glue compressor attack 30 ms / ratio 1.6 so hit onsets pass;
+    side 4th-order HP at 130 Hz moved after the glue.
+  - Final hit: braam 1.25 (edec 0.6, v_hall 0.6, lighter sub), impact size 1.2 / 2.0 s / subdec 0.4, crash 0.85 +
+    crack, taikos 0.7, sub drop 0.35; pickup roll 0.08-0.26, reverse swell 0.45, 58.5 choir 0.45.
+  - Build vs drop: risers 0.3 / 0.22, 49.5 taiko 0.7, reverse swell 0.55, section gain build 1.05 -> 1.0, drop 1.22
+    (bed), drop pad 0.42 / 0.52, drop choir 0.18. Taglines: braams 0.8 s, impacts 1.35 + crash, bed out for 180 ms,
+    ride / air -4 dB for 120 ms. 50.875: braam 1.0 s + crash + impact 1.3.
+  - Hook / level: rewind 0.6, CRT zap 0.55, CRT hum is a sine thump (no saw glide), 4.0 braam + impact bigger; 6.0 cut
+    has no kick (crash 0.2), 6.15 slam bigger + crash; 5.5 riser glides a 5th; dive lighter.
+  - Stamps: braam 0.78, impact 1.15, short dark crash, bed duck 0.75 with 100 ms hold; quench lands 0.75-0.8.
+  - Register / mud: power-up ostinato up an octave (F2-Ab3, gain 0.5); drums bus -2.5 dB at 250 Hz; room sends HP 80 Hz.
+  - Choir: formants are time-varying band-passes, F1 / F2 morph +-8 % per bar (ah <-> oh), F3 drifts; 0.2 in 20-30 s,
+    slow-attack pad role from 30 s.
+  - Festival DNA: quiet four-on-the-floor kick under the backbeat from 30 to 40 s.
+  - UI: swishes 40.5 0.3 / 18.5 0.5 / 54.0 0.5 / 55.25 0.7 / 55.5 0.6, toks 48.5 0.9 / 51.7625 1.2 / typing 1.0 /
+    breakdown taps 0.65; doubled toks at 21-22.25, 27-28, 41.01-41.23 removed; the goal-photo and pin-pop cues get a
+    short broadband crack (SFX) instead of louder UI. Every UI event is >= 6.9 dB under the bed (median -16 dB).
 
 REVISION 2 (music-supervisor critique)
   - Drop rebuilt for small speakers: section gain build 1.15-1.25 / drop 1.45; drop sub sine 0.45, 50.0 sub drop 0.45,
@@ -68,11 +96,11 @@ PALETTE (all synthesized, deterministic seeds, no samples)
     burst + rising low hum.
   - UI (quiet, tactile, never melodic): "tok" = 2.5 ms band-passed noise click + 150-450 Hz damped body + tiny
     110 Hz haptic bump; "clack" (HUD counter) = two toks 14 ms apart; small swish for reveals/slides.
-  Mix: buses drums / bass / music / sfx / ui; four synthetic convolution reverbs (decorrelated stereo noise IRs:
+  Mix: buses drums / bass / music / sfx / ui + undamped hit buses hits / hitd; four synthetic convolution reverbs (decorrelated stereo noise IRs:
   music hall 2.8 s, FX hall 3.4 s, plate 1.3 s, room 0.6 s); side-chain pump on music + bass from every kick
   and deeper ducks under every big hit; parallel-compressed drums; section filter automation on the music bus;
-  low end mono (side high-passed at 140 Hz); glue compression, two-stage look-ahead limiter, true-peak and
-  LUFS loop to -14 LUFS / <= -1.0 dBTP.
+  glue compression, low end mono (side 4th-order high-pass at 130 Hz), linked oversampled soft clipper, two-stage
+  look-ahead limiter, true-peak and LUFS loop to -14 LUFS / <= -1.0 dBTP.
 
 ARRANGEMENT
   0-4   HOOK: lava bed, ring pulses (sub whums), swallow (sub drop + thud + sizzle), suck-ins, GAME braam (Fm) /
@@ -84,9 +112,10 @@ ARRANGEMENT
         overheat 9.0 (riser + 16th snare/tom roll + C7b9 repeated-note tremolo), white-out reverse swell, 40 ms suck.
   10-40 POWER-UPS: hybrid groove that grows on the picture cuts: 10 kick/snare/8th hats/taiko/ostinato A;
         15 + 16th hats, spiccato, ostinato B; 20 + toms, taiko on 3, pickup kick, shaker, open hats, choir;
-        30 + string pad, brighter pulse. Tom fill into every whip (P+4.5). Chords Fm Fm Db Eb | Fm Gb Db C ...
+        30 + string pad, brighter pulse, choir as pad, quiet four-on-the-floor kick. Tom fill into every whip (P+4.5). Chords Fm Fm Db Eb | Fm Gb Db C ...
   40-45 BREAKDOWN: no kick; heartbeat, choir pad Fm -> Db -> Eb, low felt piano, soft lava.
-  45-50 BUILD: Db -> Eb -> C, kicks on beats, snare roll 8ths->16ths->32nds, ostinato rising, riser into 49.94,
+  45-50 BUILD: Db -> Eb -> C, kicks on beats, snare roll 8ths->16ths->32nds, ostinato rising, riser into 49.94 (kept
+        about 3 LU under the drop),
         then 60 ms of silence.
   50-54 DROP: four-on-the-floor drop kick, bright clap/snare backbeat, offbeat open hats + 16th ride, rolling reese
         with driven mids, wide gated pulse (LP 4.5 kHz), gated noise air, braam stabs on 50.0 / 50.875 / 52.0 / 53.0 / 53.5, impacts on every slam.
@@ -151,8 +180,9 @@ CUE -> SOUND (every weight-3 and weight-2 cue)
   57.750 w2 PRET A JOUER ................. stamp-lite
   58.000 w2 download button .............. medium hit + Ebsus4 chord
   59.000 w3 FINAL HIT .................... braam Fm (biggest) + impact + sub drop + taiko ensemble + crash +
-                                           drop kick; everything decays (choir 0.35 s, braam 0.4 s), duck held,
-                                           hall ring-out, fade only the last 0.3 s
+                                           drop kick + crack; nothing on the hit buses is ducked; everything decays
+                                           (choir 0.35 s, braam 0.6 s) into the FX hall, bed duck held to 60.0,
+                                           fade only the last 0.3 s
 """
 import json
 import os
@@ -161,7 +191,7 @@ import time
 import numpy as np
 import pyloudnorm as pyln
 import soundfile as sf
-from pedalboard import Chorus, Compressor
+from pedalboard import Chorus, Compressor, PeakFilter
 from scipy.ndimage import maximum_filter1d, uniform_filter1d
 from scipy.signal import butter, lfilter, oaconvolve, resample_poly, sosfilt
 
@@ -311,14 +341,19 @@ def tvf(x, fc, q=0.707, kind='low', blk=64):
 
 
 # ===================================================================================== buses
-BUS = {k: np.zeros((2, N)) for k in ['drums', 'bass', 'music', 'sfx', 'ui', 'post',
+BUS = {k: np.zeros((2, N)) for k in ['drums', 'bass', 'music', 'sfx', 'ui', 'post', 'hits', 'hitd',
                                       'v_mhall', 'v_hall', 'v_plate', 'v_room']}
+# 'hits' (braams) and 'hitd' (hit taikos / hit kick / stamp snare) are the big-moment layers: they are NOT
+# multiplied by the kick side-chain, the big-hit duck or the section gain (the duck exists to make room for them).
 DK = []   # kick side-chain events (t, depth, release)
 DH = []   # big-hit duck events
 PD = []   # pre-hit micro-sucks on the whole pre-mix (start, end, gain)
+BPD = []  # pre-hit micro-sucks on the bed only (music / bass / drums; not sfx, ui or hits)
 
 
 def place(bus, sig, at, g=1.0, pan=0.0, hall=0.0, plate=0.0, room=0.0, mhall=0.0):
+    if bus in ('hits', 'hitd') and mhall:     # hit layers send to the undamped FX hall, never the ducked music hall
+        hall, mhall = hall + mhall * 1.4, 0.0
     s = stereo(np.asarray(sig, float), pan) * g
     i = int(round(at * SR))
     j0 = max(0, -i)
@@ -457,7 +492,7 @@ def tick_clock(seed=0, acc=1.0):
     return fin((nz + body) * 0.5 * acc)
 
 
-def braam(midis, d=2.2, bright=1.0, seed=0, growl=0.14, bend=0.6, voices=3, edec=None):
+def braam(midis, d=2.2, bright=1.0, seed=0, growl=0.14, bend=0.6, voices=3, edec=None, sub_amt=0.45):
     n = ns(d); t = tax(n)
     bc = -bend * np.exp(-t / 0.07)
     rng = R(seed)
@@ -477,7 +512,7 @@ def braam(midis, d=2.2, bright=1.0, seed=0, growl=0.14, bend=0.6, voices=3, edec
     out = np.tanh(2.6 * out) / np.tanh(2.6)
     env = ar(n, 0.014, edec if edec else d * 0.42)
     sub = sine(mtof(min(midis)), n) * ar(n, 0.01, edec if edec else d * 0.35)
-    y = out * env + stereo(np.tanh(1.5 * sub) * 0.45)
+    y = out * env + stereo(np.tanh(1.5 * sub) * sub_amt)
     return fin(y, 30)
 
 
@@ -620,6 +655,14 @@ def eruption(seed=0, g=1.0, pan=0.0, f0=58.0):
     return y * g
 
 
+def crack_hit(seed, d=0.12):
+    """distorted broadband transient (the 'snap' on top of a trailer hit)."""
+    n = ns(d)
+    x = np.vstack([noise(n, seed), noise(n, seed + 1)])
+    x = np.tanh(4 * bp(x, 700, 9000) * ar(n, 0.0005, 0.012)) * 0.6 + bp(x, 250, 1200) * ar(n, 0.0008, 0.025) * 0.6
+    return fin(x, 10)
+
+
 def quench(seed=0, g=1.0):
     n = ns(1.4)
     y = impact(seed, size=0.8, sub=(95, 36), metal=85, d=1.4, bright=0.8, metal_amt=0.25)
@@ -728,7 +771,7 @@ def string_pad(midis, d, seed=0, cutoff=1600, att=0.5, rel=0.8, voices=5):
     return x * env
 
 
-def choir(midis, d, seed=0, att=0.6, rel=1.0, bright=1.0, dec=None, voices=8):
+def choir(midis, d, seed=0, att=0.6, rel=1.0, bright=1.0, dec=None, voices=8, t0=0.0):
     """ensemble 'ah': 8 voices per note and per channel, each with its own detune, slow vibrato and a random
     onset (0-45 ms), soft source (saws low-passed at 2.5 kHz), three narrow vowel formants (Q ~6) + chest body,
     then a slow ensemble chorus. dec -> exponential decay instead of sustain + release."""
@@ -751,10 +794,15 @@ def choir(midis, d, seed=0, att=0.6, rel=1.0, bright=1.0, dec=None, voices=8):
     br = lp(np.vstack([noise(n, seed + 1), noise(n, seed + 2)]), 5000) * 0.05
     src = x + br
 
-    def fm(fc, q, a):
-        bw = fc / q
-        return bp(src, fc - bw / 2, fc + bw / 2, 1) * a
-    y = fm(750, 6, 1.6) + fm(1180, 6, 1.0 * bright) + fm(2650, 6, 0.35 * bright) + bp(src, 220, 420, 1) * 0.5
+    # moving vowel: F1 / F2 morph 'ah' <-> 'oh' over each bar on film time (t0 = placement time), +-8 %,
+    # F3 drifts +-4 % on a slower cycle -> no static formant lines in the spectrogram
+    tf = t0 + t
+    mv = np.sin(2 * np.pi * tf / 2.0 + 0.7)          # one cycle per bar
+    mv2 = np.sin(2 * np.pi * tf / 5.3 + 1.9)
+    y = (tvf(src, 750 * (1 - 0.08 * mv), q=5.0, kind='band', blk=128) * 1.6
+         + tvf(src, 1180 * (1 - 0.08 * mv + 0.03 * mv2), q=5.0, kind='band', blk=128) * 1.0 * bright
+         + tvf(src, 2650 * (1 + 0.04 * mv2), q=5.0, kind='band', blk=128) * 0.35 * bright
+         + bp(src, 220, 420, 1) * 0.5)
     y = Chorus(rate_hz=0.35, depth=0.18, centre_delay_ms=9.0, feedback=0.0, mix=0.45)(y.astype(np.float32), SR).astype(float)
     if dec:
         env = np.clip(t / max(att, 1e-3), 0, 1) ** 1.6 * np.exp(-np.maximum(t - att, 0) / dec)
@@ -817,8 +865,8 @@ BUS['sfx'] += crk * lvl * 0.10
 
 # ---------------- HOOK 0-4
 place('music', string_pad([29, 41, 42, 48], 1.0, 21, cutoff=500, att=0.6, rel=0.2), 0.0, 0.35, mhall=0.3)
-place('music', braam([29, 36, 41, 44, 48], 2.0, 1.0, 31), 1.0, 0.62, mhall=0.35)
-place('music', braam([29, 42, 49, 54], 2.4, 0.75, 32), 1.5, 0.62, mhall=0.4)
+place('hits', braam([29, 36, 41, 44, 48], 2.0, 1.0, 31), 1.0, 0.62, mhall=0.35)
+place('hits', braam([29, 42, 49, 54], 2.4, 0.75, 32), 1.5, 0.66, mhall=0.4)
 place('music', string_pad([41, 42, 48, 53], 1.5, 22, cutoff=1300, att=0.35, rel=0.3), 1.5, 0.35, mhall=0.4)
 # ostinato + clock 2.0-3.0
 for i in range(8):
@@ -829,7 +877,7 @@ for i in range(4):
     place('drums', tick_clock(300 + i, 1.0), 2.0 + i * 0.25, 0.8, room=0.2)
 
 # ---------------- REJOUER 4-6
-place('music', braam([29, 36, 41], 1.0, 0.6, 33), 4.0, 0.42, mhall=0.3)
+place('hits', braam([29, 36, 41, 48], 1.0, 0.8, 33), 4.0, 0.7, mhall=0.3)
 place('music', string_pad([41, 48, 53, 56], 2.0, 23, cutoff=1100, att=0.4, rel=0.3), 4.0, 0.3, mhall=0.4)
 for i in range(4):
     place('bass', low_pluck(29 if i % 2 == 0 else 41, 0.2, 0.9, 400 + i, 0.6), 4.0 + i * 0.25, 0.9)
@@ -840,8 +888,8 @@ for i in range(16):
     t = 4.0 + i * 0.125
     if clear(t):
         place('drums', tick_clock(310 + i, 0.6 + 0.4 * (i % 2 == 0)), t, 0.6, room=0.15)
-place('music', braam([29, 41, 48, 53, 56], 1.6, 1.4, 34), 5.0, 0.55, mhall=0.4)
-place('music', riser(0.5, 35, 41, 53), 5.5, 0.55, mhall=0.2)
+place('hits', braam([29, 41, 48, 53, 56], 1.6, 1.4, 34), 5.0, 0.55, mhall=0.4)
+place('music', riser(0.5, 35, 41, 46), 5.5, 0.5, mhall=0.2)
 for i in range(8):
     t = 5.5 + i * 0.0625
     place('drums', snare(500 + i, 0.2, bright=0.8), t, 0.25 + 0.4 * i / 7, plate=0.25)
@@ -850,8 +898,9 @@ for i in range(8):
 for b in range(8):            # beats 6.0 .. 9.5
     t = 6.0 + b * 0.5
     if t < 9.0:
-        place('drums', kick(600 + b, drive=2.0), t, 0.75); DK.append((t, 0.35, 0.18))
-        place('drums', taiko(64 if b % 2 == 0 else 82, 1.0, 610 + b), t, 0.55, room=0.3, hall=0.15)
+        if b > 0:     # no kick on the 6.0 cut: the NIVEAU slam 150 ms later is the hit
+            place('drums', kick(600 + b, drive=2.0), t, 0.75); DK.append((t, 0.35, 0.18))
+        place('drums', taiko(64 if b % 2 == 0 else 82, 1.0, 610 + b), t, 0.55 if b else 0.35, room=0.3, hall=0.15)
 for i in range(24):           # spiccato 16ths 6.0-9.0
     t = 6.0 + i * 0.125
     ch = chord_at(t)
@@ -911,6 +960,9 @@ for bar in range(5, 20):
             place('drums', clap(860 + bar * 4 + beat), tb + 0.004, 0.35, plate=0.3)
             if lv >= 2:
                 place('drums', tom(120, 880 + bar * 4 + beat), tb, 0.3, room=0.3)
+            if lv >= 4:   # 30-40: quiet four-on-the-floor under the backbeat (foreshadows the drop, festival DNA)
+                place('drums', kick(940 + bar * 4 + beat, drive=2.2, hold=0.010, adec=0.12, f_end=50.0), tb, 0.6)
+                DK.append((tb, 0.4, 0.2))
         if lv >= 2 and beat == 1 and clear(tb + 0.375):
             place('drums', kick(900 + bar * 4, drive=2.0, hold=0.010), tb + 0.375, 0.6)
             DK.append((tb + 0.375, 0.35, 0.16))
@@ -933,9 +985,9 @@ for bar in range(5, 20):
     for i in range(16):
         ts = t0 + i * 0.125
         lv = pu(ts)
-        m = tones[OST[lv % 2][i]] - 12
+        m = tones[OST[lv % 2][i]]
         vel = 1.0 if i % 4 == 0 else (0.75 if i % 2 == 0 else 0.6)
-        place('bass', low_pluck(m, 0.15, vel, 1300 + bar * 16 + i, open_=0.6 + 0.08 * lv), ts, 0.62)
+        place('bass', low_pluck(m, 0.15, vel, 1300 + bar * 16 + i, open_=0.55 + 0.07 * lv), ts, 0.5)
         if lv >= 1:
             ms = tones[SPC[lv % 2][i % 4]] + 12 + (12 if (lv >= 4 and i % 8 == 6) else 0)
             place('music', spiccato(ms, 0.13, 0.65 + 0.35 * (i % 4 == 0), 1500 + bar * 16 + i, cutoff=1700 + 150 * lv),
@@ -947,8 +999,10 @@ for bar in range(5, 20):
     pad = sawstack(CH[ch][1:], nn, 4, 0.22, 1600 + bar, drift=0.002)
     pad = lp(pad, 1000 + 800 * phb, 2) * gate16(nn, t0, 0.85, 0.045)
     place('music', pad, t0, 0.22 + 0.05 * phb, mhall=0.25)
-    if phb >= 1:
-        place('music', choir(CH[ch][1:4], 2.1, 1700 + bar, att=0.4, rel=0.3), t0, 0.30, mhall=0.4)
+    if phb == 1:
+        place('music', choir(CH[ch][1:4], 2.1, 1700 + bar, att=0.4, rel=0.3, t0=t0), t0, 0.20, mhall=0.4)
+    elif phb == 2:        # pad role: slow swell under the string pad, no attack of its own
+        place('music', choir(CH[ch][1:4], 2.15, 1700 + bar, att=0.9, rel=0.5, bright=0.8, t0=t0), t0, 0.24, mhall=0.45)
     if phb == 2:
         place('music', string_pad(CH[ch][:4], 2.05, 1750 + bar, cutoff=2000, att=0.2, rel=0.2), t0, 0.22, mhall=0.35)
 # tom fill into every whip-pan cut (P+4.5 .. P+4.875), lighter into the breakdown
@@ -965,9 +1019,9 @@ for P in (10, 15, 20, 25, 30, 35):
 # ---------------- BREAKDOWN 40-45
 for i, tb in enumerate([40.0, 41.0, 42.0, 43.0, 44.0]):
     place('drums', heartbeat(1900 + i), tb, 0.9, room=0.2)
-place('music', choir([41, 48, 53, 56], 2.3, 1910, att=0.5, rel=0.4), 40.0, 0.55, mhall=0.6)
-place('music', choir([37, 44, 49, 53], 2.3, 1911, att=0.3, rel=0.4), 42.0, 0.55, mhall=0.6)
-place('music', choir([39, 46, 51, 55], 1.2, 1912, att=0.3, rel=0.2), 44.0, 0.5, mhall=0.6)
+place('music', choir([41, 48, 53, 56], 2.3, 1910, att=0.5, rel=0.4, t0=40.0), 40.0, 0.55, mhall=0.6)
+place('music', choir([37, 44, 49, 53], 2.3, 1911, att=0.3, rel=0.4, t0=42.0), 42.0, 0.55, mhall=0.6)
+place('music', choir([39, 46, 51, 55], 1.2, 1912, att=0.3, rel=0.2, t0=44.0), 44.0, 0.5, mhall=0.6)
 place('music', string_pad([29, 41], 5.0, 1913, cutoff=400, att=0.8, rel=0.3), 40.0, 0.35)
 for t, m, v in [(40.0, 41, 0.9), (41.0, 48, 0.6), (41.5, 44, 0.7), (42.0, 37, 0.9), (42.5, 44, 0.55),
                 (43.0, 49, 0.6), (43.5, 48, 0.55), (44.0, 39, 0.85), (44.5, 46, 0.5)]:
@@ -1005,8 +1059,8 @@ for a, b_, ch in [(45.0, 47.0, 'Db'), (47.0, 49.0, 'Eb'), (49.0, 49.94, 'C')]:
     place('music', fin(pad, 4), a, 0.28, mhall=0.25)
     rootf = subf(ROOT[ch])
     place('bass', fin(sine(float(rootf), nn) * np.clip(tax(nn) / 0.01, 0, 1), 6) * 0.5, a, 1.0)
-place('music', riser(4.94, 2500, 41, 60, 150, 9000), 45.0, 0.4, mhall=0.25)
-place('music', riser(0.94, 2501, 48, 60, 400, 10000), 49.0, 0.32, mhall=0.2)
+place('music', riser(4.94, 2500, 41, 60, 150, 9000), 45.0, 0.3, mhall=0.25)
+place('music', riser(0.94, 2501, 48, 60, 400, 10000), 49.0, 0.22, mhall=0.2)
 
 # ---------------- DROP 50-54
 for b in range(8):
@@ -1027,7 +1081,8 @@ for b in range(8):
         th = tb + j * 0.125
         if clear(th):
             rd = hp(noise(ns(0.09), 2900 + b * 4 + j), 5000, 2) * ar(ns(0.09), 0.0006, 0.03 if j % 2 else 0.02)
-            place('drums', fin(rd), th, 0.26 if j % 2 else 0.36, pan=0.35)
+            tag = any(0 <= th - tg < 0.12 for tg in (53.0, 53.5))
+            place('drums', fin(rd), th, (0.26 if j % 2 else 0.36) * (0.63 if tag else 1.0), pan=0.35)
 for i in range(32):           # rolling reese, 16ths 2-4 of every beat
     ts = 50.0 + i * 0.125
     if i % 4 == 0:
@@ -1043,26 +1098,28 @@ for a, b_ in [(50.0, 52.0), (52.0, 53.0), (53.0, 54.0)]:
     nn = ns(b_ - a)
     pad = sawstack(CH[ch][1:], nn, 5, 0.26, 2800 + int(a), drift=0.002)
     pad = lp(pad, 4500, 2) * gate16(nn, a, 0.5, 0.06)
-    place('music', fin(pad, 4), a, 0.5 if a < 52 else 0.66, mhall=0.3)
-    place('music', choir(CH[ch][1:4], b_ - a, 2810 + int(a), att=0.05, rel=0.1), a, 0.22, mhall=0.35)
+    place('music', fin(pad, 4), a, 0.42 if a < 52 else 0.52, mhall=0.3)
+    place('music', choir(CH[ch][1:4], b_ - a, 2810 + int(a), att=0.05, rel=0.1, t0=a), a, 0.18, mhall=0.35)
     rootf = subf(ROOT[ch])
     place('bass', fin(sine(float(rootf), nn) * np.clip(tax(nn) / 0.005, 0, 1), 6) * 0.45, a, 1.0)
 nn = ns(4.0)                  # wide noise 'air' bed gated on 16ths (electro drop texture, fills the top end)
 air = bp(np.vstack([noise(nn, 2950), noise(nn, 2951)]), 2500, 12000, 2) * gate16(nn, 50.0, 0.7, 0.05)
 air *= np.interp(tax(nn), [0, 0.05, 3.9, 4.0], [0, 1, 1.25, 0])[None]
+for tg in (3.0, 3.5):         # taglines 53.0 / 53.5: air -4 dB for 120 ms
+    air *= np.interp(tax(nn), [tg - 0.02, tg, tg + 0.12, tg + 0.16], [1, 0.63, 0.63, 1], left=1, right=1)[None]
 place('music', air, 50.0, 0.12, mhall=0.1)
-for t, chd, d, br, g in [(50.0, [29, 36, 41, 44, 48, 53], 1.0, 1.4, 0.6), (50.875, [29, 41, 48, 53, 56], 0.6, 1.2, 0.45),
-                         (52.0, [25, 37, 44, 49, 53], 0.9, 0.85, 0.5), (53.0, [27, 39, 46, 51, 55], 0.5, 1.3, 0.5),
-                         (53.5, [24, 36, 43, 48, 52], 0.5, 1.4, 0.52)]:
-    place('music', braam(chd, d, br, int(t * 100)), t, g * 1.15, mhall=0.35)
+for t, chd, d, br, g in [(50.0, [29, 36, 41, 44, 48, 53], 1.0, 1.4, 0.6), (50.875, [29, 41, 48, 53, 56], 1.0, 1.2, 0.45),
+                         (52.0, [25, 37, 44, 49, 53], 0.9, 0.85, 0.5), (53.0, [27, 39, 46, 51, 55], 0.8, 1.3, 0.5),
+                         (53.5, [24, 36, 43, 48, 52], 0.8, 1.4, 0.52)]:
+    place('hits', braam(chd, d, br, int(t * 100), sub_amt=0.45 if t < 50.5 else 0.15), t, g * {50.0: 1.45, 50.875: 2.7, 52.0: 1.2, 53.0: 3.15, 53.5: 2.6}[t], mhall=0.35)
 
 # ---------------- END 54-60
-place('music', choir([41, 48, 53, 55, 60], 1.15, 3000, att=0.7, rel=0.2), 54.0, 0.55, mhall=0.45)
-place('music', choir([41, 48, 53, 56, 60], 1.15, 3001, att=0.15, rel=0.2), 55.0, 0.55, mhall=0.45)
-place('music', choir([37, 44, 49, 51, 56], 2.1, 3002, att=0.08, rel=0.2), 56.0, 0.55, mhall=0.45)
-place('music', choir([39, 46, 51, 56, 58], 0.6, 3003, att=0.06, rel=0.1), 58.0, 0.55, mhall=0.45)
-place('music', choir([39, 46, 51, 55, 58], 0.55, 3004, att=0.03, rel=0.1), 58.5, 0.55, mhall=0.45)
-place('music', choir([41, 48, 53, 56, 60, 65], 1.0, 3005, att=0.01, dec=0.35), 59.0, 0.5, mhall=0.5)
+place('music', choir([41, 48, 53, 55, 60], 1.15, 3000, att=0.7, rel=0.2, t0=54.0), 54.0, 0.55, mhall=0.45)
+place('music', choir([41, 48, 53, 56, 60], 1.15, 3001, att=0.15, rel=0.2, t0=55.0), 55.0, 0.55, mhall=0.45)
+place('music', choir([37, 44, 49, 51, 56], 2.1, 3002, att=0.08, rel=0.2, t0=56.0), 56.0, 0.55, mhall=0.45)
+place('music', choir([39, 46, 51, 56, 58], 0.6, 3003, att=0.06, rel=0.1, t0=58.0), 58.0, 0.55, mhall=0.45)
+place('music', choir([39, 46, 51, 55, 58], 0.55, 3004, att=0.03, rel=0.1, t0=58.5), 58.5, 0.45, mhall=0.45)
+place('music', choir([41, 48, 53, 56, 60, 65], 1.0, 3005, att=0.01, dec=0.35, t0=59.0), 59.0, 0.5, mhall=0.5)
 for a, b_, chd in [(54.0, 55.0, [29, 41, 48, 55]), (55.0, 56.0, [29, 41, 48, 56]), (56.0, 58.0, [25, 37, 44, 51]),
                    (58.0, 58.5, [27, 39, 46, 56]), (58.5, 59.0, [27, 39, 46, 55])]:
     place('music', string_pad(chd, b_ - a + 0.05, 3010 + int(a * 10), cutoff=1400, att=0.12, rel=0.08), a, 0.35, mhall=0.4)
@@ -1074,13 +1131,13 @@ for t, m, v in [(54.0, 41, 0.9), (55.0, 48, 0.6), (56.0, 37, 0.9), (57.0, 44, 0.
 for i, tb in enumerate([54.0, 55.0, 55.5, 56.0, 57.0, 57.5, 58.0]):
     place('drums', taiko(58 if i % 2 == 0 else 72, 1.3, 3200 + i, drive=1.7), tb, 0.55, room=0.3, hall=0.2)
 for i, tb in enumerate([56.0, 56.5, 57.0, 57.5, 58.0, 58.5]):
-    place('drums', kick(3250 + i, drive=2.2), tb, 0.75)
+    place('drums', kick(3250 + i, drive=2.2), tb, 0.65)
     DK.append((tb, 0.4, 0.2))
 for i, tb in enumerate([55.0, 57.0]):
     place('drums', snare(3270 + i, 0.4), tb, 0.45, plate=0.45)
 for i in range(13):           # pickup 58.5-58.9 snare 32nds
     t = 58.5 + i * 0.03125
-    place('drums', snare(3300 + i, 0.15, bright=0.7), t, 0.12 + 0.35 * i / 15, plate=0.3)
+    place('drums', snare(3300 + i, 0.15, bright=0.7), t, 0.08 + 0.18 * i / 15, plate=0.3)
 for i in range(16):           # end ostinato 56-58
     ts = 56.0 + i * 0.125
     tones = sorted(CH['Db'][:4])
@@ -1111,7 +1168,7 @@ for k, (a, b_) in enumerate([(0.775, 1.0), (1.275, 1.5)]):
     place('drums', tom(80, 5057 + k), a, 0.4, room=0.3)
 for k, t0 in enumerate([1.0, 1.5]):
     place(S, impact(5060 + k, 1.2, (130, 33), 92 + 10 * k, 2.6, bright=1.3 if k == 0 else 1.0), t0, 1.0, hall=0.35)
-    place('drums', taiko(55, 1.6, 5070 + k, drive=2.0), t0, 0.8, hall=0.3)
+    place('hitd', taiko(55, 1.6, 5070 + k, drive=2.0), t0, 0.8, hall=0.3)
     place(S, crash(2.4, 5080 + k, dark=0.6), t0, 0.5, hall=0.3)
     DH.append((t0, 0.6, 0.45))
 place(S, swish(0.22, 500, 3500, 5090), 2.0, 0.9, pan=0.4)
@@ -1123,35 +1180,37 @@ place('ui', tok(5102, 200, 0.5), 2.75, 1.0)
 
 # --- REJOUER
 nn = ns(0.6); t = tax(nn)
-hum = (sine(50 + 70 * (1 - np.exp(-t / 0.15)), nn) + 0.4 * saw(50 + 70 * (1 - np.exp(-t / 0.15)), nn)) * ar(nn, 0.004, 0.25)
-place(S, lp(hum, 600), 4.0, 0.4)
-place(S, impact(5200, 1.0, (110, 36), 105, 1.8), 4.0, 0.9, hall=0.3)
+hum = sine(55 + 40 * np.exp(-t / 0.03), nn) * ar(nn, 0.003, 0.12)     # CRT-on: low sine thump, no glide
+place(S, hum, 4.0, 0.45)
+place(S, impact(5200, 1.1, (110, 36), 105, 1.8, bright=1.2), 4.0, 1.1, hall=0.3)
 place(S, hp(noise(ns(0.25), 5201), 2000) * ar(ns(0.25), 0.001, 0.05) * 0.4, 4.0, 1.0)
-place('drums', taiko(60, 1.4, 5202, drive=1.8), 4.0, 0.6, hall=0.2)
-DH.append((4.0, 0.5, 0.35))
+place('hitd', taiko(60, 1.4, 5202, drive=1.8), 4.0, 0.7, hall=0.2)
+DH.append((4.0, 0.6, 0.35))
 place(S, swish(0.3, 400, 2500, 5210), 4.5, 0.8)
 place('drums', tom(100, 5211), 4.5, 0.45, room=0.3)
 place('ui', tok(5212, 280, 0.8), 4.5, 1.0)
 place(S, impact(5220, 1.2, (120, 34), 120, 2.4, bright=1.2), 5.0, 1.0, hall=0.4)
 place(S, crash(2.2, 5221, 1.0), 5.0, 0.55, hall=0.3)
-place('drums', taiko(56, 1.5, 5222, drive=2.0), 5.0, 0.7, hall=0.3)
+place('hitd', taiko(56, 1.5, 5222, drive=2.0), 5.0, 0.7, hall=0.3)
 DH.append((5.0, 0.6, 0.4))
-place(S, whoosh(0.52, 0.5, 200, 6000, -0.3, 0.3, onset=0.3, seed=5230, low=0.7), 5.5, 0.8)
-place(S, reverse_swell(0.5, 5231), 5.5, 0.6)
-place('drums', tom(85, 5232), 5.75, 0.85, room=0.3)
+place(S, whoosh(0.52, 0.5, 200, 6000, -0.3, 0.3, onset=0.3, seed=5230, low=0.7), 5.5, 0.65)
+place(S, reverse_swell(0.5, 5231), 5.5, 0.45)
+place('drums', tom(85, 5232), 5.75, 0.6, room=0.3)
 place(S, swish(0.12, 3000, 800, 5235, 1.0), 5.75, 1.0)
 place('drums', taiko(66, 1.0, 5233), 5.5, 0.6, room=0.3)
 place(S, swish(0.12, 3500, 900, 5234, 1.2), 5.5, 1.0)
 
 # --- LEVEL 1
-place(S, crash(1.6, 5300, 0.7), 6.0, 0.35, hall=0.2)
-place(S, swish(0.2, 2500, 600, 5301, 1.0), 6.0, 0.8)
-place(S, impact(5310, 1.2, (125, 34), 98, 2.4), 6.15, 1.0, hall=0.35)
-place('music', braam([29, 36, 41, 48, 53], 1.4, 1.1, 5311), 6.15, 0.5, mhall=0.35)
-place('drums', taiko(55, 1.5, 5312, drive=2.0), 6.15, 0.7, hall=0.3)
-DH.append((6.15, 0.55, 0.35))
-place('drums', taiko(78, 1.0, 5320), 6.375, 0.55, room=0.3)
-place('ui', tok(5321, 330, 0.8), 6.375, 1.0)
+place(S, crash(1.6, 5300, 0.7), 6.0, 0.2, hall=0.2)
+place(S, swish(0.2, 2500, 600, 5301, 1.0), 6.0, 0.6)
+place(S, impact(5310, 1.2, (125, 34), 98, 2.4, bright=1.2), 6.15, 1.35, hall=0.35)
+place('hits', braam([29, 36, 41, 48, 53], 1.4, 1.1, 5311), 6.15, 0.95, mhall=0.35)
+place('hitd', taiko(55, 1.5, 5312, drive=2.0), 6.15, 0.8, hall=0.3)
+DH.append((6.15, 0.7, 0.35, 0.08))
+place(S, crash(2.0, 5313, 0.8), 6.15, 0.4, hall=0.25)
+place('hitd', taiko(78, 1.0, 5320), 6.375, 0.6, room=0.3)
+place(S, crack_hit(5322, 0.08), 6.375, 0.5)
+place('ui', tok(5321, 330, 0.4), 6.375, 1.0)
 ER = [(7.0, 350), (7.2375, 1500), (7.5, 960), (7.75, 445), (8.0, 1460), (8.25, 715), (8.5, 1540), (8.75, 500)]
 for k, (t0, x) in enumerate(ER):
     pan = (x - 960) / 960 * 0.9
@@ -1171,14 +1230,6 @@ def whip(P, seed, pan0=0.8, pan1=-0.8):
     place(S, whoosh(0.53, 0.5, 300, 5500, pan0, pan1, onset=0.3, seed=seed, low=0.6), P - 0.5, 0.85)
 
 
-def crack_hit(seed, d=0.12):
-    """distorted broadband transient (the 'snap' on top of a trailer hit)."""
-    n = ns(d)
-    x = np.vstack([noise(n, seed), noise(n, seed + 1)])
-    x = np.tanh(4 * bp(x, 700, 9000) * ar(n, 0.0005, 0.012)) * 0.6 + bp(x, 250, 1200) * ar(n, 0.0008, 0.025) * 0.6
-    return fin(x, 10)
-
-
 def erupt(P, seed, g=1.0):
     place(S, eruption(seed, 1.0 * g, 0.0, 56), P, 1.0, room=0.2, hall=0.2)
     place(S, crack_hit(seed + 7), P, 0.55 * g, room=0.15)
@@ -1187,28 +1238,31 @@ def erupt(P, seed, g=1.0):
 
 
 def fall(t0, seed, g=1.0):
-    place(S, whoosh(0.5, 0.49, 400, 3500, 0.0, 0.0, onset=0.35, seed=seed, low=0.5, after=0.04), t0, 0.7 * g)
-    place(S, crackle(0.5, 120, seed + 1, 1500, 6000) * np.linspace(0.3, 1, ns(0.5)), t0, 0.5 * g)
+    # the fall ends 15 ms before the land, so the quench is a clean onset (replaces the old whole-mix pre-suck)
+    place(S, whoosh(0.485, 0.47, 400, 3500, 0.0, 0.0, onset=0.35, seed=seed, low=0.5, after=0.012), t0, 0.7 * g)
+    place(S, fin(crackle(0.48, 120, seed + 1, 1500, 6000) * np.linspace(0.3, 1, ns(0.48)), 10), t0, 0.5 * g)
 
 
 STAMP_N = [0]
 
 
 def stamp(t0, seed, g=1.0, verb=0.35):
-    place(S, impact(seed, 0.9, (105, 38), 140, 1.8, bright=1.1, metal_amt=0.3), t0, 0.95 * g, hall=verb)
-    place('drums', snare(seed + 1, 0.4), t0, 0.45 * g, plate=0.4)
+    place(S, impact(seed, 0.9, (105, 38), 140, 1.8, bright=1.1, metal_amt=0.3), t0, 1.15 * g, hall=verb)
+    place('hitd', snare(seed + 1, 0.4), t0, 0.45 * g, plate=0.4)
+    place(S, crash(1.4, seed + 5, dark=0.7), t0, 0.28 * g, hall=0.2)
     ch = chord_at(t0)
     root = ROOT[ch] if ROOT[ch] < 36 else ROOT[ch] - 12
     tn = sorted(CH[ch][:4])
     v = STAMP_N[0] % 3          # rotate the voicing: root position / 1st inversion / open (octave on top)
     STAMP_N[0] += 1
     voic = [tn[0], tn[1], tn[2]] if v == 0 else ([tn[1], tn[2], tn[3]] if v == 1 else [tn[0], tn[3], tn[1] + 12])
-    place('music', braam([root] + voic, 0.7, 1.0, seed + 2), t0, 0.42 * g, mhall=0.35)
-    DH.append((t0, 0.55 * g, 0.3))
+    place('hits', braam([root] + voic, 0.8, 1.1, seed + 2), t0, 0.78 * g, mhall=0.35)
+    DH.append((t0, 0.75 * g, 0.3, 0.1))
+    BPD.append((t0 - 0.02, t0 - 0.001, 0.5))
 
 
-def counter(t0, seed):
-    place('ui', clack(seed, 1.6), t0, 1.0, plate=0.08)
+def counter(t0, seed, g=1.6):
+    place('ui', clack(seed, g), t0, 1.0, plate=0.08)
 
 
 def hop(P, seed):
@@ -1221,7 +1275,7 @@ place(S, impact(6000, 1.3, (130, 33), 95, 2.4), 10.0, 1.0, hall=0.35)
 place(S, crash(2.4, 6001, 1.0), 10.0, 0.55, hall=0.3)
 erupt(10.0, 6002)
 fall(10.5, 6010)
-PD.append((10.972, 10.998, 0.3)); place(S, quench(6020), 11.0, 0.95, hall=0.2); DH.append((11.0, 0.45, 0.3))
+BPD.append((10.986, 10.998, 0.5)); place(S, quench(6020), 11.0, 0.8, hall=0.2); DH.append((11.0, 0.45, 0.3))
 place(S, sheen(6030), 11.14, 0.9)
 stamp(11.5, 6040)
 place('ui', tok(6050, 300, 0.6), 11.55, 1.0)
@@ -1242,7 +1296,7 @@ whip(15.0, 6095)
 # power-up 2 (15)
 erupt(15.0, 6100)
 fall(15.5, 6110)
-PD.append((15.972, 15.998, 0.3)); place(S, quench(6120), 16.0, 0.95, hall=0.2); DH.append((16.0, 0.45, 0.3))
+BPD.append((15.986, 15.998, 0.5)); place(S, quench(6120), 16.0, 0.8, hall=0.2); DH.append((16.0, 0.45, 0.3))
 for i, tb in enumerate([16.1, 16.163, 16.225, 16.288, 16.35, 16.413, 16.475, 16.538]):
     place('ui', hp(noise(ns(0.03), 6130 + i), 2500) * ar(ns(0.03), 0.004, 0.008) * 0.08, tb, 1.0, pan=-0.6 + 0.17 * i)
 place(S, sheen(6140), 16.14, 1.0)
@@ -1252,7 +1306,7 @@ place('ui', swish(0.3, 500, 3000, 6161, 0.9), 17.063, 1.0)
 counter(17.12, 6170)
 place('ui', swish(0.28, 700, 2200, 6180, 0.8, 0.4), 17.5, 1.0)
 place('ui', swish(0.28, 700, 2200, 6181, 0.8, -0.4), 18.0, 1.0)
-place('ui', swish(0.3, 2600, 700, 6182, 0.9), 18.5, 1.0)
+place('ui', swish(0.3, 2600, 700, 6182, 0.5), 18.5, 1.0)
 hop(15.0, 6190)
 whip(20.0, 6195)
 
@@ -1264,20 +1318,20 @@ grind = grind * ar(nn, 0.004, 0.25)
 place(S, stereo(grind) + whoosh(0.5, 0.45, 200, 1500, 0, 0, 0.4, 6211, 0.7) * 0.6, 20.5, 0.8)
 place(S, impact(6220, 0.7, (90, 38), 90, 1.2, bright=0.6, metal_amt=0.2), 21.0, 0.7, hall=0.15)
 for i, t0 in enumerate([21.0, 21.25, 21.5, 21.75, 22.0, 22.25]):
-    place('ui', thump(6230 + i, 0.8, 120), t0, 1.0)
-    place('ui', tok(6240 + i, 300, 0.7), t0, 1.0)
+    place('ui', thump(6230 + i, 0.55, 120), t0, 1.0)
 stamp(21.5, 6250)
 place('ui', tok(6260, 320, 0.7), 22.0, 1.0)
 counter(22.12, 6270)
 place('ui', tok(6280, 260, 1.0), 22.5, 1.0)
-place('ui', swish(0.18, 600, 2400, 6281, 1.4), 22.56, 1.0)
-place('ui', tok(6282, 340, 1.8), 22.56, 1.0)
+place('ui', swish(0.18, 600, 2400, 6281, 0.9), 22.56, 1.0)
+place('ui', tok(6282, 340, 1.2), 22.56, 1.0)
+place(S, crack_hit(6283, 0.06), 22.56, 0.4)       # pin pop: short broadband snap clear of the 22.5 backbeat
 place('ui', swish(0.4, 400, 1800, 6290, 0.7), 23.0, 1.0)
 place('ui', tok(6291, 240, 0.8), 23.0, 1.0)
 for i, t0 in enumerate([23.5, 23.75, 24.0]):
     nn = ns(0.5); t = tax(nn)
     son = sine(70 + 20 * np.exp(-t / 0.05), nn) * ar(nn, 0.003, 0.12) + bp(noise(nn, 6300 + i), 300, 1500) * ar(nn, 0.002, 0.03) * 0.5
-    place('ui', son, t0, 0.7 - 0.2 * i, room=0.4)
+    place('ui', son, t0, 0.45 - 0.12 * i, room=0.4)
 whip(25.0, 6310)
 
 # power-up 4 (25) planning
@@ -1292,7 +1346,6 @@ place('ui', tok(6421, 250, 0.7), 25.5, 1.0)
 place(S, sub_drop(70, 35, 0.6, 0.2), 26.0, 0.3)
 stamp(26.5, 6430)
 for i, t0 in enumerate([27.0, 27.5, 28.0]):
-    place('ui', tok(6440 + i, 320, 1.0, 0.6), t0, 1.0)
     place('ui', thump(6445 + i, 0.5, 140), t0, 1.0)
 counter(27.12, 6450)
 place(S, impact(6460, 0.8, (110, 40), 150, 1.4, bright=1.0, metal_amt=0.3), 28.5, 0.85, hall=0.25)
@@ -1324,9 +1377,9 @@ whip(35.0, 6595)
 # power-up 6 (35) cashless
 erupt(35.0, 6600)
 fall(35.5, 6610)
-PD.append((35.972, 35.998, 0.3)); place(S, quench(6620, 1.05), 36.0, 1.0, hall=0.2); DH.append((36.0, 0.5, 0.3))
+BPD.append((35.986, 35.998, 0.5)); place(S, quench(6620, 1.05), 36.0, 0.75, hall=0.2); place(S, crack_hit(6625), 36.0, 0.45, room=0.15); DH.append((36.0, 0.5, 0.3))
 place(S, sheen(6630), 36.12, 1.0)
-stamp(36.5, 6640)
+stamp(36.5, 6640, 1.15)
 nn = ns(0.4); t = tax(nn)        # RECHARGE: band-passed noise swept 300 -> 1200 Hz, no pitched oscillator
 chg = tvf(np.vstack([noise(nn, 6645), noise(nn, 6646)]), 300 * 4 ** (t / 0.4), q=1.2, kind='band')
 place(S, fin(chg * ar(nn, 0.01, 0.15) * 1.2, 20), 36.5, 0.5)
@@ -1341,33 +1394,31 @@ place(S, whoosh(0.54, 0.5, 300, 5500, 0.8, -0.8, onset=0.3, seed=6690, low=0.6),
 # breakdown (40)
 place(S, eruption(6700, 0.6, 0.0, 52), 40.0, 0.8, hall=0.35)
 place(S, whoosh(0.5, 0.49, 300, 2200, 0, 0, 0.3, 6710, 0.5), 40.5, 0.5)
-place('ui', swish(0.15, 3000, 800, 6711, 1.2), 40.5, 1.0)
+place('ui', swish(0.15, 3000, 800, 6711, 0.3), 40.5, 1.0)
 place(S, crackle(0.3, 200, 6712, 1200, 6000, decay=0.08), 40.5, 0.7)
 place(S, thump(6720, 1.2, 70), 41.0, 1.0, room=0.3)
 place(S, steam(0.6, 6721, 0.6), 41.0, 0.6)
 place('ui', tok(6722, 300, 1.0), 41.0, 1.0)
-for i, tb in enumerate([41.012, 41.038, 41.070, 41.111, 41.174, 41.234]):
-    place('ui', tok(6730 + i, 420, 0.25, 0.4), tb, 1.0)
 stamp(41.5, 6740, 0.9, verb=0.6)
-place('ui', tok(6745, 260, 0.8), 41.5, 1.0)
+place('ui', tok(6745, 260, 0.4), 41.5, 1.0)
 place('ui', tok(6750, 280, 1.0), 42.0, 1.0)
-counter(42.12, 6760)
+counter(42.12, 6760, 0.9)
 for i, t0 in enumerate([42.5, 42.75, 43.0, 43.5]):
-    place('ui', tok(6770 + i, 300 + 20 * i, 1.0), t0, 1.0)
+    place('ui', tok(6770 + i, 300 + 20 * i, 0.65), t0, 1.0)
 place('ui', thump(6780, 0.8, 110), 43.0, 1.0)
 place('ui', swish(0.08, 1500, 600, 6781, 0.6), 44.5, 1.0)
 place(S, whoosh(0.52, 0.5, 300, 6000, 0.8, -0.8, onset=0.3, seed=6790, low=0.7), 44.5, 0.8)
 
 # build (45)
 place(S, impact(6800, 1.2, (120, 34), 100, 2.4), 45.0, 1.0, hall=0.35)
-place('music', braam([25, 37, 44, 49, 53], 1.6, 1.0, 6801), 45.0, 0.5, mhall=0.35)
+place('hits', braam([25, 37, 44, 49, 53], 1.6, 1.0, 6801), 45.0, 0.5, mhall=0.35)
 place(S, crash(2.0, 6802, 0.8), 45.0, 0.45, hall=0.3)
 DH.append((45.0, 0.55, 0.35))
 place('ui', swish(0.26, 400, 2200, 6810, 0.9), 45.5, 1.0)
 place('ui', tok(6811, 260, 0.6), 45.5, 1.0)
 for i in range(18):
     tb = 45.75 + i * 0.04
-    place('ui', tok(6820 + i, 400 + 30 * (i % 3), 0.28 if i else 1.4, 0.6), tb, 1.0)
+    place('ui', tok(6820 + i, 400 + 30 * (i % 3), 0.28 if i else 1.0, 0.6), tb, 1.0)
 stamp(46.5, 6840)
 place(S, whoosh(0.2, 0.05, 3000, 600, 0.0, 0.0, 0.6, 6841, 0.2, after=0.12), 46.5, 0.5)
 place('ui', tok(6850, 260, 1.0), 47.0, 1.0)
@@ -1375,15 +1426,15 @@ place('ui', swish(0.15, 600, 2000, 6851, 0.6), 47.0, 1.0)
 counter(47.12, 6860)
 for i, t0 in enumerate([47.5, 47.75, 48.0, 48.25]):
     place('ui', tok(6870 + i, 290 + 15 * i, 0.9), t0, 1.0)
-place('ui', tok(6880, 250, 1.8), 48.5, 1.0)
-place('ui', swish(0.1, 3000, 900, 6881, 0.8), 48.5, 1.0)
+place('ui', tok(6880, 250, 0.9), 48.5, 1.0)
+place('ui', swish(0.1, 3000, 900, 6881, 0.5), 48.5, 1.0)
 place(S, sub_drop(60, 30, 1.0, 0.6), 49.0, 0.4)
 place('drums', taiko(56, 1.0, 6890, drive=1.8), 49.0, 0.9, room=0.3)
 place(S, impact(6892, 0.7, (100, 40), 130, 1.0, bright=1.3, metal_amt=0.3), 49.0, 0.8, hall=0.2)
-place('drums', taiko(70, 1.0, 6893, drive=1.8), 49.5, 1.0, room=0.3)
+place('drums', taiko(70, 1.0, 6893, drive=1.8), 49.5, 0.7, room=0.3)
 PD.append((49.475, 49.498, 0.4))
 place(S, impact(6894, 0.6, (90, 40), 150, 0.8, bright=1.4, metal_amt=0.25), 49.5, 0.7, hall=0.2)
-place(S, reverse_swell(0.44, 6891, 1.3), 49.5, 0.8)
+place(S, reverse_swell(0.44, 6891, 1.3), 49.5, 0.55)
 
 # DROP
 place(S, impact(7000, 1.5, (140, 40), 90, 2.8, bright=1.5, metal_amt=0.45, subdec=0.4), 50.0, 1.0, hall=0.4)
@@ -1396,62 +1447,68 @@ place('post', swish(0.1, 4000, 1500, 7012, 1.5), 50.075, 0.6)
 place('post', impact(7020, 1.0, (120, 38), 130, 1.6, bright=1.8, metal_amt=0.45), 50.125, 0.75)
 place('post', snare(7021, 0.4), 50.125, 0.5)
 place('post', swish(0.1, 4500, 1500, 7022, 1.5), 50.125, 0.6)
-PD += [(50.052, 50.073, 0.5), (50.088, 50.123, 0.15)]
 for i, tb in enumerate([50.507, 50.522, 50.539, 50.559, 50.582, 50.612, 50.656]):
     place('ui', tok(7030 + i, 350, (1.6 if i == 0 else 0.5 + 0.08 * i), 0.7), tb, 1.0)
-place(S, impact(7040, 1.0, (120, 36), 120, 1.8, bright=1.2, metal_amt=0.4), 50.875, 0.9, hall=0.3)
+place(S, impact(7040, 1.0, (120, 45), 120, 1.8, bright=1.2, metal_amt=0.45, subdec=0.14), 50.875, 1.3, hall=0.3)
+place(S, crash(1.6, 7042, 0.9), 50.875, 0.45, hall=0.25)
 place(S, crackle(0.5, 200, 7041, 900, 6000, decay=0.15), 50.875, 0.5)
-DH.append((50.875, 0.45, 0.25))
+DH.append((50.875, 0.8, 0.3, 0.15))
+BPD.append((50.835, 50.874, 0.4))
 place(S, whoosh(0.5, 0.1, 6000, 250, 0.0, 0.0, onset=0.6, seed=7050, low=0.9, after=0.12), 51.5, 0.6)
-place('ui', thump(7060, 2.0, 100), 51.7625, 1.0)
-place('ui', tok(7061, 320, 2.0, 1.2), 51.7625, 1.0)
+place('ui', thump(7060, 1.2, 100), 51.7625, 1.0)
+place('ui', tok(7061, 320, 1.2, 1.2), 51.7625, 1.0)
+place(S, crack_hit(7062, 0.1), 51.7625, 0.55, room=0.15)     # lava pops at the goal: short broadband crack, not a UI sound
 for i, tb in enumerate([51.925, 52.075, 52.225, 52.375, 52.525, 52.675]):   # hops: rimshot-like accents only
     rim = hp(noise(ns(0.05), 7080 + i), 3000, 2) * ar(ns(0.05), 0.0004, 0.006)
     place('ui', fin(rim), tb, 0.6, pan=0.3 * (1 if i % 2 else -1))
     place('ui', tok(7070 + i, 360, 0.6, 1.0), tb, 1.0)
-place(S, impact(7090, 0.7, (110, 40), 140, 1.2, bright=1.4, metal_amt=0.3), 52.8125, 0.85, hall=0.25)
+place(S, impact(7090, 0.7, (110, 40), 140, 1.2, bright=1.4, metal_amt=0.3), 52.8125, 0.7, hall=0.25)
 place(S, crackle(0.4, 220, 7091, 900, 6000, decay=0.12), 52.8125, 0.5)
 place(S, crack_hit(7092), 52.8125, 0.6, room=0.2)
 DH.append((52.8125, 0.35, 0.18))
 for k, t0 in enumerate([53.0, 53.5]):
     place(S, whoosh(0.11, 0.1, 600, 4000, 0.6 - 1.2 * k, 0, 0.3, 7100 + k, 0.3), t0 - 0.1, 0.5)
-    place(S, impact(7110 + k, 1.1, (125, 36), 110 + 15 * k, 1.8, bright=1.3, metal_amt=0.4), t0, 1.0, hall=0.3)
-    DH.append((t0, 0.5, 0.25))
+    place(S, impact(7110 + k, 1.1, (125, 45), 110 + 15 * k, 1.8, bright=1.3, metal_amt=0.45, subdec=0.14), t0, 1.35, hall=0.3)
+    place(S, crash(1.6, 7115 + k, 0.9), t0, 0.45, hall=0.25)
+    DH.append((t0, 0.82, 0.3, 0.18))     # stop-time: the bed drops out under each tagline slam
+    BPD.append((t0 - 0.02, t0 - 0.001, 0.5))
 
 # END
 place(S, crash(2.4, 7200, 0.5), 54.0, 0.35, hall=0.4)
 place(S, impact(7201, 0.6, (90, 36), 110, 1.2, bright=0.9, metal_amt=0.2), 54.0, 0.6, hall=0.4)
-place('ui', swish(0.2, 3500, 900, 7202, 1.2), 54.0, 1.0)
+place('ui', swish(0.2, 3500, 900, 7202, 0.5), 54.0, 1.0)
 place(S, sub_drop(70, 34, 1.4, 0.4), 54.0, 0.45)
 place('ui', whoosh(0.4, 0.35, 300, 3500, -0.4, 0.4, 0.3, 7210, 0.4), 55.25, 0.6)
-place('ui', swish(0.2, 600, 3000, 7211, 1.3), 55.25, 1.0)
-place('ui', tok(7212, 280, 1.2), 55.25, 1.0)
+place('ui', swish(0.2, 600, 3000, 7211, 0.7), 55.25, 1.0)
+place('ui', tok(7212, 280, 0.7), 55.25, 1.0)
+place(S, crack_hit(7213, 0.06), 55.25, 0.3)
 place(S, whoosh(0.52, 0.5, 400, 5000, 0.6, -0.2, 0.3, 7220, 0.6), 55.5, 0.8)
-place('ui', swish(0.14, 3500, 900, 7221, 1.3), 55.5, 1.0)
+place('ui', swish(0.14, 3500, 900, 7221, 0.6), 55.5, 1.0)
 place('ui', tok(7222, 240, 1.0), 55.5, 1.0)
 place(S, impact(7230, 1.2, (125, 34), 100, 2.4, bright=1.2), 56.0, 1.0, hall=0.4)
-place('music', braam([25, 37, 44, 49, 51, 56], 1.6, 1.0, 7231), 56.0, 0.48, mhall=0.4)
+place('hits', braam([25, 37, 44, 49, 51, 56], 1.6, 1.0, 7231), 56.0, 0.7, mhall=0.4)
 place(S, crash(2.2, 7232, 0.8), 56.0, 0.45, hall=0.3)
 DH.append((56.0, 0.5, 0.35))
 place('ui', swish(0.3, 500, 2600, 7240, 0.9), 56.5, 1.0)
 place('ui', tok(7241, 260, 0.6), 56.5, 1.0)
 place('ui', tok(7250, 300, 1.0), 57.0, 1.0)
 place('ui', tok(7251, 320, 1.0), 57.25, 1.0)
-place(S, impact(7260, 0.7, (100, 40), 150, 1.2, bright=1.0, metal_amt=0.25), 57.75, 0.6, hall=0.25)
-place(S, impact(7270, 0.8, (110, 38), 120, 1.4, bright=1.0, metal_amt=0.3), 58.0, 0.7, hall=0.3)
+place(S, impact(7260, 0.7, (100, 40), 150, 1.2, bright=1.0, metal_amt=0.25), 57.75, 0.5, hall=0.25)
+place(S, impact(7270, 0.8, (110, 38), 120, 1.4, bright=1.0, metal_amt=0.3), 58.0, 0.55, hall=0.3)
 place('ui', tok(7271, 280, 0.8), 58.0, 1.0)
 place('ui', swish(0.2, 800, 2000, 7272, 0.4), 58.725, 1.0)
-place(S, reverse_swell(0.5, 7280, 1.2), 58.5, 0.7)
+place(S, reverse_swell(0.5, 7280, 1.2), 58.5, 0.45)
 # FINAL HIT 59.0
-place('music', braam([29, 36, 41, 44, 48, 53, 56], 1.0, 1.6, 7300, growl=0.18, edec=0.4), 59.0, 0.7, mhall=0.45)
-place(S, impact(7301, 0.75, (140, 32), 88, 1.0, bright=1.5, metal_amt=0.4, subdec=0.28), 59.0, 1.0, hall=0.5)
-place(S, crash(2.4, 7302, 1.0), 59.0, 0.7, hall=0.4)
-place(S, sub_drop(120, 29, 0.7, 0.25), 59.0, 0.7)
-place('drums', drop_kick(7303), 59.0, 1.0)
+place('hits', braam([29, 36, 41, 44, 48, 53, 56], 1.0, 1.6, 7300, growl=0.18, edec=0.6, sub_amt=0.25), 59.0, 1.25, hall=0.6)
+place(S, impact(7301, 1.2, (140, 32), 88, 2.0, bright=1.5, metal_amt=0.4, subdec=0.4), 59.0, 1.0, hall=0.5)
+place(S, crash(2.4, 7302, 1.0), 59.0, 0.85, hall=0.4)
+place(S, crack_hit(7304, 0.15), 59.0, 0.7, room=0.2, hall=0.3)
+place(S, sub_drop(120, 29, 0.7, 0.25), 59.0, 0.35)    # fewer stacked subs: headroom goes to the braam
+place('hitd', drop_kick(7303), 59.0, 1.0)
 for k, f0 in enumerate([52, 66, 84]):
-    place('drums', taiko(f0, 1.0, 7310 + k, drive=2.0), 59.0 + 0.004 * k, 0.55, hall=0.3, pan=(k - 1) * 0.5)
+    place('hitd', taiko(f0, 1.0, 7310 + k, drive=2.0), 59.0 + 0.004 * k, 0.7, hall=0.3, pan=(k - 1) * 0.5)
 place('ui', tok(7320, 260, 0.8), 59.0, 1.0)
-DH.append((59.0, 0.6, 1.5))     # duck never recovers before 60.0: the hit decays
+DH.append((59.0, 0.75, 1.5, 0.1))     # duck never recovers before 60.0: the hit decays
 PD.append((58.93, 58.998, 0.12))
 
 # ===================================================================================== MIX
@@ -1460,12 +1517,14 @@ print('mix...  %.1fs' % (time.time() - T_START))
 
 def duck_env(events, n):
     e = np.ones(n)
-    for t0, depth, rel in events:
+    for ev in events:
+        t0, depth, rel = ev[:3]
+        hold = ev[3] if len(ev) > 3 else 0.012
         i = ns(t0)
-        L = ns(rel + 0.02)
+        L = ns(rel + hold + 0.01)
         tt = tax(L)
         a = np.clip(tt / 0.003, 0, 1)
-        r = np.clip((tt - 0.012) / rel, 0, 1)
+        r = np.clip((tt - hold) / rel, 0, 1)
         g = depth * a * (1 - r * r * (3 - 2 * r))
         j = min(N, i + L)
         e[i:j] = np.minimum(e[i:j], 1 - g[:j - i])
@@ -1488,6 +1547,7 @@ def conv(x, ir):
 
 IR = {'v_mhall': make_ir(3.2, 2.8, 7000, 1800, 9001, 0.03), 'v_hall': make_ir(3.8, 3.4, 9000, 2000, 9003, 0.025),
       'v_plate': make_ir(1.6, 1.3, 11000, 4000, 9005, 0.01), 'v_room': make_ir(0.8, 0.6, 8000, 2500, 9007, 0.005)}
+BUS['v_room'] = hp(BUS['v_room'], 80, 2)     # keep taiko / tom room sends out of the low end
 RET = {k: conv(BUS[k], IR[k]) for k in IR}
 
 dk = duck_env(DK, N)
@@ -1498,7 +1558,8 @@ fc_pts = [(0, 1800), (1.0, 6000), (2.0, 3000), (4, 1500), (5.0, 5000), (6, 3500)
           (18, 7000), (26, 9000), (34, 12000), (40, 3000), (45, 2500), (49.9, 14000), (50, 16000), (54, 16000), (60, 16000)]
 fcm = np.interp(tax(N), [p[0] for p in fc_pts], [p[1] for p in fc_pts])
 music = tvf(BUS['music'], fcm, q=0.7, blk=128)
-music = (music + RET['v_mhall'] * 0.9) * (dk * 0.85 + 0.15 * 1.0) [None] * dh[None]
+# the big-hit duck applies to the BED only; the music hall return gets half its depth (tails are not pumped shut)
+music = (music * dh[None] + RET['v_mhall'] * 0.9 * (0.5 + 0.5 * dh)[None]) * (dk * 0.85 + 0.15 * 1.0)[None]
 TS = tax(N)
 # width automation: 1.0 in the hook and on the end card (mono-safe), 1.05 in the breakdown, 1.15 in the grooves
 wid = np.interp(TS, [0, 3.98, 4.0, 39.97, 40.0, 44.97, 45.0, 53.97, 54.0, 62],
@@ -1514,27 +1575,55 @@ comp = Compressor(threshold_db=-22, ratio=6, attack_ms=2, release_ms=90)
 dpar = comp(drums.astype(np.float32), SR).astype(float)
 drums = drums + 0.45 * dpar
 drums = np.tanh(drums * 1.1) / 1.1
-drums = drums * (0.6 + 0.4 * dh)[None]
+drums = drums * (0.4 + 0.6 * dh)[None]       # bed drums only now (hit taikos / kick live on 'hitd')
+drums = PeakFilter(250, -2.5, 0.9)(drums.astype(np.float32), SR).astype(float)    # de-mud the taiko / tom low-mids
+
+# hit layers: never side-chained, never ducked, no section gain
+hits = lp(BUS['hits'], 1500, 4)     # braam saw harmonics above ~2 kHz read as tonal 'beeps': the crash / crack carry the top
+hitd = BUS['hitd']
+hcomp = Compressor(threshold_db=-20, ratio=4, attack_ms=4, release_ms=120)
+hitd = hitd + 0.35 * hcomp(hitd.astype(np.float32), SR).astype(float)
+hitd = np.tanh(hitd * 1.1) / 1.1
 
 sfx = BUS['sfx']
 ui = BUS['ui']
 
-G = {'drums': 0.85, 'bass': 0.5, 'music': 1.5, 'sfx': 0.75, 'ui': 0.75, 'hall': 0.55, 'plate': 0.36, 'room': 0.35}
+G = {'drums': 0.85, 'bass': 0.5, 'music': 1.5, 'sfx': 0.75, 'ui': 0.75, 'hall': 0.55, 'plate': 0.36, 'room': 0.35,
+     'hits': 1.5, 'hitd': 1.0}
 # section gain on the groove (music / bass / drums): the power-ups and the build must not sag under the hits
 # every step is a 25 ms ramp that ends on the downbeat. The drop gets the most section gain of the film.
 sg = np.interp(TS, [0, 9.975, 10.0, 39.975, 40.0, 44.975, 45.0, 49.9, 49.975, 50.0, 53.975, 54.0, 62],
-               [1.0, 1.0, 1.55, 1.55, 1.0, 1.0, 1.15, 1.25, 1.25, 1.45, 1.45, 1.05, 1.05])
+               [1.0, 1.0, 1.55, 1.55, 1.0, 1.0, 1.05, 1.0, 1.0, 1.22, 1.22, 1.05, 1.05])
 sgm = sg * np.interp(TS, [0, 39.975, 40.0, 44.975, 45.0, 62], [1, 1, 0.55, 0.55, 1, 1])
 drums = drums * sg[None]
 bass = bass * sg[None]
 music = music * sgm[None]
-pre = (drums * G['drums'] + bass * G['bass'] + music * G['music'] + sfx * G['sfx'] + ui * G['ui']
+# bed-only pre-hit micro-sucks (stamps, quench lands, taglines): short dips of the groove, never of the SFX / hits
+bpd = np.ones(N)
+for a, b_, dep in BPD:
+    i0, i1 = ns(a), ns(b_)
+    f = ns(0.003)
+    bpd[i0:i1] = np.minimum(bpd[i0:i1], dep)
+    bpd[i0 - f:i0] = np.minimum(bpd[i0 - f:i0], np.linspace(1, dep, f))
+    bpd[i1:i1 + f] = np.minimum(bpd[i1:i1 + f], np.linspace(dep, 1, f))
+drums, bass, music = drums * bpd[None], bass * bpd[None], music * bpd[None]
+
+
+def softclip(x, thr):
+    """2x-oversampled tanh clipper (linear-phase resampling: no latency). Trailer-style hit bus clipping:
+    shaves the crack transients so the master limiter does not pull the whole hit down."""
+    up = resample_poly(x, 2, 1, axis=1)
+    return resample_poly(thr * np.tanh(up / thr), 1, 2, axis=1)
+
+
+hitgrp = softclip(sfx * G['sfx'] + hits * G['hits'] + hitd * G['hitd'], 100.0)
+pre = (drums * G['drums'] + bass * G['bass'] + music * G['music'] + hitgrp + ui * G['ui']
        + RET['v_hall'] * G['hall'] + RET['v_plate'] * G['plate'] + RET['v_room'] * G['room'])
 
 if os.environ.get('STEMS_OUT'):      # debug: dump the gained stems for measurement
     np.savez(os.environ['STEMS_OUT'], drums=(drums * G['drums']).astype(np.float32), bass=(bass * G['bass']).astype(np.float32),
              music=(music * G['music']).astype(np.float32), sfx=(sfx * G['sfx']).astype(np.float32),
-             ui=(ui * G['ui']).astype(np.float32),
+             ui=(ui * G['ui']).astype(np.float32), hits=(hits * G['hits'] + hitd * G['hitd']).astype(np.float32),
              rev=(RET['v_hall'] * G['hall'] + RET['v_plate'] * G['plate'] + RET['v_room'] * G['room']).astype(np.float32))
 for a, b_, dep in PD:
     g = np.ones(N)
@@ -1553,7 +1642,7 @@ rate = 1 + k_ * (tr / 0.75) ** 1.5
 pos = 2.0 - np.cumsum(rate) / SR
 pos = np.clip(pos, 0, 2.0 - 1 / SR) * SR
 rew = np.vstack([np.interp(pos, np.arange(seg.shape[1]), seg[c]) for c in range(2)])
-rew = lp(hp(rew, 160), 1500, 4) * 0.85
+rew = lp(hp(rew, 160), 1500, 4) * 0.6
 rew += np.vstack([hp(noise(nr, 9103), 2500, 2), hp(noise(nr, 9104), 2500, 2)]) * 0.05 * np.clip(tr / 0.02, 0, 1)
 rew *= np.clip(tr / 0.01, 0, 1)
 rew += np.vstack([bp(noise(nr, 9101), 300, 2200), bp(noise(nr, 9102), 300, 2200)]) * 0.05 * (tr / 0.75)
@@ -1569,7 +1658,7 @@ nn = ns(0.35); t = tax(nn)
 zap = tvf(np.vstack([noise(nn, 9120), noise(nn, 9121)]), 6000 * np.exp(-t / 0.05) + 80, q=1.2, kind='band') * 2.5
 zap *= ar(nn, 0.002, 0.08)
 zap += stereo(sine(30 + 90 * np.exp(-t / 0.04), nn) * ar(nn, 0.002, 0.12) * 0.9)
-place('post', zap, 3.75, 0.8)
+place('post', zap, 3.75, 0.55)
 place('post', crackle(0.25, 200, 9122, 1500, 7000, decay=0.05), 3.75, 0.4)
 place('post', crackle(0.1, 150, 9123, 2000, 7000, decay=0.02), 3.888, 0.25)
 post = BUS['post'] + conv(BUS['post'], IR['v_room']) * 0.25 + conv(BUS['post'], IR['v_hall']) * 0.3
@@ -1583,17 +1672,18 @@ for t0, t1 in [(49.94, 50.0), (9.965, 10.0)]:
     g[i0 - ns(0.006):i0] = np.linspace(1, 0.03, ns(0.006))
     mix *= g[None]
 
-# M/S: low end mono, gentle width on the sides
-mid = (mix[0] + mix[1]) / 2
-side = (mix[0] - mix[1]) / 2
-side = hp(side, 140, 2) * wid[:N]
-mix = np.vstack([mid + side, mid - side])
 mix = hp(mix, 22, 2)
 
 # glue
 mix = mix / (np.abs(mix).max() + 1e-9) * 0.5
-glue = Compressor(threshold_db=-16, ratio=2.0, attack_ms=12, release_ms=160)
+glue = Compressor(threshold_db=-16, ratio=1.6, attack_ms=30, release_ms=160)   # slow attack: hit onsets pass
 mix = glue(mix.astype(np.float32), SR).astype(float)
+
+# M/S after the glue (so nothing downstream re-creates low side): low end mono (side 4th-order HP 130 Hz), width
+mid = (mix[0] + mix[1]) / 2
+side = (mix[0] - mix[1]) / 2
+side = hp(side, 130, 4) * wid[:N]
+mix = np.vstack([mid + side, mid - side])
 mix = mix[:, :NOUT]
 
 
@@ -1609,6 +1699,18 @@ def limiter(x, ceil):
     return out
 
 
+def master_clip(x, thr, knee=0.8):
+    """2x-oversampled soft-knee clipper ahead of the limiter: shaves the few-ms crack / kick transients so the
+    look-ahead limiter does not pull 40-80 ms of every slam down (hits keep their loudness)."""
+    up = resample_poly(x, 2, 1, axis=1)
+    a = knee * thr
+    m = np.abs(up).max(0)              # stereo-linked: same gain on L and R, so no new (low-frequency) side content
+    g = np.ones_like(m)
+    over = m > a
+    g[over] = (a + (thr - a) * np.tanh((m[over] - a) / (thr - a))) / m[over]
+    return resample_poly(up * g[None], 1, 2, axis=1)
+
+
 def true_peak(x):
     return max(np.abs(resample_poly(c, 4, 1)).max() for c in x)
 
@@ -1618,7 +1720,7 @@ gain = 1.0
 fade = np.ones(NOUT)
 fade[-ns(0.3):] = np.cos(np.linspace(0, np.pi / 2, ns(0.3))) ** 2
 for it in range(5):
-    y = limiter(mix * gain, 10 ** (-1.35 / 20))
+    y = limiter(master_clip(mix * gain, 10 ** (-1.0 / 20)), 10 ** (-1.35 / 20))
     y = y * fade[None]
     tp = true_peak(y)
     if tp > 10 ** (-1.05 / 20):
@@ -1629,6 +1731,8 @@ for it in range(5):
         break
     gain *= 10 ** ((-14.0 - L) / 20)
 
+if os.environ.get('STEMS_OUT'):      # debug: limiter gain reduction
+    np.save(os.environ['STEMS_OUT'] + '_prelim.npy', (mix * gain).astype(np.float32))
 y = y - y.mean(1, keepdims=True)
 y = np.clip(y, -1, 1)
 assert y.shape == (2, NOUT)
